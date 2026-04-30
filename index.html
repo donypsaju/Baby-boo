@@ -751,7 +751,12 @@
         </button>
       </div>
       <label class="field-label">Duration (minutes) <span style="font-weight:600;color:var(--text3)">optional</span></label>
-      <input class="field-input" id="feed-duration" type="number" min="1" max="120" placeholder="e.g. 15">
+      <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+        <button id="feed-timer-btn" type="button" class="choice-btn" onclick="toggleFeedTimer()" style="flex: 1; background: rgba(167,139,250,0.1); color: var(--accent); border-color: var(--accent);">
+          ⏱ Start Timer
+        </button>
+        <input class="field-input" id="feed-duration" type="number" min="1" max="120" placeholder="e.g. 15" style="margin-bottom: 0; flex: 1;">
+      </div>
       <label class="field-label">Notes <span style="font-weight:600;color:var(--text3)">optional</span></label>
       <input class="field-input" id="feed-notes" type="text" placeholder="Any observations…">
       <div class="submit-row">
@@ -827,6 +832,9 @@ let data = {
   weights: [],
   theme: 'dark'
 };
+
+let activeFeedStart = localStorage.getItem('activeFeedStart') || null;
+let feedTimerInterval = null;
 
 function load() {
   try {
@@ -1320,9 +1328,55 @@ function pickDiaperType(btn) {
   });
 }
 
+function toggleFeedTimer() {
+  const btn = document.getElementById('feed-timer-btn');
+  const input = document.getElementById('feed-duration');
+
+  if (!activeFeedStart) {
+    // Start the timer
+    activeFeedStart = Date.now();
+    localStorage.setItem('activeFeedStart', activeFeedStart);
+    btn.innerHTML = '⏹ Stop Timer (0m)';
+    btn.style.color = 'var(--red)';
+    btn.style.borderColor = 'var(--red)';
+    feedTimerInterval = setInterval(updateFeedTimerUI, 60000);
+  } else {
+    // Stop the timer and calculate difference
+    const mins = Math.floor((Date.now() - parseInt(activeFeedStart)) / 60000);
+    input.value = mins > 0 ? mins : 1; // Default to at least 1 minute
+    
+    // Reset state
+    activeFeedStart = null;
+    localStorage.removeItem('activeFeedStart');
+    clearInterval(feedTimerInterval);
+    resetTimerUI();
+  }
+}
+
+function updateFeedTimerUI() {
+  if (!activeFeedStart) return;
+  const mins = Math.floor((Date.now() - parseInt(activeFeedStart)) / 60000);
+  document.getElementById('feed-timer-btn').innerHTML = `⏹ Stop Timer (${mins}m)`;
+}
+
+function resetTimerUI() {
+  const btn = document.getElementById('feed-timer-btn');
+  btn.innerHTML = '⏱ Start Timer';
+  btn.style.color = 'var(--accent)';
+  btn.style.borderColor = 'var(--accent)';
+}
+
 function submitFeed() {
   const duration = document.getElementById('feed-duration').value;
   const notes = document.getElementById('feed-notes').value.trim();
+  
+  if (activeFeedStart) {
+    activeFeedStart = null;
+    localStorage.removeItem('activeFeedStart');
+    clearInterval(feedTimerInterval);
+    resetTimerUI();
+  }
+
   data.feeds.unshift({
     id: now(),
     timestamp: new Date().toISOString(),
@@ -1476,6 +1530,14 @@ function init() {
   // Open profile on first launch
   if (!data.profile.name) {
     setTimeout(openProfile, 400);
+  }
+
+  if (activeFeedStart) {
+    const btn = document.getElementById('feed-timer-btn');
+    btn.style.color = 'var(--red)';
+    btn.style.borderColor = 'var(--red)';
+    updateFeedTimerUI();
+    feedTimerInterval = setInterval(updateFeedTimerUI, 60000);
   }
 }
 
