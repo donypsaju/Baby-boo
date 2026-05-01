@@ -20,16 +20,13 @@
     --accent: #a78bfa;
     --accent2: #7c3aed;
     --green: #34d399;
-    --green2: #059669;
     --amber: #fbbf24;
     --red: #f87171;
     --blue: #38bdf8;
-    --blue2: #0ea5e9;
     --pink: #f472b6;
-    --pink2: #db2777;
+    --purple: #c084fc;
     --input: #0c1228;
     --overlay: rgba(0,0,0,0.75);
-    --shadow: 0 8px 32px rgba(0,0,0,0.4);
   }
   [data-theme="light"] {
     --bg: #f0f4ff;
@@ -43,7 +40,6 @@
     --text3: #9baabf;
     --input: #f0f4ff;
     --overlay: rgba(0,0,0,0.55);
-    --shadow: 0 8px 32px rgba(0,0,0,0.12);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -80,500 +76,99 @@
     position: relative;
     z-index: 50;
   }
-  .header-left h1 {
-    font-size: 20px;
-    font-weight: 900;
-    background: linear-gradient(130deg, #a78bfa, #60a5fa);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  .header-left p {
-    font-size: 11px;
-    color: var(--text3);
-    margin-top: 2px;
-    font-weight: 600;
-  }
-  .header-right { display: flex; gap: 8px; align-items: center; }
-  .icon-btn {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    border: 1px solid var(--border2);
-    background: var(--card);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 17px;
-    color: var(--text2);
-    transition: background 0.15s, transform 0.1s;
-    flex-shrink: 0;
-  }
-  .icon-btn:active { transform: scale(0.92); background: var(--card2); }
+  .header-left h1 { font-size: 20px; font-weight: 900; background: linear-gradient(130deg, #a78bfa, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .header-left p { font-size: 11px; color: var(--text3); margin-top: 2px; font-weight: 600; }
+  .header-right { display: flex; gap: 8px; }
+  .icon-btn { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--border2); background: var(--card); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 17px; color: var(--text2); }
 
   /* ── SCROLL AREA ── */
-  #scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    padding: 20px 16px 24px;
-    scrollbar-width: none;
-  }
+  #scroll-area { flex: 1; overflow-y: auto; padding: 20px 16px 24px; scrollbar-width: none; }
   #scroll-area::-webkit-scrollbar { display: none; }
 
   /* ── BOTTOM NAV ── */
-  nav {
-    display: flex;
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-    padding: 8px 0 max(12px, env(safe-area-inset-bottom));
-    flex-shrink: 0;
-  }
-  .nav-btn {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 6px 0;
-    transition: transform 0.1s;
-  }
-  .nav-btn:active { transform: scale(0.92); }
+  nav { display: flex; background: var(--surface); border-top: 1px solid var(--border); padding: 8px 0 max(12px, env(safe-area-inset-bottom)); flex-shrink: 0; }
+  .nav-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; background: none; border: none; cursor: pointer; padding: 6px 0; }
   .nav-icon { font-size: 21px; }
-  .nav-label {
-    font-size: 10px;
-    font-weight: 700;
-    color: var(--text3);
-    font-family: 'Nunito', sans-serif;
-    letter-spacing: 0.3px;
-    transition: color 0.15s;
-  }
+  .nav-label { font-size: 10px; font-weight: 700; color: var(--text3); font-family: 'Nunito', sans-serif; }
   .nav-btn.active .nav-label { color: var(--accent); }
   .nav-dot { width: 18px; height: 3px; border-radius: 2px; background: var(--accent); margin-top: 1px; }
 
   /* ── CARDS ── */
-  .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 22px;
-    padding: 22px;
-    margin-bottom: 14px;
-  }
-  .card-sm { padding: 18px 20px; }
-  .card-label {
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--text3);
-    margin-bottom: 6px;
-  }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 22px; padding: 22px; margin-bottom: 14px; }
+  .card-label { font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--text3); margin-bottom: 6px; }
 
   /* ── HERO TIMER ── */
-  #timer-card {
-    border-radius: 24px;
-    padding: 28px 24px;
-    text-align: center;
-    margin-bottom: 14px;
-    transition: border-color 0.6s, background 0.6s;
-    position: relative;
-    overflow: hidden;
-  }
-  #timer-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: radial-gradient(ellipse at 50% -20%, var(--glow-color, rgba(52,211,153,0.15)) 0%, transparent 65%);
-    pointer-events: none;
-    transition: --glow-color 0.6s;
-  }
-  #timer-value {
-    font-size: 62px;
-    font-weight: 900;
-    line-height: 1;
-    letter-spacing: -2px;
-    margin-bottom: 10px;
-    transition: color 0.6s;
-  }
-  #timer-next {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: rgba(0,0,0,0.25);
-    border-radius: 100px;
-    padding: 8px 18px;
-    font-size: 13px;
-    font-weight: 700;
-    margin-bottom: 8px;
-    transition: color 0.6s;
-  }
-  [data-theme="light"] #timer-next { background: rgba(255,255,255,0.5); }
-  #timer-alert {
-    font-size: 13px;
-    font-weight: 700;
-    margin-top: 10px;
-    min-height: 20px;
-  }
-  #timer-last {
-    font-size: 12px;
-    color: var(--text3);
-    margin-top: 10px;
-  }
-
-  /* ── PROGRESS BAR ── */
-  .prog-track {
-    height: 6px;
-    background: var(--border2);
-    border-radius: 3px;
-    margin-top: 14px;
-    overflow: hidden;
-  }
-  .prog-fill {
-    height: 100%;
-    border-radius: 3px;
-    transition: width 0.8s cubic-bezier(.4,0,.2,1), background 0.6s;
-  }
+  #timer-card { text-align: center; position: relative; overflow: hidden; }
+  #timer-value { font-size: 62px; font-weight: 900; line-height: 1; letter-spacing: -2px; margin-bottom: 10px; }
+  #timer-alert { font-size: 13px; font-weight: 700; margin-top: 10px; min-height: 20px; }
+  #timer-last { font-size: 12px; color: var(--text3); margin-top: 10px; }
+  .prog-track { height: 6px; background: var(--border2); border-radius: 3px; margin-top: 14px; overflow: hidden; }
+  .prog-fill { height: 100%; border-radius: 3px; transition: width 0.8s; }
 
   /* ── STAT GRID ── */
   .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
-  .stat-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 18px;
-  }
-  .stat-num {
-    font-size: 44px;
-    font-weight: 900;
-    line-height: 1;
-    margin: 4px 0;
-  }
+  .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 18px; }
+  .stat-num { font-size: 44px; font-weight: 900; line-height: 1; margin: 4px 0; }
   .stat-sub { font-size: 11px; color: var(--text3); font-weight: 600; }
   .stat-note { font-size: 11px; font-weight: 700; margin-top: 8px; }
 
   /* ── ACTION BUTTONS ── */
-  .action-btn {
-    width: 100%;
-    padding: 20px 20px;
-    border-radius: 18px;
-    border: none;
-    color: #fff;
-    font-size: 16px;
-    font-weight: 800;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 10px;
-    transition: transform 0.1s, box-shadow 0.1s;
-    font-family: 'Nunito', sans-serif;
-    text-align: left;
-  }
-  .action-btn:active { transform: scale(0.97); }
+  .action-btn { width: 100%; padding: 20px; border-radius: 18px; border: none; color: #fff; cursor: pointer; display: flex; align-items: center; gap: 14px; margin-bottom: 10px; text-align: left; font-family: 'Nunito', sans-serif; }
   .action-btn .btn-emoji { font-size: 28px; flex-shrink: 0; }
-  .action-btn .btn-text { flex: 1; }
-  .action-btn .btn-text-main { display: block; }
-  .action-btn .btn-text-sub { display: block; font-size: 12px; font-weight: 600; opacity: 0.8; margin-top: 1px; }
-  .action-btn .btn-plus { font-size: 22px; flex-shrink: 0; opacity: 0.8; }
-  .btn-feed { background: linear-gradient(135deg, #34d399, #059669); box-shadow: 0 6px 24px rgba(52,211,153,0.28); }
-  .btn-diaper { background: linear-gradient(135deg, #38bdf8, #0ea5e9); box-shadow: 0 6px 24px rgba(56,189,248,0.28); }
-  .btn-weight { background: linear-gradient(135deg, #f472b6, #db2777); box-shadow: 0 6px 24px rgba(244,114,182,0.28); }
-
-  /* ── SECTION HEADER ── */
-  .section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
-  }
-  .section-title { font-size: 14px; font-weight: 800; color: var(--text2); text-transform: uppercase; letter-spacing: 1.5px; }
-  .section-action {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--accent);
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-family: 'Nunito', sans-serif;
-    padding: 4px 0;
-  }
+  .action-btn .btn-text-main { display: block; font-size: 16px; font-weight: 800;}
+  .action-btn .btn-text-sub { display: block; font-size: 12px; font-weight: 600; opacity: 0.8; }
+  .btn-feed { background: linear-gradient(135deg, #34d399, #059669); }
+  .btn-sleep { background: linear-gradient(135deg, #c084fc, #7e22ce); }
+  .btn-diaper { background: linear-gradient(135deg, #38bdf8, #0ea5e9); }
+  .btn-weight { background: linear-gradient(135deg, #f472b6, #db2777); }
 
   /* ── LOG ITEMS ── */
-  .log-item {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 15px 18px;
-    margin-bottom: 8px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .log-icon { font-size: 22px; flex-shrink: 0; }
-  .log-body { flex: 1; min-width: 0; }
+  .log-item { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 15px 18px; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; }
+  .log-icon { font-size: 22px; }
+  .log-body { flex: 1; }
   .log-title { font-size: 14px; font-weight: 800; }
   .log-meta { font-size: 11px; color: var(--text3); margin-top: 3px; font-weight: 600; }
-  .log-badge {
-    font-size: 11px;
-    font-weight: 800;
-    padding: 4px 10px;
-    border-radius: 100px;
-    flex-shrink: 0;
-  }
-  .del-btn {
-    background: rgba(248,113,113,0.12);
-    border: none;
-    border-radius: 10px;
-    color: var(--red);
-    width: 34px;
-    height: 34px;
-    cursor: pointer;
-    font-size: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    transition: background 0.15s;
-  }
-  .del-btn:active { background: rgba(248,113,113,0.25); }
+  .del-btn { background: rgba(248,113,113,0.12); border: none; border-radius: 10px; color: var(--red); width: 34px; height: 34px; cursor: pointer; font-size: 15px; }
 
   /* ── ANALYTICS ── */
-  .analytics-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 20px;
-    margin-bottom: 14px;
-  }
-  .analytics-title {
-    font-size: 15px;
-    font-weight: 800;
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .chart-wrap { width: 100%; height: 200px; }
+  .analytics-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 20px; margin-bottom: 14px; }
+  .analytics-title { font-size: 15px; font-weight: 800; margin-bottom: 16px; }
+  .chart-wrap { width: 100%; height: 220px; }
   .mini-stat-row { display: flex; gap: 10px; margin-bottom: 10px; }
-  .mini-stat {
-    flex: 1;
-    background: var(--card2);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 14px;
-    text-align: center;
-  }
+  .mini-stat { flex: 1; background: var(--card2); border: 1px solid var(--border); border-radius: 14px; padding: 14px; text-align: center; }
   .mini-stat-num { font-size: 28px; font-weight: 900; line-height: 1; }
   .mini-stat-label { font-size: 11px; color: var(--text3); font-weight: 700; margin-top: 4px; }
-  .alert-box {
-    border-radius: 14px;
-    padding: 14px 16px;
-    font-size: 13px;
-    font-weight: 700;
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-  }
-  .alert-icon { font-size: 18px; flex-shrink: 0; }
-  .alert-warn { background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.2); color: var(--red); }
-  .alert-ok { background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.2); color: var(--green); }
-  .alert-info { background: rgba(167,139,250,0.1); border: 1px solid rgba(167,139,250,0.2); color: var(--accent); }
-  .feed-type-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    background: rgba(167,139,250,0.12);
-    border: 1px solid rgba(167,139,250,0.2);
-    color: var(--accent);
-    border-radius: 100px;
-    padding: 6px 14px;
-    font-size: 13px;
-    font-weight: 700;
-    margin: 3px 4px 3px 0;
-  }
-  .empty-state {
-    text-align: center;
-    padding: 50px 20px;
-    color: var(--text3);
-  }
-  .empty-state .empty-emoji { font-size: 44px; margin-bottom: 12px; }
-  .empty-state p { font-weight: 700; font-size: 15px; margin-bottom: 6px; color: var(--text2); }
-  .empty-state span { font-size: 13px; }
+  .alert-box { border-radius: 14px; padding: 14px; font-size: 13px; font-weight: 700; display: flex; gap: 10px; margin-top:10px; }
 
-  /* ── MODAL OVERLAY ── */
-  .modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: var(--overlay);
-    z-index: 200;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s;
-  }
+  /* ── MODALS ── */
+  .modal-overlay { position: fixed; inset: 0; background: var(--overlay); z-index: 200; display: flex; align-items: flex-end; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
   .modal-overlay.open { opacity: 1; pointer-events: all; }
-  .modal-sheet {
-    background: var(--card);
-    border-radius: 28px 28px 0 0;
-    padding: 12px 22px max(28px, env(safe-area-inset-bottom));
-    width: 100%;
-    max-width: 480px;
-    transform: translateY(100%);
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
+  .modal-sheet { background: var(--card); border-radius: 28px 28px 0 0; padding: 12px 22px max(28px, env(safe-area-inset-bottom)); width: 100%; max-width: 480px; transform: translateY(100%); transition: transform 0.3s; }
   .modal-overlay.open .modal-sheet { transform: translateY(0); }
-  .modal-handle {
-    width: 40px; height: 4px;
-    background: var(--border2);
-    border-radius: 2px;
-    margin: 0 auto 22px;
-  }
-  .modal-title { font-size: 20px; font-weight: 900; margin-bottom: 20px; }
+  .modal-handle { width: 40px; height: 4px; background: var(--border2); border-radius: 2px; margin: 0 auto 22px; }
+  .modal-center { align-items: center; padding: 20px; }
+  .modal-center .modal-sheet { border-radius: 24px; padding: 28px; transform: scale(0.95); }
+  .modal-overlay.open.modal-center .modal-sheet { transform: scale(1); }
 
-  /* full-screen modal (profile) */
-  .modal-center {
-    align-items: center;
-    padding: 20px;
-  }
-  .modal-center .modal-sheet {
-    border-radius: 24px;
-    padding: 28px;
-  }
-
-  /* ── TYPE TABS ── */
-  .type-tabs { display: flex; gap: 8px; margin-bottom: 22px; }
-  .type-tab {
-    flex: 1;
-    padding: 12px 6px;
-    border-radius: 14px;
-    border: none;
-    font-size: 13px;
-    font-weight: 800;
-    cursor: pointer;
-    font-family: 'Nunito', sans-serif;
-    transition: all 0.2s;
-    background: var(--card2);
-    color: var(--text3);
-    border: 1px solid var(--border);
-  }
-  .type-tab.active {
-    background: linear-gradient(135deg, var(--accent), #60a5fa);
-    color: #fff;
-    border-color: transparent;
-    box-shadow: 0 4px 16px rgba(124,58,237,0.25);
-  }
-
-  /* ── CHOICE PILLS ── */
+  /* ── TABS & INPUTS ── */
+  .type-tabs { display: flex; gap: 4px; margin-bottom: 22px; overflow-x: auto; padding-bottom: 4px;}
+  .type-tab { flex: 1; min-width: 70px; padding: 10px 4px; border-radius: 14px; border: 1px solid var(--border); background: var(--card2); color: var(--text3); font-size: 12px; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; text-align: center; }
+  .type-tab.active { background: linear-gradient(135deg, var(--accent), #60a5fa); color: #fff; border-color: transparent; }
+  
   .choice-row { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
-  .choice-btn {
-    flex: 1;
-    min-width: calc(50% - 4px);
-    padding: 14px 10px;
-    border-radius: 14px;
-    border: 2px solid var(--border2);
-    background: var(--input);
-    color: var(--text2);
-    font-size: 13px;
-    font-weight: 800;
-    cursor: pointer;
-    font-family: 'Nunito', sans-serif;
-    text-align: center;
-    transition: all 0.15s;
-  }
-  .choice-btn .choice-emoji { display: block; font-size: 22px; margin-bottom: 4px; }
-  .choice-btn:active { transform: scale(0.95); }
-
-  /* ── FORM FIELDS ── */
+  .choice-btn { flex: 1; min-width: calc(33% - 8px); padding: 12px 4px; border-radius: 14px; border: 2px solid var(--border2); background: var(--input); color: var(--text2); font-size: 13px; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; text-align: center; }
+  .choice-btn .choice-emoji { display: block; font-size: 20px; margin-bottom: 4px; }
+  
   .field-label { font-size: 13px; font-weight: 800; color: var(--text2); margin-bottom: 8px; display: block; }
-  .field-input {
-    width: 100%;
-    padding: 15px 16px;
-    border-radius: 14px;
-    border: 1.5px solid var(--border2);
-    background: var(--input);
-    color: var(--text);
-    font-size: 16px;
-    font-family: 'Nunito', sans-serif;
-    font-weight: 700;
-    margin-bottom: 20px;
-    outline: none;
-    transition: border-color 0.2s;
-    -webkit-appearance: none;
-  }
-  .field-input:focus { border-color: var(--accent); }
-  .field-input::placeholder { color: var(--text3); font-weight: 600; }
-
-  /* Date input fix */
-  input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.6); }
-  [data-theme="light"] input[type="date"]::-webkit-calendar-picker-indicator { filter: none; }
-
-  /* ── SUBMIT BUTTONS ── */
+  .field-input { width: 100%; padding: 15px 16px; border-radius: 14px; border: 1.5px solid var(--border2); background: var(--input); color: var(--text); font-size: 16px; font-family: 'Nunito', sans-serif; font-weight: 700; margin-bottom: 20px; outline: none; }
   .submit-row { display: flex; gap: 10px; }
-  .cancel-btn {
-    padding: 16px 20px;
-    border-radius: 16px;
-    border: 1.5px solid var(--border2);
-    background: transparent;
-    color: var(--text2);
-    font-size: 16px;
-    font-weight: 800;
-    cursor: pointer;
-    font-family: 'Nunito', sans-serif;
-    transition: background 0.15s;
-  }
-  .cancel-btn:active { background: var(--card2); }
-  .submit-btn {
-    flex: 1;
-    padding: 16px;
-    border-radius: 16px;
-    border: none;
-    color: #fff;
-    font-size: 16px;
-    font-weight: 800;
-    cursor: pointer;
-    font-family: 'Nunito', sans-serif;
-    transition: transform 0.1s, opacity 0.1s;
-  }
-  .submit-btn:active { transform: scale(0.97); opacity: 0.9; }
-  .submit-feed { background: linear-gradient(135deg, #34d399, #059669); }
-  .submit-diaper { background: linear-gradient(135deg, #38bdf8, #0ea5e9); }
-  .submit-weight { background: linear-gradient(135deg, #f472b6, #db2777); }
-  .submit-profile { background: linear-gradient(135deg, var(--accent), #60a5fa); }
+  .cancel-btn { padding: 16px 20px; border-radius: 16px; border: 1.5px solid var(--border2); background: transparent; color: var(--text2); font-size: 16px; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; }
+  .submit-btn { flex: 1; padding: 16px; border-radius: 16px; border: none; color: #fff; font-size: 16px; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; }
 
-  /* ── HISTORY SEGMENT ── */
   .seg-tabs { display: flex; gap: 8px; margin-bottom: 18px; }
-  .seg-tab {
-    flex: 1;
-    padding: 11px;
-    border-radius: 14px;
-    border: 1px solid var(--border);
-    background: var(--card);
-    color: var(--text2);
-    font-size: 13px;
-    font-weight: 800;
-    cursor: pointer;
-    font-family: 'Nunito', sans-serif;
-    transition: all 0.15s;
-  }
-  .seg-tab.active {
-    background: linear-gradient(135deg, var(--accent), #60a5fa);
-    color: #fff;
-    border-color: transparent;
-  }
+  .seg-tab { flex: 1; padding: 11px; border-radius: 14px; border: 1px solid var(--border); background: var(--card); color: var(--text2); font-size: 13px; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; }
+  .seg-tab.active { background: linear-gradient(135deg, var(--accent), #60a5fa); color: #fff; }
 
-  /* ── ANIMATIONS ── */
-  @keyframes fadeUp { from { opacity:0; transform: translateY(12px); } to { opacity:1; transform: translateY(0); } }
-  .view { animation: fadeUp 0.2s ease both; }
-  @keyframes pulse-glow { 0%,100%{opacity:0.6} 50%{opacity:1} }
-
-  /* ── SCROLLBAR NONE ── */
   * { scrollbar-width: none; }
   *::-webkit-scrollbar { display: none; }
 </style>
@@ -581,30 +176,23 @@
 <body>
 <div id="app">
 
-  <!-- HEADER -->
   <header>
     <div class="header-left">
       <h1 id="header-name">🌙 Baby's Tracker</h1>
       <p id="header-age"></p>
     </div>
     <div class="header-right">
-      <button class="icon-btn" onclick="openProfile()" title="Settings">⚙️</button>
-      <button class="icon-btn" id="theme-btn" onclick="toggleTheme()" title="Toggle theme">☀️</button>
+      <button class="icon-btn" onclick="openProfile()">⚙️</button>
+      <button class="icon-btn" id="theme-btn" onclick="toggleTheme()">☀️</button>
     </div>
   </header>
 
-  <!-- SCROLL AREA -->
   <div id="scroll-area">
     <!-- DASHBOARD VIEW -->
-    <div id="view-dashboard" class="view">
-
-      <!-- Hero Timer Card -->
+    <div id="view-dashboard">
       <div id="timer-card" class="card">
-        <p class="card-label" style="text-align:center">Since Last Feed</p>
+        <p class="card-label">Since Last Feed</p>
         <div id="timer-value">—</div>
-        <div id="timer-next" style="display:none">
-          <span>⏰</span><span id="timer-next-text"></span>
-        </div>
         <div id="timer-alert"></div>
         <div class="prog-track" id="timer-prog-track" style="display:none">
           <div class="prog-fill" id="timer-prog-fill"></div>
@@ -612,7 +200,6 @@
         <div id="timer-last"></div>
       </div>
 
-      <!-- Stat Grid -->
       <div class="stat-grid">
         <div class="stat-card" id="wet-card">
           <div class="card-label">Wet Diapers</div>
@@ -621,114 +208,82 @@
           <div class="stat-note" id="wet-note"></div>
         </div>
         <div class="stat-card">
-          <div class="card-label">Feeds Today</div>
-          <div class="stat-num" id="feed-count" style="color:var(--accent)">0</div>
+          <div class="card-label">Sleep Today</div>
+          <div class="stat-num" id="sleep-total" style="color:var(--purple)">0h</div>
           <div class="stat-sub">last 24 hours</div>
-          <div class="stat-note" id="weight-latest" style="color:var(--pink)"></div>
+          <div class="stat-note" id="sleep-note"></div>
         </div>
       </div>
 
-      <!-- Quick Log -->
-      <div class="section-header">
-        <span class="section-title">Quick Log</span>
-      </div>
+      <div style="font-size: 14px; font-weight: 800; color: var(--text2); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1.5px;">Quick Log</div>
+      
       <button class="action-btn btn-feed" onclick="openLog('feed')">
         <span class="btn-emoji">🍼</span>
-        <span class="btn-text">
-          <span class="btn-text-main">Log Feed</span>
-          <span class="btn-text-sub">Breastmilk, formula or pumped</span>
-        </span>
-        <span class="btn-plus">+</span>
+        <div><span class="btn-text-main">Log Feed</span><span class="btn-text-sub">Breastmilk, formula or solids</span></div>
+      </button>
+      <button class="action-btn btn-sleep" onclick="openLog('sleep')">
+        <span class="btn-emoji">💤</span>
+        <div><span class="btn-text-main">Log Sleep</span><span class="btn-text-sub">Naps and overnight rest</span></div>
       </button>
       <button class="action-btn btn-diaper" onclick="openLog('diaper')">
         <span class="btn-emoji">💧</span>
-        <span class="btn-text">
-          <span class="btn-text-main">Log Diaper</span>
-          <span class="btn-text-sub">Wet, dirty or both</span>
-        </span>
-        <span class="btn-plus">+</span>
+        <div><span class="btn-text-main">Log Diaper</span><span class="btn-text-sub">Wet, dirty or both</span></div>
       </button>
       <button class="action-btn btn-weight" onclick="openLog('weight')">
         <span class="btn-emoji">⚖️</span>
-        <span class="btn-text">
-          <span class="btn-text-main">Log Weight</span>
-          <span class="btn-text-sub">Track growth over time</span>
-        </span>
-        <span class="btn-plus">+</span>
+        <div><span class="btn-text-main">Log Weight</span><span class="btn-text-sub">Track growth curve</span></div>
       </button>
     </div>
 
     <!-- HISTORY VIEW -->
-    <div id="view-history" class="view" style="display:none">
+    <div id="view-history" style="display:none">
       <div class="seg-tabs">
-        <button class="seg-tab active" id="seg-feed" onclick="switchSeg('feed')">🍼 Feeds</button>
-        <button class="seg-tab" id="seg-diaper" onclick="switchSeg('diaper')">💧 Diapers</button>
-        <button class="seg-tab" id="seg-weight" onclick="switchSeg('weight')">⚖️ Weights</button>
+        <button class="seg-tab active" id="seg-feed" onclick="switchSeg('feed')">🍼 Feed</button>
+        <button class="seg-tab" id="seg-sleep" onclick="switchSeg('sleep')">💤 Sleep</button>
+        <button class="seg-tab" id="seg-diaper" onclick="switchSeg('diaper')">💧 Diaper</button>
       </div>
       <div id="history-list"></div>
     </div>
 
     <!-- ANALYTICS VIEW -->
-    <div id="view-analytics" class="view" style="display:none">
-
-      <!-- Weight Chart -->
+    <div id="view-analytics" style="display:none">
+      
       <div class="analytics-card">
-        <div class="analytics-title">⚖️ Weight Progress
-          <button class="section-action" onclick="openLog('weight')">+ Add</button>
-        </div>
-        <div id="chart-empty" class="empty-state" style="padding:30px 20px">
-          <div class="empty-emoji">📈</div>
-          <p>Not enough data</p>
-          <span>Log at least 2 weights to see the chart</span>
-        </div>
-        <div class="chart-wrap" id="chart-wrap" style="display:none">
-          <canvas id="weight-chart"></canvas>
+        <div class="analytics-title">📊 24-Hour Timeline</div>
+        <div class="chart-wrap">
+          <canvas id="timeline-chart"></canvas>
         </div>
       </div>
 
-      <!-- Feed summary 24h -->
       <div class="analytics-card">
-        <div class="analytics-title">🍼 Feed Summary · 24h</div>
+        <div class="analytics-title">🍼 Feed Summary (24h)</div>
         <div id="feed-summary"></div>
       </div>
 
-      <!-- Diaper summary 24h -->
       <div class="analytics-card">
-        <div class="analytics-title">💧 Diaper Summary · 24h</div>
-        <div id="diaper-summary"></div>
+        <div class="analytics-title">⚖️ Weight Progress</div>
+        <div class="chart-wrap"><canvas id="weight-chart"></canvas></div>
       </div>
 
     </div>
   </div>
 
-  <!-- BOTTOM NAV -->
+  <!-- NAV -->
   <nav>
-    <button class="nav-btn active" id="nav-dashboard" onclick="switchView('dashboard')">
-      <span class="nav-icon">🏠</span>
-      <span class="nav-label">Home</span>
-      <div class="nav-dot" id="dot-dashboard"></div>
-    </button>
-    <button class="nav-btn" id="nav-history" onclick="switchView('history')">
-      <span class="nav-icon">📋</span>
-      <span class="nav-label">History</span>
-      <div class="nav-dot" id="dot-history" style="visibility:hidden"></div>
-    </button>
-    <button class="nav-btn" id="nav-analytics" onclick="switchView('analytics')">
-      <span class="nav-icon">📊</span>
-      <span class="nav-label">Analytics</span>
-      <div class="nav-dot" id="dot-analytics" style="visibility:hidden"></div>
-    </button>
+    <button class="nav-btn active" id="nav-dashboard" onclick="switchView('dashboard')"><span class="nav-icon">🏠</span><span class="nav-label">Home</span><div class="nav-dot" id="dot-dashboard"></div></button>
+    <button class="nav-btn" id="nav-history" onclick="switchView('history')"><span class="nav-icon">📋</span><span class="nav-label">History</span><div class="nav-dot" id="dot-history" style="visibility:hidden"></div></button>
+    <button class="nav-btn" id="nav-analytics" onclick="switchView('analytics')"><span class="nav-icon">📊</span><span class="nav-label">Analytics</span><div class="nav-dot" id="dot-analytics" style="visibility:hidden"></div></button>
   </nav>
 </div>
 
-<!-- ═══════════════════════════════════════════════ LOG MODAL ═══ -->
+<!-- LOG MODAL -->
 <div class="modal-overlay" id="log-modal" onclick="handleOverlayClick(event)">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
 
-    <!-- Type Tabs -->
     <div class="type-tabs">
       <button class="type-tab active" id="tab-feed" onclick="switchLogTab('feed')">🍼 Feed</button>
+      <button class="type-tab" id="tab-sleep" onclick="switchLogTab('sleep')">💤 Sleep</button>
       <button class="type-tab" id="tab-diaper" onclick="switchLogTab('diaper')">💧 Diaper</button>
       <button class="type-tab" id="tab-weight" onclick="switchLogTab('weight')">⚖️ Weight</button>
     </div>
@@ -737,31 +292,44 @@
     <div id="form-feed">
       <label class="field-label">Feed type</label>
       <div class="choice-row" id="feed-type-row">
-        <button class="choice-btn active" data-val="Breastmilk" onclick="pickFeedType(this)">
-          <span class="choice-emoji">🤱</span>Breastmilk
-        </button>
-        <button class="choice-btn" data-val="Formula" onclick="pickFeedType(this)">
-          <span class="choice-emoji">🍼</span>Formula
-        </button>
-        <button class="choice-btn" data-val="Pumped" onclick="pickFeedType(this)">
-          <span class="choice-emoji">🥛</span>Pumped
-        </button>
-        <button class="choice-btn" data-val="Solids" onclick="pickFeedType(this)">
-          <span class="choice-emoji">🥣</span>Solids
-        </button>
+        <button class="choice-btn active" data-val="Breastmilk" onclick="pickFeedType(this)"><span class="choice-emoji">🤱</span>Breastmilk</button>
+        <button class="choice-btn" data-val="Formula" onclick="pickFeedType(this)"><span class="choice-emoji">🍼</span>Formula</button>
+        <button class="choice-btn" data-val="Pumped" onclick="pickFeedType(this)"><span class="choice-emoji">🥛</span>Pumped</button>
       </div>
-      <label class="field-label">Duration (minutes) <span style="font-weight:600;color:var(--text3)">optional</span></label>
+      
+      <!-- Side selector (Only for Breastmilk) -->
+      <div id="breast-side-row" style="display:block;">
+        <label class="field-label">Side</label>
+        <div class="choice-row" id="side-choice-row">
+          <button class="choice-btn active" data-val="Left" onclick="pickSide(this)">Left</button>
+          <button class="choice-btn" data-val="Right" onclick="pickSide(this)">Right</button>
+          <button class="choice-btn" data-val="Both" onclick="pickSide(this)">Both</button>
+        </div>
+      </div>
+
+      <label class="field-label">Duration (minutes)</label>
       <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-        <button id="feed-timer-btn" type="button" class="choice-btn" onclick="toggleFeedTimer()" style="flex: 1; background: rgba(167,139,250,0.1); color: var(--accent); border-color: var(--accent);">
-          ⏱ Start Timer
-        </button>
-        <input class="field-input" id="feed-duration" type="number" min="1" max="120" placeholder="e.g. 15" style="margin-bottom: 0; flex: 1;">
+        <button id="feed-timer-btn" type="button" class="choice-btn" onclick="toggleFeedTimer()" style="flex: 1; background: rgba(52,211,153,0.1); color: var(--green); border-color: var(--green);">⏱ Start Timer</button>
+        <input class="field-input" id="feed-duration" type="number" min="1" placeholder="e.g. 15" style="margin-bottom: 0; flex: 1;">
       </div>
-      <label class="field-label">Notes <span style="font-weight:600;color:var(--text3)">optional</span></label>
-      <input class="field-input" id="feed-notes" type="text" placeholder="Any observations…">
       <div class="submit-row">
         <button class="cancel-btn" onclick="closeLog()">✕</button>
-        <button class="submit-btn submit-feed" onclick="submitFeed()">Log Feed Now ✓</button>
+        <button class="submit-btn" style="background:var(--green)" onclick="submitFeed()">Log Feed ✓</button>
+      </div>
+    </div>
+
+    <!-- SLEEP FORM -->
+    <div id="form-sleep" style="display:none">
+      <label class="field-label">Sleep Duration (minutes)</label>
+      <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+        <button id="sleep-timer-btn" type="button" class="choice-btn" onclick="toggleSleepTimer()" style="flex: 1; background: rgba(192,132,252,0.1); color: var(--purple); border-color: var(--purple);">⏱ Start Sleep</button>
+        <input class="field-input" id="sleep-duration" type="number" min="1" placeholder="e.g. 45" style="margin-bottom: 0; flex: 1;">
+      </div>
+      <label class="field-label">Notes</label>
+      <input class="field-input" id="sleep-notes" type="text" placeholder="Nap, night sleep, etc.">
+      <div class="submit-row">
+        <button class="cancel-btn" onclick="closeLog()">✕</button>
+        <button class="submit-btn" style="background:var(--purple)" onclick="submitSleep()">Log Sleep ✓</button>
       </div>
     </div>
 
@@ -769,778 +337,405 @@
     <div id="form-diaper" style="display:none">
       <label class="field-label">Condition</label>
       <div class="choice-row" id="diaper-type-row">
-        <button class="choice-btn active" data-val="Wet" onclick="pickDiaperType(this)">
-          <span class="choice-emoji">💧</span>Wet
-        </button>
-        <button class="choice-btn" data-val="Dirty" onclick="pickDiaperType(this)">
-          <span class="choice-emoji">💩</span>Dirty
-        </button>
-        <button class="choice-btn" data-val="Both" onclick="pickDiaperType(this)">
-          <span class="choice-emoji">💧💩</span>Both
-        </button>
-        <button class="choice-btn" data-val="Dry" onclick="pickDiaperType(this)">
-          <span class="choice-emoji">⭕</span>Dry
-        </button>
+        <button class="choice-btn active" data-val="Wet" onclick="pickDiaperType(this)"><span class="choice-emoji">💧</span>Wet</button>
+        <button class="choice-btn" data-val="Dirty" onclick="pickDiaperType(this)"><span class="choice-emoji">💩</span>Dirty</button>
+        <button class="choice-btn" data-val="Both" onclick="pickDiaperType(this)"><span class="choice-emoji">💧💩</span>Both</button>
       </div>
-      <label class="field-label">Notes <span style="font-weight:600;color:var(--text3)">optional</span></label>
-      <input class="field-input" id="diaper-notes" type="text" placeholder="Color, consistency…">
       <div class="submit-row">
         <button class="cancel-btn" onclick="closeLog()">✕</button>
-        <button class="submit-btn submit-diaper" onclick="submitDiaper()">Log Diaper Now ✓</button>
+        <button class="submit-btn" style="background:var(--blue)" onclick="submitDiaper()">Log Diaper ✓</button>
       </div>
     </div>
 
     <!-- WEIGHT FORM -->
     <div id="form-weight" style="display:none">
       <label class="field-label">Weight (kg)</label>
-      <input class="field-input" id="weight-value" type="number" step="0.01" min="0.5" max="30" placeholder="e.g. 3.45">
+      <input class="field-input" id="weight-value" type="number" step="0.01" placeholder="e.g. 3.45">
       <label class="field-label">Date</label>
       <input class="field-input" id="weight-date" type="date">
       <div class="submit-row">
         <button class="cancel-btn" onclick="closeLog()">✕</button>
-        <button class="submit-btn submit-weight" onclick="submitWeight()">Log Weight ✓</button>
+        <button class="submit-btn" style="background:var(--pink)" onclick="submitWeight()">Log Weight ✓</button>
       </div>
     </div>
 
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════ PROFILE MODAL ═══ -->
+<!-- PROFILE MODAL -->
 <div class="modal-overlay modal-center" id="profile-modal" onclick="handleProfileOverlayClick(event)">
   <div class="modal-sheet">
-    <div class="modal-title">👶 Baby Profile</div>
+    <div style="font-size: 20px; font-weight: 900; margin-bottom: 20px;">👶 Baby Profile</div>
     <label class="field-label">Name</label>
     <input class="field-input" id="profile-name" type="text" placeholder="Baby's name">
     <label class="field-label">Birth Date</label>
     <input class="field-input" id="profile-birth" type="date">
-    <label class="field-label">Birth Weight (kg) <span style="font-weight:600;color:var(--text3)">optional</span></label>
-    <input class="field-input" id="profile-bw" type="number" step="0.01" min="0.5" max="6" placeholder="e.g. 3.25">
     <div class="submit-row">
       <button class="cancel-btn" onclick="closeProfile()">Cancel</button>
-      <button class="submit-btn submit-profile" onclick="saveProfile()">Save Profile ✓</button>
+      <button class="submit-btn" style="background:var(--accent)" onclick="saveProfile()">Save ✓</button>
     </div>
   </div>
 </div>
 
 <script>
-/* ═══════════════════════════════════════ STATE & STORAGE ═══ */
-const STORE = 'baby-tracker-v2';
+/* ═══════════════════════════════════════ STATE ═══ */
+const STORE = 'baby-tracker-v3';
 let data = {
-  profile: { name: '', birthDate: '', birthWeight: null },
+  profile: { name: '', birthDate: '' },
   feeds: [],
   diapers: [],
   weights: [],
+  sleeps: [],
   theme: 'dark'
 };
 
 let activeFeedStart = localStorage.getItem('activeFeedStart') || null;
 let feedTimerInterval = null;
 
-function load() {
-  try {
-    const raw = localStorage.getItem(STORE);
-    if (raw) data = JSON.parse(raw);
-  } catch(e) {}
-}
+let activeSleepStart = localStorage.getItem('activeSleepStart') || null;
+let sleepTimerInterval = null;
 
-function save() {
-  try { localStorage.setItem(STORE, JSON.stringify(data)); } catch(e) {}
-}
+let timelineChart = null;
+let weightChart = null;
 
-/* ═══════════════════════════════════════ TIME UTILS ═══ */
+function load() { try { const raw = localStorage.getItem(STORE); if (raw) data = Object.assign(data, JSON.parse(raw)); } catch(e) {} }
+function save() { try { localStorage.setItem(STORE, JSON.stringify(data)); } catch(e) {} }
+
+/* ═══════════════════════════════════════ UTILS ═══ */
 function now() { return Date.now(); }
-
-function minsSince(ts) {
-  return Math.floor((now() - new Date(ts).getTime()) / 60000);
-}
-
+function minsSince(ts) { return Math.floor((now() - new Date(ts).getTime()) / 60000); }
 function fmtDuration(mins) {
   if (mins < 1) return 'Just now';
   if (mins < 60) return mins + 'm';
   const h = Math.floor(mins / 60), m = mins % 60;
   return m > 0 ? h + 'h ' + m + 'm' : h + 'h';
 }
-
-function fmtTime(ts) {
-  return new Date(ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-}
-
+function fmtTime(ts) { return new Date(ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); }
 function fmtDate(ts) {
-  const d = new Date(ts);
-  const today = new Date();
-  const yesterday = new Date(today - 86400000);
+  const d = new Date(ts), today = new Date(), yesterday = new Date(today - 86400000);
   if (d.toDateString() === today.toDateString()) return 'Today';
   if (d.toDateString() === yesterday.toDateString()) return 'Yesterday';
   return d.toLocaleDateString([], { month: 'short', day: 'numeric' });
 }
 
-function fmtDateShort(ts) {
-  return new Date(ts).toLocaleDateString([], { month: 'short', day: 'numeric' });
-}
-
-function ageStr(birthDate) {
-  if (!birthDate) return '';
-  const b = new Date(birthDate);
-  const n = new Date();
-  const days = Math.floor((n - b) / 86400000);
-  if (days < 0) return '';
-  if (days < 7) return days + (days === 1 ? ' day old' : ' days old');
-  const weeks = Math.floor(days / 7);
-  if (weeks < 8) return weeks + (weeks === 1 ? ' week old' : ' weeks old');
-  const months = Math.floor(days / 30.44);
-  return months + (months === 1 ? ' month old' : ' months old');
-}
-
-function todayStr() {
-  const d = new Date();
-  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
-}
-
-/* ═══════════════════════════════════════ TIMER ═══ */
-function updateTimer() {
-  const last = data.feeds[0] || null;
-  const tv = document.getElementById('timer-value');
-  const tn = document.getElementById('timer-next');
-  const ta = document.getElementById('timer-alert');
-  const tl = document.getElementById('timer-last');
-  const tp = document.getElementById('timer-prog-track');
-  const pf = document.getElementById('timer-prog-fill');
-  const card = document.getElementById('timer-card');
-
-  if (!last) {
-    tv.textContent = 'No feed yet';
-    tv.style.color = 'var(--text3)';
-    tv.style.fontSize = '36px';
-    tn.style.display = 'none';
-    ta.textContent = '';
-    tl.textContent = '';
-    tp.style.display = 'none';
-    card.style.background = 'var(--card)';
-    card.style.borderColor = 'var(--border)';
-    return;
-  }
-
-  const mins = minsSince(last.timestamp);
-  tv.textContent = fmtDuration(mins);
-  tv.style.fontSize = mins >= 600 ? '42px' : '62px';
-
-  const MAX = 180;
-  const pct = Math.min(100, (mins / MAX) * 100);
-  const minsLeft = Math.max(0, MAX - mins);
-
-  let color, bgColor, borderColor, glowColor, alertHtml = '';
-
-  if (mins < 120) {
-    color = 'var(--green)';
-    bgColor = 'rgba(52,211,153,0.07)';
-    borderColor = 'rgba(52,211,153,0.25)';
-    glowColor = 'rgba(52,211,153,0.18)';
-    pf.style.background = 'var(--green)';
-  } else if (mins < 150) {
-    color = 'var(--amber)';
-    bgColor = 'rgba(251,191,36,0.07)';
-    borderColor = 'rgba(251,191,36,0.25)';
-    glowColor = 'rgba(251,191,36,0.18)';
-    pf.style.background = 'var(--amber)';
-    alertHtml = '<span style="color:var(--amber)">🔔 Consider feeding soon</span>';
+/* ═══════════════════════════════════════ TIMERS ═══ */
+function toggleFeedTimer() {
+  const btn = document.getElementById('feed-timer-btn');
+  const input = document.getElementById('feed-duration');
+  if (!activeFeedStart) {
+    activeFeedStart = now();
+    localStorage.setItem('activeFeedStart', activeFeedStart);
+    btn.innerHTML = '⏹ Stop (0m)';
+    btn.style.color = 'var(--red)'; btn.style.borderColor = 'var(--red)';
+    feedTimerInterval = setInterval(() => {
+      const m = Math.floor((now() - parseInt(activeFeedStart)) / 60000);
+      btn.innerHTML = `⏹ Stop (${m}m)`;
+    }, 60000);
   } else {
-    color = 'var(--red)';
-    bgColor = 'rgba(248,113,113,0.07)';
-    borderColor = 'rgba(248,113,113,0.3)';
-    glowColor = 'rgba(248,113,113,0.18)';
-    pf.style.background = 'var(--red)';
-    alertHtml = '<span style="color:var(--red)">⚠️ ' + (mins >= MAX ? 'Feeding overdue — time to feed!' : 'Feeding due very soon') + '</span>';
+    input.value = Math.max(1, Math.floor((now() - parseInt(activeFeedStart)) / 60000));
+    activeFeedStart = null; localStorage.removeItem('activeFeedStart'); clearInterval(feedTimerInterval);
+    btn.innerHTML = '⏱ Start Timer'; btn.style.color = 'var(--green)'; btn.style.borderColor = 'var(--green)';
   }
+}
 
-  tv.style.color = color;
-  card.style.background = bgColor;
-  card.style.borderColor = borderColor;
-  card.style.setProperty('--glow-color', glowColor);
-  ta.innerHTML = alertHtml;
-
-  tn.style.display = 'inline-flex';
-  tn.style.color = color;
-  document.getElementById('timer-next-text').textContent = minsLeft > 0
-    ? 'Next feed in ' + fmtDuration(minsLeft)
-    : 'Feed now';
-
-  tp.style.display = 'block';
-  pf.style.width = pct + '%';
-
-  tl.textContent = 'Last: ' + last.type + ' at ' + fmtTime(last.timestamp) +
-    (last.duration ? ' · ' + last.duration + ' min' : '');
+function toggleSleepTimer() {
+  const btn = document.getElementById('sleep-timer-btn');
+  const input = document.getElementById('sleep-duration');
+  if (!activeSleepStart) {
+    activeSleepStart = now();
+    localStorage.setItem('activeSleepStart', activeSleepStart);
+    btn.innerHTML = '⏹ Wake Up (0m)';
+    btn.style.color = 'var(--red)'; btn.style.borderColor = 'var(--red)';
+    sleepTimerInterval = setInterval(() => {
+      const m = Math.floor((now() - parseInt(activeSleepStart)) / 60000);
+      btn.innerHTML = `⏹ Wake Up (${fmtDuration(m)})`;
+    }, 60000);
+  } else {
+    input.value = Math.max(1, Math.floor((now() - parseInt(activeSleepStart)) / 60000));
+    activeSleepStart = null; localStorage.removeItem('activeSleepStart'); clearInterval(sleepTimerInterval);
+    btn.innerHTML = '⏱ Start Sleep'; btn.style.color = 'var(--purple)'; btn.style.borderColor = 'var(--purple)';
+  }
 }
 
 /* ═══════════════════════════════════════ DASHBOARD ═══ */
 function updateDashboard() {
-  updateTimer();
-  const h24 = now() - 86400000;
-
-  const wet = data.diapers.filter(d =>
-    new Date(d.timestamp).getTime() > h24 && (d.condition === 'Wet' || d.condition === 'Both')
-  ).length;
-
-  const wetCount = document.getElementById('wet-count');
-  wetCount.textContent = wet;
-  wetCount.style.color = wet < 6 && data.diapers.length ? 'var(--red)' : 'var(--blue)';
-
-  const wetNote = document.getElementById('wet-note');
-  if (wet < 6 && data.diapers.length) {
-    wetNote.innerHTML = '<span style="color:var(--red)">⚠️ Target: 6+ per day</span>';
-    document.getElementById('wet-card').style.borderColor = 'rgba(248,113,113,0.3)';
-  } else if (wet >= 6) {
-    wetNote.innerHTML = '<span style="color:var(--green)">✓ Great hydration</span>';
-    document.getElementById('wet-card').style.borderColor = 'rgba(52,211,153,0.25)';
-  } else {
-    wetNote.textContent = '';
-    document.getElementById('wet-card').style.borderColor = 'var(--border)';
+  // Feed Timer Card
+  const lastF = data.feeds[0];
+  const tv = document.getElementById('timer-value');
+  const tp = document.getElementById('timer-prog-track');
+  const pf = document.getElementById('timer-prog-fill');
+  const tl = document.getElementById('timer-last');
+  
+  if (!lastF) { tv.textContent = 'No feed'; } 
+  else {
+    const m = minsSince(lastF.timestamp);
+    tv.textContent = fmtDuration(m);
+    tv.style.color = m > 150 ? 'var(--red)' : m > 120 ? 'var(--amber)' : 'var(--green)';
+    tp.style.display = 'block';
+    pf.style.width = Math.min(100, (m / 180) * 100) + '%';
+    pf.style.background = tv.style.color;
+    
+    let sideStr = lastF.side ? ` (${lastF.side})` : '';
+    tl.textContent = `Last: ${lastF.type}${sideStr} at ${fmtTime(lastF.timestamp)}`;
   }
 
-  const feedsToday = data.feeds.filter(f => new Date(f.timestamp).getTime() > h24).length;
-  document.getElementById('feed-count').textContent = feedsToday;
-
-  const wl = data.weights.length;
-  const wNote = document.getElementById('weight-latest');
-  wNote.textContent = wl > 0 ? '⚖️ ' + data.weights[wl-1].weight.toFixed(2) + ' kg' : '';
+  // Stat Grid
+  const h24 = now() - 86400000;
+  const wet = data.diapers.filter(d => new Date(d.timestamp).getTime() > h24 && d.condition !== 'Dirty').length;
+  document.getElementById('wet-count').textContent = wet;
+  
+  const sleepMins = data.sleeps.filter(s => new Date(s.timestamp).getTime() > h24).reduce((acc, s) => acc + (s.duration || 0), 0);
+  document.getElementById('sleep-total').textContent = Math.round(sleepMins/60) + 'h';
 }
 
-/* ═══════════════════════════════════════ HEADER ═══ */
-function updateHeader() {
-  const name = data.profile.name || 'Baby';
-  document.getElementById('header-name').textContent = '🌙 ' + name + "'s Tracker";
-  const age = ageStr(data.profile.birthDate);
-  document.getElementById('header-age').textContent = age;
-}
-
-/* ═══════════════════════════════════════ VIEWS ═══ */
+/* ═══════════════════════════════════════ VIEWS & TABS ═══ */
 let currentView = 'dashboard';
-let currentSeg = 'feed';
-let weightChart = null;
-
 function switchView(v) {
   ['dashboard','history','analytics'].forEach(id => {
-    const el = document.getElementById('view-'+id);
-    const btn = document.getElementById('nav-'+id);
-    const dot = document.getElementById('dot-'+id);
-    if (id === v) {
-      el.style.display = 'block';
-      btn.classList.add('active');
-      dot.style.visibility = 'visible';
-    } else {
-      el.style.display = 'none';
-      btn.classList.remove('active');
-      dot.style.visibility = 'hidden';
-    }
+    document.getElementById('view-'+id).style.display = (id===v)?'block':'none';
+    document.getElementById('nav-'+id).classList.toggle('active', id===v);
+    document.getElementById('dot-'+id).style.visibility = (id===v)?'visible':'hidden';
   });
   currentView = v;
-  document.getElementById('scroll-area').scrollTop = 0;
-
-  if (v === 'history') renderHistory();
-  if (v === 'analytics') renderAnalytics();
+  if(v==='history') renderHistory();
+  if(v==='analytics') renderAnalytics();
 }
 
-/* ═══════════════════════════════════════ HISTORY ═══ */
+let currentSeg = 'feed';
 function switchSeg(seg) {
   currentSeg = seg;
-  ['feed','diaper','weight'].forEach(s => {
-    document.getElementById('seg-'+s).classList.toggle('active', s === seg);
-  });
+  ['feed','sleep','diaper'].forEach(s => document.getElementById('seg-'+s).classList.toggle('active', s===seg));
   renderHistory();
 }
 
-function renderHistory() {
-  const list = document.getElementById('history-list');
-
-  if (currentSeg === 'feed') {
-    if (!data.feeds.length) {
-      list.innerHTML = emptyState('🍼', 'No feeds logged yet', 'Tap "Log Feed" on the home screen to get started.');
-      return;
-    }
-    list.innerHTML = data.feeds.map((f, i) => `
-      <div class="log-item">
-        <span class="log-icon">🍼</span>
-        <div class="log-body">
-          <div class="log-title">${f.type}${f.duration ? ' &middot; ' + f.duration + ' min' : ''}</div>
-          <div class="log-meta">${fmtDate(f.timestamp)} at ${fmtTime(f.timestamp)} &middot; ${fmtDuration(minsSince(f.timestamp))} ago${f.notes ? ' &middot; ' + f.notes : ''}</div>
-        </div>
-        <button class="del-btn" onclick="deleteFeed(${i})">🗑</button>
-      </div>`).join('');
-  }
-
-  if (currentSeg === 'diaper') {
-    if (!data.diapers.length) {
-      list.innerHTML = emptyState('💧', 'No diapers logged yet', 'Start tracking to monitor hydration.');
-      return;
-    }
-    list.innerHTML = data.diapers.map((d, i) => {
-      const emoji = d.condition === 'Wet' ? '💧' : d.condition === 'Dirty' ? '💩' : d.condition === 'Both' ? '💧💩' : '⭕';
-      return `<div class="log-item">
-        <span class="log-icon">${emoji}</span>
-        <div class="log-body">
-          <div class="log-title">${d.condition}</div>
-          <div class="log-meta">${fmtDate(d.timestamp)} at ${fmtTime(d.timestamp)} &middot; ${fmtDuration(minsSince(d.timestamp))} ago${d.notes ? ' &middot; ' + d.notes : ''}</div>
-        </div>
-        <button class="del-btn" onclick="deleteDiaper(${i})">🗑</button>
-      </div>`;
-    }).join('');
-  }
-
-  if (currentSeg === 'weight') {
-    if (!data.weights.length) {
-      list.innerHTML = emptyState('⚖️', 'No weights logged yet', 'Track weight to monitor growth.');
-      return;
-    }
-    const sorted = [...data.weights].reverse();
-    list.innerHTML = sorted.map((w, i) => {
-      const realIdx = data.weights.length - 1 - i;
-      const prev = realIdx > 0 ? data.weights[realIdx - 1] : null;
-      const diff = prev ? (w.weight - prev.weight) : null;
-      const diffStr = diff !== null
-        ? (diff >= 0 ? '<span style="color:var(--green)">▲ +' : '<span style="color:var(--red)">▼ ') + Math.abs(diff).toFixed(2) + ' kg</span>'
-        : '';
-      return `<div class="log-item">
-        <span class="log-icon">⚖️</span>
-        <div class="log-body">
-          <div class="log-title">${w.weight.toFixed(2)} kg ${diffStr}</div>
-          <div class="log-meta">${fmtDate(w.date)} · ${w.date}</div>
-        </div>
-        <button class="del-btn" onclick="deleteWeight(${realIdx})">🗑</button>
-      </div>`;
-    }).join('');
-  }
-}
-
-function emptyState(emoji, title, sub) {
-  return `<div class="empty-state"><div class="empty-emoji">${emoji}</div><p>${title}</p><span>${sub}</span></div>`;
-}
-
-/* ═══════════════════════════════════════ ANALYTICS ═══ */
-function renderAnalytics() {
-  renderWeightChart();
-  renderFeedSummary();
-  renderDiaperSummary();
-}
-
-function renderWeightChart() {
-  const wrap = document.getElementById('chart-wrap');
-  const empty = document.getElementById('chart-empty');
-
-  if (data.weights.length < 2) {
-    wrap.style.display = 'none';
-    empty.style.display = 'block';
-    if (weightChart) { weightChart.destroy(); weightChart = null; }
-    return;
-  }
-
-  wrap.style.display = 'block';
-  empty.style.display = 'none';
-
-  const sorted = [...data.weights].sort((a, b) => new Date(a.date) - new Date(b.date));
-  const labels = sorted.map(w => w.date);
-  const values = sorted.map(w => w.weight);
-
-  const isDark = document.documentElement.dataset.theme === 'dark';
-  const gridColor = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
-  const tickColor = isDark ? '#4f617a' : '#9baabf';
-  const tooltipBg = isDark ? '#111827' : '#ffffff';
-  const tooltipText = isDark ? '#e8edf5' : '#1a2035';
-
-  if (weightChart) weightChart.destroy();
-
-  const ctx = document.getElementById('weight-chart').getContext('2d');
-
-  // WHO approximate reference line (simplified: newborn 3.3kg, +0.2kg/week for first 3 months)
-  // Just a gentle reference - we'll show it if birthWeight + birthDate exist
-  const datasets = [{
-    label: 'Weight (kg)',
-    data: values,
-    borderColor: '#f472b6',
-    backgroundColor: 'rgba(244,114,182,0.12)',
-    borderWidth: 3,
-    pointBackgroundColor: '#db2777',
-    pointBorderColor: '#fff',
-    pointBorderWidth: 2,
-    pointRadius: 6,
-    pointHoverRadius: 8,
-    fill: true,
-    tension: 0.4
-  }];
-
-  weightChart = new Chart(ctx, {
-    type: 'line',
-    data: { labels, datasets },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      animation: { duration: 600, easing: 'easeOutQuart' },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          backgroundColor: tooltipBg,
-          titleColor: tooltipText,
-          bodyColor: tooltipText,
-          borderColor: 'rgba(244,114,182,0.3)',
-          borderWidth: 1,
-          padding: 12,
-          cornerRadius: 12,
-          callbacks: {
-            label: ctx => ' ' + ctx.parsed.y.toFixed(2) + ' kg'
-          }
-        }
-      },
-      scales: {
-        x: {
-          grid: { color: gridColor },
-          ticks: { color: tickColor, font: { size: 10, family: 'Nunito', weight: '700' }, maxTicksLimit: 6 },
-          border: { display: false }
-        },
-        y: {
-          grid: { color: gridColor },
-          ticks: { color: tickColor, font: { size: 10, family: 'Nunito', weight: '700' }, callback: v => v.toFixed(1) + 'kg' },
-          border: { display: false }
-        }
-      }
-    }
-  });
-}
-
-function renderFeedSummary() {
-  const el = document.getElementById('feed-summary');
-  const h24 = now() - 86400000;
-  const recent = data.feeds.filter(f => new Date(f.timestamp).getTime() > h24);
-
-  if (!recent.length) {
-    el.innerHTML = '<div class="alert-box alert-info"><span class="alert-icon">ℹ️</span><div>No feeds logged in the last 24 hours.</div></div>';
-    return;
-  }
-
-  const types = {};
-  let totalDuration = 0;
-  recent.forEach(f => {
-    types[f.type] = (types[f.type] || 0) + 1;
-    if (f.duration) totalDuration += parseInt(f.duration) || 0;
-  });
-
-  const avgInterval = recent.length > 1
-    ? Math.round((new Date(recent[0].timestamp) - new Date(recent[recent.length-1].timestamp)) / 60000 / (recent.length - 1))
-    : null;
-
-  el.innerHTML = `
-    <div style="display:flex;flex-wrap:wrap;margin-bottom:14px">
-      ${Object.entries(types).map(([t,c]) => `<span class="feed-type-pill">${t}: ${c}</span>`).join('')}
-    </div>
-    <div class="mini-stat-row">
-      <div class="mini-stat">
-        <div class="mini-stat-num" style="color:var(--accent)">${recent.length}</div>
-        <div class="mini-stat-label">Total feeds</div>
-      </div>
-      ${avgInterval ? `<div class="mini-stat">
-        <div class="mini-stat-num" style="color:var(--accent)">${fmtDuration(avgInterval)}</div>
-        <div class="mini-stat-label">Avg interval</div>
-      </div>` : ''}
-      ${totalDuration > 0 ? `<div class="mini-stat">
-        <div class="mini-stat-num" style="color:var(--accent)">${totalDuration}m</div>
-        <div class="mini-stat-label">Total time</div>
-      </div>` : ''}
-    </div>`;
-}
-
-function renderDiaperSummary() {
-  const el = document.getElementById('diaper-summary');
-  const h24 = now() - 86400000;
-  const recent = data.diapers.filter(d => new Date(d.timestamp).getTime() > h24);
-
-  const wet = recent.filter(d => d.condition === 'Wet' || d.condition === 'Both').length;
-  const dirty = recent.filter(d => d.condition === 'Dirty' || d.condition === 'Both').length;
-
-  let alertHtml = '';
-  if (!recent.length) {
-    alertHtml = '<div class="alert-box alert-info" style="margin-top:12px"><span class="alert-icon">ℹ️</span><div>No diapers logged in the last 24 hours.</div></div>';
-  } else if (wet < 6) {
-    alertHtml = `<div class="alert-box alert-warn" style="margin-top:12px"><span class="alert-icon">⚠️</span><div>Fewer than 6 wet diapers in 24 hours. Monitor hydration closely. If this continues, consult your pediatrician.</div></div>`;
-  } else {
-    alertHtml = `<div class="alert-box alert-ok" style="margin-top:12px"><span class="alert-icon">✅</span><div>Hydration looks great — ${wet} wet diapers today!</div></div>`;
-  }
-
-  el.innerHTML = `
-    <div class="mini-stat-row">
-      <div class="mini-stat">
-        <div class="mini-stat-num" style="color:var(--blue)">${wet}</div>
-        <div class="mini-stat-label">Wet 💧</div>
-      </div>
-      <div class="mini-stat">
-        <div class="mini-stat-num" style="color:var(--amber)">${dirty}</div>
-        <div class="mini-stat-label">Dirty 💩</div>
-      </div>
-      <div class="mini-stat">
-        <div class="mini-stat-num" style="color:var(--text2)">${recent.length}</div>
-        <div class="mini-stat-label">Total</div>
-      </div>
-    </div>
-    ${alertHtml}`;
-}
-
-/* ═══════════════════════════════════════ LOG MODAL ═══ */
-let logActiveTab = 'feed';
-let feedType = 'Breastmilk';
-let diaperType = 'Wet';
+/* ═══════════════════════════════════════ LOGGING MODAL ═══ */
+let feedType = 'Breastmilk', breastSide = 'Left', diaperType = 'Wet';
 
 function openLog(tab) {
   switchLogTab(tab);
   document.getElementById('log-modal').classList.add('open');
-  // pre-fill date
-  document.getElementById('weight-date').value = todayStr();
+  if(tab==='weight') document.getElementById('weight-date').value = new Date().toISOString().split('T')[0];
 }
-
-function closeLog() {
-  document.getElementById('log-modal').classList.remove('open');
-}
-
-function handleOverlayClick(e) {
-  if (e.target === document.getElementById('log-modal')) closeLog();
-}
+function closeLog() { document.getElementById('log-modal').classList.remove('open'); }
+function handleOverlayClick(e) { if(e.target.id === 'log-modal') closeLog(); }
 
 function switchLogTab(tab) {
-  logActiveTab = tab;
-  ['feed','diaper','weight'].forEach(t => {
-    document.getElementById('tab-'+t).classList.toggle('active', t === tab);
-    document.getElementById('form-'+t).style.display = t === tab ? 'block' : 'none';
+  ['feed','sleep','diaper','weight'].forEach(t => {
+    document.getElementById('tab-'+t).classList.toggle('active', t===tab);
+    document.getElementById('form-'+t).style.display = (t===tab)?'block':'none';
   });
 }
 
 function pickFeedType(btn) {
   feedType = btn.dataset.val;
   document.querySelectorAll('#feed-type-row .choice-btn').forEach(b => {
-    const active = b === btn;
-    b.style.borderColor = active ? 'var(--green)' : 'var(--border2)';
-    b.style.background = active ? 'rgba(52,211,153,0.12)' : 'var(--input)';
-    b.style.color = active ? 'var(--green)' : 'var(--text2)';
+    const act = b===btn;
+    b.style.borderColor = act?'var(--green)':'var(--border2)';
+    b.style.color = act?'var(--green)':'var(--text2)';
+  });
+  // Show side only if Breastmilk
+  document.getElementById('breast-side-row').style.display = (feedType === 'Breastmilk') ? 'block' : 'none';
+}
+
+function pickSide(btn) {
+  breastSide = btn.dataset.val;
+  document.querySelectorAll('#side-choice-row .choice-btn').forEach(b => {
+    const act = b===btn;
+    b.style.borderColor = act?'var(--green)':'var(--border2)';
+    b.style.color = act?'var(--green)':'var(--text2)';
   });
 }
 
 function pickDiaperType(btn) {
   diaperType = btn.dataset.val;
   document.querySelectorAll('#diaper-type-row .choice-btn').forEach(b => {
-    const active = b === btn;
-    b.style.borderColor = active ? 'var(--blue)' : 'var(--border2)';
-    b.style.background = active ? 'rgba(56,189,248,0.12)' : 'var(--input)';
-    b.style.color = active ? 'var(--blue)' : 'var(--text2)';
+    const act = b===btn;
+    b.style.borderColor = act?'var(--blue)':'var(--border2)';
+    b.style.color = act?'var(--blue)':'var(--text2)';
   });
 }
 
-function toggleFeedTimer() {
-  const btn = document.getElementById('feed-timer-btn');
-  const input = document.getElementById('feed-duration');
-
-  if (!activeFeedStart) {
-    // Start the timer
-    activeFeedStart = Date.now();
-    localStorage.setItem('activeFeedStart', activeFeedStart);
-    btn.innerHTML = '⏹ Stop Timer (0m)';
-    btn.style.color = 'var(--red)';
-    btn.style.borderColor = 'var(--red)';
-    feedTimerInterval = setInterval(updateFeedTimerUI, 60000);
-  } else {
-    // Stop the timer and calculate difference
-    const mins = Math.floor((Date.now() - parseInt(activeFeedStart)) / 60000);
-    input.value = mins > 0 ? mins : 1; // Default to at least 1 minute
-    
-    // Reset state
-    activeFeedStart = null;
-    localStorage.removeItem('activeFeedStart');
-    clearInterval(feedTimerInterval);
-    resetTimerUI();
-  }
-}
-
-function updateFeedTimerUI() {
-  if (!activeFeedStart) return;
-  const mins = Math.floor((Date.now() - parseInt(activeFeedStart)) / 60000);
-  document.getElementById('feed-timer-btn').innerHTML = `⏹ Stop Timer (${mins}m)`;
-}
-
-function resetTimerUI() {
-  const btn = document.getElementById('feed-timer-btn');
-  btn.innerHTML = '⏱ Start Timer';
-  btn.style.color = 'var(--accent)';
-  btn.style.borderColor = 'var(--accent)';
-}
-
+/* ═══════════════════════════════════════ SUBMIT ═══ */
 function submitFeed() {
-  const duration = document.getElementById('feed-duration').value;
-  const notes = document.getElementById('feed-notes').value.trim();
-  
-  if (activeFeedStart) {
-    activeFeedStart = null;
-    localStorage.removeItem('activeFeedStart');
-    clearInterval(feedTimerInterval);
-    resetTimerUI();
-  }
+  const dur = parseInt(document.getElementById('feed-duration').value);
+  if(activeFeedStart) { activeFeedStart=null; localStorage.removeItem('activeFeedStart'); clearInterval(feedTimerInterval); }
+  data.feeds.unshift({ id: now(), timestamp: new Date().toISOString(), type: feedType, side: (feedType==='Breastmilk'?breastSide:null), duration: dur||null });
+  save(); document.getElementById('feed-duration').value=''; closeLog(); updateDashboard(); if(currentView==='history') renderHistory();
+}
 
-  data.feeds.unshift({
-    id: now(),
-    timestamp: new Date().toISOString(),
-    type: feedType,
-    duration: duration ? parseInt(duration) : null,
-    notes: notes || null
-  });
-  save();
-  document.getElementById('feed-duration').value = '';
-  document.getElementById('feed-notes').value = '';
-  closeLog();
-  updateDashboard();
-  if (currentView === 'history') renderHistory();
+function submitSleep() {
+  const dur = parseInt(document.getElementById('sleep-duration').value);
+  const notes = document.getElementById('sleep-notes').value;
+  if(activeSleepStart) { activeSleepStart=null; localStorage.removeItem('activeSleepStart'); clearInterval(sleepTimerInterval); }
+  data.sleeps.unshift({ id: now(), timestamp: new Date().toISOString(), duration: dur||0, notes: notes||null });
+  save(); document.getElementById('sleep-duration').value=''; document.getElementById('sleep-notes').value=''; closeLog(); updateDashboard(); if(currentView==='history') renderHistory();
 }
 
 function submitDiaper() {
-  const notes = document.getElementById('diaper-notes').value.trim();
-  data.diapers.unshift({
-    id: now(),
-    timestamp: new Date().toISOString(),
-    condition: diaperType,
-    notes: notes || null
-  });
-  save();
-  document.getElementById('diaper-notes').value = '';
-  closeLog();
-  updateDashboard();
-  if (currentView === 'history') renderHistory();
+  data.diapers.unshift({ id: now(), timestamp: new Date().toISOString(), condition: diaperType });
+  save(); closeLog(); updateDashboard(); if(currentView==='history') renderHistory();
 }
 
 function submitWeight() {
-  const val = parseFloat(document.getElementById('weight-value').value);
-  const date = document.getElementById('weight-date').value || todayStr();
-  if (!val || val < 0.5 || val > 30) {
-    document.getElementById('weight-value').style.borderColor = 'var(--red)';
-    setTimeout(() => document.getElementById('weight-value').style.borderColor = '', 1500);
-    return;
-  }
-  data.weights.push({ id: now(), date, weight: val, timestamp: new Date().toISOString() });
-  data.weights.sort((a, b) => new Date(a.date) - new Date(b.date));
-  save();
-  document.getElementById('weight-value').value = '';
-  closeLog();
-  updateDashboard();
-  if (currentView === 'history') renderHistory();
-  if (currentView === 'analytics') renderAnalytics();
+  const w = parseFloat(document.getElementById('weight-value').value);
+  const d = document.getElementById('weight-date').value;
+  if(!w) return;
+  data.weights.push({ id: now(), date: d, weight: w });
+  data.weights.sort((a,b)=>new Date(a.date)-new Date(b.date));
+  save(); closeLog();
 }
 
-/* ═══════════════════════════════════════ DELETE ═══ */
-function deleteFeed(idx) {
-  if (!confirm('Delete this feed entry?')) return;
-  data.feeds.splice(idx, 1);
-  save();
-  updateDashboard();
-  renderHistory();
+/* ═══════════════════════════════════════ HISTORY ═══ */
+function renderHistory() {
+  const list = document.getElementById('history-list');
+  const arr = data[currentSeg + 's'] || [];
+  
+  if(!arr.length) { list.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text3)">No entries yet.</div>`; return; }
+
+  list.innerHTML = arr.map((item, i) => {
+    let icon, title, meta;
+    if(currentSeg === 'feed') {
+      icon = '🍼'; 
+      title = item.type + (item.side ? ` (${item.side})` : '') + (item.duration ? ` · ${item.duration}m` : '');
+      meta = `${fmtDate(item.timestamp)} · ${fmtTime(item.timestamp)}`;
+    } else if(currentSeg === 'sleep') {
+      icon = '💤';
+      title = `Sleep · ${fmtDuration(item.duration)}`;
+      meta = `${fmtDate(item.timestamp)} · ${fmtTime(item.timestamp)} ${item.notes ? '· '+item.notes : ''}`;
+    } else if(currentSeg === 'diaper') {
+      icon = item.condition==='Dirty'?'💩':item.condition==='Both'?'💧💩':'💧';
+      title = item.condition + ' Diaper';
+      meta = `${fmtDate(item.timestamp)} · ${fmtTime(item.timestamp)}`;
+    }
+    
+    return `<div class="log-item">
+      <span class="log-icon">${icon}</span>
+      <div class="log-body">
+        <div class="log-title">${title}</div>
+        <div class="log-meta">${meta}</div>
+      </div>
+      <button class="del-btn" onclick="deleteEntry('${currentSeg}', ${i})">🗑</button>
+    </div>`;
+  }).join('');
 }
 
-function deleteDiaper(idx) {
-  if (!confirm('Delete this diaper entry?')) return;
-  data.diapers.splice(idx, 1);
-  save();
-  updateDashboard();
-  renderHistory();
+function deleteEntry(type, idx) {
+  if(!confirm('Delete entry?')) return;
+  data[type+'s'].splice(idx, 1); save(); updateDashboard(); renderHistory();
 }
 
-function deleteWeight(idx) {
-  if (!confirm('Delete this weight entry?')) return;
-  data.weights.splice(idx, 1);
-  save();
-  updateDashboard();
-  renderHistory();
+/* ═══════════════════════════════════════ ANALYTICS (CHART.JS) ═══ */
+function renderAnalytics() {
+  renderTimelineChart();
+  renderWeightChart();
 }
 
-/* ═══════════════════════════════════════ PROFILE ═══ */
-function openProfile() {
-  document.getElementById('profile-name').value = data.profile.name;
-  document.getElementById('profile-birth').value = data.profile.birthDate || '';
-  document.getElementById('profile-bw').value = data.profile.birthWeight || '';
-  document.getElementById('profile-modal').classList.add('open');
-}
+function renderTimelineChart() {
+  const ctx = document.getElementById('timeline-chart').getContext('2d');
+  if(timelineChart) timelineChart.destroy();
 
-function closeProfile() {
-  document.getElementById('profile-modal').classList.remove('open');
-}
+  const h24 = now() - 86400000;
+  const filterRecent = (arr) => arr.filter(x => new Date(x.timestamp).getTime() > h24);
+  
+  // Convert timestamp to a decimal hour (0-24) relative to 24h ago
+  const toDecimalHour = (ts) => (new Date(ts).getTime() - h24) / 3600000;
 
-function handleProfileOverlayClick(e) {
-  if (e.target === document.getElementById('profile-modal')) closeProfile();
-}
+  const sleepData = filterRecent(data.sleeps).map(s => ({ x: toDecimalHour(s.timestamp), y: 3 }));
+  const diaperData = filterRecent(data.diapers).map(d => ({ x: toDecimalHour(d.timestamp), y: 2 }));
+  const feedData = filterRecent(data.feeds).map(f => ({ x: toDecimalHour(f.timestamp), y: 1 }));
 
-function saveProfile() {
-  const name = document.getElementById('profile-name').value.trim();
-  const birth = document.getElementById('profile-birth').value;
-  const bw = parseFloat(document.getElementById('profile-bw').value) || null;
-  data.profile = { name: name || 'Baby', birthDate: birth, birthWeight: bw };
-  save();
-  updateHeader();
-  closeProfile();
-}
-
-/* ═══════════════════════════════════════ THEME ═══ */
-function toggleTheme() {
   const isDark = document.documentElement.dataset.theme === 'dark';
-  const theme = isDark ? 'light' : 'dark';
-  document.documentElement.dataset.theme = theme;
-  data.theme = theme;
-  document.getElementById('theme-btn').textContent = isDark ? '🌙' : '☀️';
-  save();
-  if (currentView === 'analytics' && weightChart) {
-    renderAnalytics();
-  }
+  const gridColor = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
+  const textColor = isDark ? '#8b9ab5' : '#5a6a85';
+
+  timelineChart = new Chart(ctx, {
+    type: 'scatter',
+    data: {
+      datasets: [
+        { label: 'Sleep', data: sleepData, backgroundColor: '#c084fc', pointRadius: 6 },
+        { label: 'Diaper', data: diaperData, backgroundColor: '#38bdf8', pointRadius: 6 },
+        { label: 'Feed', data: feedData, backgroundColor: '#34d399', pointRadius: 6 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { 
+          min: 0, max: 24, grid: { color: gridColor },
+          ticks: { color: textColor, callback: (val) => val % 24 + 'h' } 
+        },
+        y: {
+          min: 0.5, max: 3.5, grid: { color: gridColor },
+          ticks: { color: textColor, callback: (val) => {
+            if(val===1) return 'Feed'; if(val===2) return 'Diaper'; if(val===3) return 'Sleep'; return '';
+          }}
+        }
+      }
+    }
+  });
+
+  // Simple Summary below chart
+  const recentFeeds = filterRecent(data.feeds);
+  const totalMins = recentFeeds.reduce((acc, f) => acc + (f.duration||0), 0);
+  document.getElementById('feed-summary').innerHTML = `
+    <div class="mini-stat-row">
+      <div class="mini-stat"><div class="mini-stat-num" style="color:var(--green)">${recentFeeds.length}</div><div class="mini-stat-label">Feeds</div></div>
+      <div class="mini-stat"><div class="mini-stat-num" style="color:var(--green)">${totalMins}m</div><div class="mini-stat-label">Total Time</div></div>
+    </div>
+  `;
+}
+
+function renderWeightChart() {
+  const ctx = document.getElementById('weight-chart').getContext('2d');
+  if(weightChart) weightChart.destroy();
+  if(data.weights.length < 2) return;
+
+  const labels = data.weights.map(w => w.date.substring(5)); // Show MM-DD
+  const vals = data.weights.map(w => w.weight);
+
+  weightChart = new Chart(ctx, {
+    type: 'line',
+    data: { labels, datasets: [{ data: vals, borderColor: '#f472b6', tension: 0.4, pointBackgroundColor: '#db2777' }] },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+  });
+}
+
+/* ═══════════════════════════════════════ SETTINGS ═══ */
+function openProfile() { document.getElementById('profile-modal').classList.add('open'); }
+function closeProfile() { document.getElementById('profile-modal').classList.remove('open'); }
+function handleProfileOverlayClick(e) { if(e.target.id === 'profile-modal') closeProfile(); }
+function saveProfile() {
+  data.profile.name = document.getElementById('profile-name').value;
+  data.profile.birthDate = document.getElementById('profile-birth').value;
+  save(); closeProfile(); document.getElementById('header-name').textContent = data.profile.name ? `🌙 ${data.profile.name}'s Tracker` : "🌙 Baby's Tracker";
+}
+function toggleTheme() {
+  data.theme = data.theme === 'dark' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = data.theme;
+  save(); if(currentView === 'analytics') renderAnalytics();
 }
 
 /* ═══════════════════════════════════════ INIT ═══ */
-function applyChoiceStyling() {
-  // Highlight default feed type
-  document.querySelectorAll('#feed-type-row .choice-btn').forEach(b => {
-    if (b.dataset.val === feedType) {
-      b.style.borderColor = 'var(--green)';
-      b.style.background = 'rgba(52,211,153,0.12)';
-      b.style.color = 'var(--green)';
-    }
-  });
-  document.querySelectorAll('#diaper-type-row .choice-btn').forEach(b => {
-    if (b.dataset.val === diaperType) {
-      b.style.borderColor = 'var(--blue)';
-      b.style.background = 'rgba(56,189,248,0.12)';
-      b.style.color = 'var(--blue)';
-    }
-  });
-}
-
 function init() {
   load();
-
-  // Apply saved theme
-  if (data.theme) {
-    document.documentElement.dataset.theme = data.theme;
-    document.getElementById('theme-btn').textContent = data.theme === 'dark' ? '☀️' : '🌙';
-  }
-
-  updateHeader();
+  document.documentElement.dataset.theme = data.theme;
+  document.getElementById('header-name').textContent = data.profile.name ? `🌙 ${data.profile.name}'s Tracker` : "🌙 Baby's Tracker";
   updateDashboard();
-  applyChoiceStyling();
-
-  // Live timer refresh every 60 seconds
-  setInterval(() => {
-    updateDashboard();
-    if (currentView === 'history') renderHistory();
-  }, 60000);
-
-  // Open profile on first launch
-  if (!data.profile.name) {
-    setTimeout(openProfile, 400);
-  }
-
-  if (activeFeedStart) {
+  
+  // Resume timers
+  if(activeFeedStart) {
     const btn = document.getElementById('feed-timer-btn');
-    btn.style.color = 'var(--red)';
-    btn.style.borderColor = 'var(--red)';
-    updateFeedTimerUI();
-    feedTimerInterval = setInterval(updateFeedTimerUI, 60000);
+    btn.style.color = 'var(--red)'; btn.style.borderColor = 'var(--red)';
+    feedTimerInterval = setInterval(() => { btn.innerHTML = `⏹ Stop (${Math.floor((now()-parseInt(activeFeedStart))/60000)}m)`; }, 60000);
   }
+  if(activeSleepStart) {
+    const btn = document.getElementById('sleep-timer-btn');
+    btn.style.color = 'var(--red)'; btn.style.borderColor = 'var(--red)';
+    sleepTimerInterval = setInterval(() => { btn.innerHTML = `⏹ Wake Up (${fmtDuration(Math.floor((now()-parseInt(activeSleepStart))/60000))})`; }, 60000);
+  }
+  setInterval(updateDashboard, 60000);
 }
-
 init();
 </script>
 </body>
