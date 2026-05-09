@@ -275,7 +275,18 @@
         <button class="choice-btn" data-val="Bottle" onclick="pickOpt(this, 'feedType')"><span class="emoji">🍼</span>Bottle</button>
         <button class="choice-btn" data-val="Pump" onclick="pickOpt(this, 'feedType')"><span class="emoji">🥛</span>Pump</button>
       </div>
+
+      <!-- Breast Side Selector -->
+      <div id="feed-side-wrap" style="display:block;">
+        <label class="field-label">Side</label>
+        <div class="choice-row" id="side-choice-row">
+          <button class="choice-btn active" data-val="Left" onclick="pickOpt(this, 'breastSide')">Left</button>
+          <button class="choice-btn" data-val="Right" onclick="pickOpt(this, 'breastSide')">Right</button>
+          <button class="choice-btn" data-val="Both" onclick="pickOpt(this, 'breastSide')">Both</button>
+        </div>
+      </div>
       
+      <!-- Bottle/Pump Volume Input -->
       <div id="feed-vol-wrap" style="display:none;">
         <label class="field-label">Volume (oz)</label>
         <input class="field-input" id="feed-vol" type="number" step="0.5" placeholder="e.g. 4">
@@ -438,7 +449,7 @@ const MILESTONES = [
   { m: 12, text: ["Walks holding on", "Says mama/dada", "Waves bye-bye"] }
 ];
 
-let state = { feedType: 'Nursing', diaperType: 'Wet', medType: 'Acetaminophen', foodReact: 'None', parentMood: 'Great' };
+let state = { feedType: 'Nursing', breastSide: 'Left', diaperType: 'Wet', medType: 'Acetaminophen', foodReact: 'None', parentMood: 'Great' };
 let editIndex = { type: null, idx: -1 }; // Used for editing existing logs
 
 let liveTimers = {
@@ -488,7 +499,8 @@ function updateUI() {
     const m = minsSince(lastF.timestamp);
     tv.textContent = fmtDur(m);
     tv.style.color = m > 180 ? 'var(--red)' : m > 120 ? 'var(--amber)' : 'var(--green)';
-    ts.textContent = `${lastF.type} at ${fmtTime(lastF.timestamp)}`;
+    let sideStr = lastF.side ? ` (${lastF.side})` : '';
+    ts.textContent = `${lastF.type}${sideStr} at ${fmtTime(lastF.timestamp)}`;
   }
 
   // Stash & Vit D
@@ -574,7 +586,10 @@ function pickOpt(btn, stateKey) {
     b.style.borderColor = act?'var(--accent)':'var(--border2)'; 
     b.style.background = act?'rgba(167, 139, 250, 0.1)':'var(--input)';
   });
-  if(stateKey === 'feedType') document.getElementById('feed-vol-wrap').style.display = (state.feedType==='Bottle'||state.feedType==='Pump')?'block':'none';
+  if(stateKey === 'feedType') {
+    document.getElementById('feed-vol-wrap').style.display = (state.feedType==='Bottle'||state.feedType==='Pump')?'block':'none';
+    document.getElementById('feed-side-wrap').style.display = (state.feedType==='Nursing')?'block':'none';
+  }
 }
 
 /* ═══════════════════════════════════════ ADVANCED LIVE TIMERS ═══ */
@@ -695,7 +710,10 @@ function submitFeed() {
   const vol = parseFloat(document.getElementById('feed-vol').value);
   if (state.feedType === 'Pump' && vol) data.stash += vol;
   if (state.feedType === 'Bottle' && vol) data.stash = Math.max(0, data.stash - vol);
-  data.feeds.unshift({ id: now(), timestamp: new Date().toISOString(), type: state.feedType, dur: dur||null, vol: vol||null });
+  
+  const side = state.feedType === 'Nursing' ? state.breastSide : null;
+  
+  data.feeds.unshift({ id: now(), timestamp: new Date().toISOString(), type: state.feedType, side: side, dur: dur||null, vol: vol||null });
   save(); document.getElementById('feed-dur').value=''; document.getElementById('feed-vol').value=''; closeLog(); updateUI();
 }
 function submitSleep() {
@@ -748,7 +766,12 @@ function renderHistory() {
   
   list.innerHTML = arr.slice(0, 20).map((item, i) => {
     let icon, title, meta;
-    if(currSeg === 'feed') { icon = item.type==='Nursing'?'🤱':item.type==='Pump'?'🥛':'🍼'; title = item.type + (item.vol?` · ${item.vol}oz`:'') + (item.dur?` · ${item.dur}m`:''); meta = `${fmtDate(item.timestamp)} · ${fmtTime(item.timestamp)}`;}
+    if(currSeg === 'feed') { 
+        icon = item.type==='Nursing'?'🤱':item.type==='Pump'?'🥛':'🍼'; 
+        let sideStr = item.side ? ` (${item.side})` : '';
+        title = item.type + sideStr + (item.vol?` · ${item.vol}oz`:'') + (item.dur?` · ${item.dur}m`:''); 
+        meta = `${fmtDate(item.timestamp)} · ${fmtTime(item.timestamp)}`;
+    }
     else if(currSeg === 'sleep') { icon = '💤'; title = `Sleep · ${fmtDur(item.dur)}`; meta = `${fmtDate(item.timestamp)} · ${fmtTime(item.timestamp)}`;}
     else if(currSeg === 'diaper') { icon = item.type==='Dirty'?'💩':item.type==='Both'?'💧💩':'💧'; title = item.type + ' Diaper'; meta = `${fmtDate(item.timestamp)} · ${fmtTime(item.timestamp)}`;}
     else if(currSeg === 'food') { icon = item.react==='Severe'?'🚨':item.react==='Mild'?'⚠️':'✅'; title = item.food; meta = `${fmtDate(item.timestamp)} · ${fmtTime(item.timestamp)}`;}
