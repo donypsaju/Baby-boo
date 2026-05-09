@@ -133,7 +133,8 @@
   /* ── ANALYTICS ── */
   .analytics-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 20px; margin-bottom: 14px; }
   .analytics-title { font-size: 15px; font-weight: 800; margin-bottom: 16px; }
-  .chart-wrap { width: 100%; height: 220px; }
+  .chart-wrap { width: 100%; height: 220px; position: relative; }
+  .empty-chart-msg { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--text3); font-weight: 600; }
   .mini-stat-row { display: flex; gap: 10px; margin-bottom: 10px; }
   .mini-stat { flex: 1; background: var(--card2); border: 1px solid var(--border); border-radius: 14px; padding: 14px; text-align: center; }
   .mini-stat-num { font-size: 28px; font-weight: 900; line-height: 1; }
@@ -252,6 +253,7 @@
         <div class="analytics-title">📊 24-Hour Timeline</div>
         <div class="chart-wrap">
           <canvas id="timeline-chart"></canvas>
+          <div id="timeline-empty" class="empty-chart-msg" style="display:none">Not enough data to display</div>
         </div>
       </div>
 
@@ -262,7 +264,10 @@
 
       <div class="analytics-card">
         <div class="analytics-title">⚖️ Weight Progress</div>
-        <div class="chart-wrap"><canvas id="weight-chart"></canvas></div>
+        <div class="chart-wrap">
+          <canvas id="weight-chart"></canvas>
+          <div id="weight-empty" class="empty-chart-msg" style="display:none">Log weight 2+ times to see chart</div>
+        </div>
       </div>
 
     </div>
@@ -402,8 +407,7 @@ function load() { try { const raw = localStorage.getItem(STORE); if (raw) data =
 function save() { try { localStorage.setItem(STORE, JSON.stringify(data)); } catch(e) {} }
 
 /* ═══════════════════════════════════════ UTILS ═══ */
-function now() { return Date.now(); }
-function minsSince(ts) { return Math.floor((now() - new Date(ts).getTime()) / 60000); }
+function minsSince(ts) { return Math.floor((Date.now() - new Date(ts).getTime()) / 60000); }
 function fmtDuration(mins) {
   if (mins < 1) return 'Just now';
   if (mins < 60) return mins + 'm';
@@ -423,16 +427,16 @@ function toggleFeedTimer() {
   const btn = document.getElementById('feed-timer-btn');
   const input = document.getElementById('feed-duration');
   if (!activeFeedStart) {
-    activeFeedStart = now();
+    activeFeedStart = Date.now();
     localStorage.setItem('activeFeedStart', activeFeedStart);
     btn.innerHTML = '⏹ Stop (0m)';
     btn.style.color = 'var(--red)'; btn.style.borderColor = 'var(--red)';
     feedTimerInterval = setInterval(() => {
-      const m = Math.floor((now() - parseInt(activeFeedStart)) / 60000);
+      const m = Math.floor((Date.now() - parseInt(activeFeedStart)) / 60000);
       btn.innerHTML = `⏹ Stop (${m}m)`;
     }, 60000);
   } else {
-    input.value = Math.max(1, Math.floor((now() - parseInt(activeFeedStart)) / 60000));
+    input.value = Math.max(1, Math.floor((Date.now() - parseInt(activeFeedStart)) / 60000));
     activeFeedStart = null; localStorage.removeItem('activeFeedStart'); clearInterval(feedTimerInterval);
     btn.innerHTML = '⏱ Start Timer'; btn.style.color = 'var(--green)'; btn.style.borderColor = 'var(--green)';
   }
@@ -442,22 +446,37 @@ function toggleSleepTimer() {
   const btn = document.getElementById('sleep-timer-btn');
   const input = document.getElementById('sleep-duration');
   if (!activeSleepStart) {
-    activeSleepStart = now();
+    activeSleepStart = Date.now();
     localStorage.setItem('activeSleepStart', activeSleepStart);
     btn.innerHTML = '⏹ Wake Up (0m)';
     btn.style.color = 'var(--red)'; btn.style.borderColor = 'var(--red)';
     sleepTimerInterval = setInterval(() => {
-      const m = Math.floor((now() - parseInt(activeSleepStart)) / 60000);
+      const m = Math.floor((Date.now() - parseInt(activeSleepStart)) / 60000);
       btn.innerHTML = `⏹ Wake Up (${fmtDuration(m)})`;
     }, 60000);
   } else {
-    input.value = Math.max(1, Math.floor((now() - parseInt(activeSleepStart)) / 60000));
+    input.value = Math.max(1, Math.floor((Date.now() - parseInt(activeSleepStart)) / 60000));
     activeSleepStart = null; localStorage.removeItem('activeSleepStart'); clearInterval(sleepTimerInterval);
     btn.innerHTML = '⏱ Start Sleep'; btn.style.color = 'var(--purple)'; btn.style.borderColor = 'var(--purple)';
   }
 }
 
 /* ═══════════════════════════════════════ DASHBOARD ═══ */
+function updateAgeDisplay() {
+  const ageEl = document.getElementById('header-age');
+  if (!data.profile.birthDate) {
+    ageEl.textContent = 'Tap ⚙️ to add birth date';
+    return;
+  }
+  const diffTime = Math.abs(Date.now() - new Date(data.profile.birthDate).getTime());
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  
+  if (diffDays === 0) ageEl.textContent = "Born today!";
+  else if (diffDays < 30) ageEl.textContent = `${diffDays} days old`;
+  else if (diffDays < 365) ageEl.textContent = `${Math.floor(diffDays/30)} months old`;
+  else ageEl.textContent = `${(diffDays/365).toFixed(1)} years old`;
+}
+
 function updateDashboard() {
   // Feed Timer Card
   const lastF = data.feeds[0];
@@ -466,7 +485,7 @@ function updateDashboard() {
   const pf = document.getElementById('timer-prog-fill');
   const tl = document.getElementById('timer-last');
   
-  if (!lastF) { tv.textContent = 'No feed'; } 
+  if (!lastF) { tv.textContent = 'No feed'; tp.style.display = 'none'; tl.textContent = ''; } 
   else {
     const m = minsSince(lastF.timestamp);
     tv.textContent = fmtDuration(m);
@@ -480,7 +499,7 @@ function updateDashboard() {
   }
 
   // Stat Grid
-  const h24 = now() - 86400000;
+  const h24 = Date.now() - 86400000;
   const wet = data.diapers.filter(d => new Date(d.timestamp).getTime() > h24 && d.condition !== 'Dirty').length;
   document.getElementById('wet-count').textContent = wet;
   
@@ -514,7 +533,12 @@ let feedType = 'Breastmilk', breastSide = 'Left', diaperType = 'Wet';
 function openLog(tab) {
   switchLogTab(tab);
   document.getElementById('log-modal').classList.add('open');
-  if(tab==='weight') document.getElementById('weight-date').value = new Date().toISOString().split('T')[0];
+  if(tab==='weight') {
+    // Generate local timezone date string instead of UTC
+    const today = new Date();
+    const localDate = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+    document.getElementById('weight-date').value = localDate;
+  }
 }
 function closeLog() { document.getElementById('log-modal').classList.remove('open'); }
 function handleOverlayClick(e) { if(e.target.id === 'log-modal') closeLog(); }
@@ -559,7 +583,7 @@ function pickDiaperType(btn) {
 function submitFeed() {
   const dur = parseInt(document.getElementById('feed-duration').value);
   if(activeFeedStart) { activeFeedStart=null; localStorage.removeItem('activeFeedStart'); clearInterval(feedTimerInterval); }
-  data.feeds.unshift({ id: now(), timestamp: new Date().toISOString(), type: feedType, side: (feedType==='Breastmilk'?breastSide:null), duration: dur||null });
+  data.feeds.unshift({ id: Date.now(), timestamp: new Date().toISOString(), type: feedType, side: (feedType==='Breastmilk'?breastSide:null), duration: dur||null });
   save(); document.getElementById('feed-duration').value=''; closeLog(); updateDashboard(); if(currentView==='history') renderHistory();
 }
 
@@ -567,22 +591,27 @@ function submitSleep() {
   const dur = parseInt(document.getElementById('sleep-duration').value);
   const notes = document.getElementById('sleep-notes').value;
   if(activeSleepStart) { activeSleepStart=null; localStorage.removeItem('activeSleepStart'); clearInterval(sleepTimerInterval); }
-  data.sleeps.unshift({ id: now(), timestamp: new Date().toISOString(), duration: dur||0, notes: notes||null });
+  data.sleeps.unshift({ id: Date.now(), timestamp: new Date().toISOString(), duration: dur||0, notes: notes||null });
   save(); document.getElementById('sleep-duration').value=''; document.getElementById('sleep-notes').value=''; closeLog(); updateDashboard(); if(currentView==='history') renderHistory();
 }
 
 function submitDiaper() {
-  data.diapers.unshift({ id: now(), timestamp: new Date().toISOString(), condition: diaperType });
+  data.diapers.unshift({ id: Date.now(), timestamp: new Date().toISOString(), condition: diaperType });
   save(); closeLog(); updateDashboard(); if(currentView==='history') renderHistory();
 }
 
 function submitWeight() {
   const w = parseFloat(document.getElementById('weight-value').value);
   const d = document.getElementById('weight-date').value;
-  if(!w) return;
-  data.weights.push({ id: now(), date: d, weight: w });
+  if(!w || !d) {
+    alert("Please enter a valid weight and date.");
+    return;
+  }
+  data.weights.push({ id: Date.now(), date: d, weight: w });
   data.weights.sort((a,b)=>new Date(a.date)-new Date(b.date));
-  save(); closeLog();
+  save(); 
+  document.getElementById('weight-value').value=''; 
+  closeLog();
 }
 
 /* ═══════════════════════════════════════ HISTORY ═══ */
@@ -632,17 +661,28 @@ function renderAnalytics() {
 
 function renderTimelineChart() {
   const ctx = document.getElementById('timeline-chart').getContext('2d');
+  const emptyMsg = document.getElementById('timeline-empty');
   if(timelineChart) timelineChart.destroy();
 
-  const h24 = now() - 86400000;
+  const h24 = Date.now() - 86400000;
   const filterRecent = (arr) => arr.filter(x => new Date(x.timestamp).getTime() > h24);
   
+  const recentSleeps = filterRecent(data.sleeps);
+  const recentDiapers = filterRecent(data.diapers);
+  const recentFeeds = filterRecent(data.feeds);
+
   // Convert timestamp to a decimal hour (0-24) relative to 24h ago
   const toDecimalHour = (ts) => (new Date(ts).getTime() - h24) / 3600000;
 
-  const sleepData = filterRecent(data.sleeps).map(s => ({ x: toDecimalHour(s.timestamp), y: 3 }));
-  const diaperData = filterRecent(data.diapers).map(d => ({ x: toDecimalHour(d.timestamp), y: 2 }));
-  const feedData = filterRecent(data.feeds).map(f => ({ x: toDecimalHour(f.timestamp), y: 1 }));
+  const sleepData = recentSleeps.map(s => ({ x: toDecimalHour(s.timestamp), y: 3 }));
+  const diaperData = recentDiapers.map(d => ({ x: toDecimalHour(d.timestamp), y: 2 }));
+  const feedData = recentFeeds.map(f => ({ x: toDecimalHour(f.timestamp), y: 1 }));
+
+  if (sleepData.length === 0 && diaperData.length === 0 && feedData.length === 0) {
+    emptyMsg.style.display = 'flex';
+  } else {
+    emptyMsg.style.display = 'none';
+  }
 
   const isDark = document.documentElement.dataset.theme === 'dark';
   const gridColor = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
@@ -663,7 +703,14 @@ function renderTimelineChart() {
       scales: {
         x: { 
           min: 0, max: 24, grid: { color: gridColor },
-          ticks: { color: textColor, callback: (val) => val % 24 + 'h' } 
+          ticks: { 
+            color: textColor, 
+            callback: (val) => {
+              // Convert the relative hour (val) back into local human-readable time
+              const d = new Date(h24 + (val * 3600000));
+              return d.toLocaleTimeString([], { hour: 'numeric' });
+            } 
+          } 
         },
         y: {
           min: 0.5, max: 3.5, grid: { color: gridColor },
@@ -676,7 +723,6 @@ function renderTimelineChart() {
   });
 
   // Simple Summary below chart
-  const recentFeeds = filterRecent(data.feeds);
   const totalMins = recentFeeds.reduce((acc, f) => acc + (f.duration||0), 0);
   document.getElementById('feed-summary').innerHTML = `
     <div class="mini-stat-row">
@@ -688,9 +734,15 @@ function renderTimelineChart() {
 
 function renderWeightChart() {
   const ctx = document.getElementById('weight-chart').getContext('2d');
+  const emptyMsg = document.getElementById('weight-empty');
   if(weightChart) weightChart.destroy();
-  if(data.weights.length < 2) return;
-
+  
+  if(data.weights.length < 2) {
+    emptyMsg.style.display = 'flex';
+    return;
+  }
+  
+  emptyMsg.style.display = 'none';
   const labels = data.weights.map(w => w.date.substring(5)); // Show MM-DD
   const vals = data.weights.map(w => w.weight);
 
@@ -702,37 +754,53 @@ function renderWeightChart() {
 }
 
 /* ═══════════════════════════════════════ SETTINGS ═══ */
-function openProfile() { document.getElementById('profile-modal').classList.add('open'); }
+function openProfile() { 
+  document.getElementById('profile-name').value = data.profile.name || '';
+  document.getElementById('profile-birth').value = data.profile.birthDate || '';
+  document.getElementById('profile-modal').classList.add('open'); 
+}
 function closeProfile() { document.getElementById('profile-modal').classList.remove('open'); }
 function handleProfileOverlayClick(e) { if(e.target.id === 'profile-modal') closeProfile(); }
 function saveProfile() {
   data.profile.name = document.getElementById('profile-name').value;
   data.profile.birthDate = document.getElementById('profile-birth').value;
-  save(); closeProfile(); document.getElementById('header-name').textContent = data.profile.name ? `🌙 ${data.profile.name}'s Tracker` : "🌙 Baby's Tracker";
+  save(); 
+  closeProfile(); 
+  document.getElementById('header-name').textContent = data.profile.name ? `🌙 ${data.profile.name}'s Tracker` : "🌙 Baby's Tracker";
+  updateAgeDisplay();
 }
+
 function toggleTheme() {
   data.theme = data.theme === 'dark' ? 'light' : 'dark';
   document.documentElement.dataset.theme = data.theme;
-  save(); if(currentView === 'analytics') renderAnalytics();
+  document.getElementById('theme-btn').textContent = data.theme === 'dark' ? '☀️' : '🌙';
+  save(); 
+  if(currentView === 'analytics') renderAnalytics();
 }
 
 /* ═══════════════════════════════════════ INIT ═══ */
 function init() {
   load();
   document.documentElement.dataset.theme = data.theme;
+  document.getElementById('theme-btn').textContent = data.theme === 'dark' ? '☀️' : '🌙';
   document.getElementById('header-name').textContent = data.profile.name ? `🌙 ${data.profile.name}'s Tracker` : "🌙 Baby's Tracker";
+  updateAgeDisplay();
   updateDashboard();
   
   // Resume timers
   if(activeFeedStart) {
     const btn = document.getElementById('feed-timer-btn');
     btn.style.color = 'var(--red)'; btn.style.borderColor = 'var(--red)';
-    feedTimerInterval = setInterval(() => { btn.innerHTML = `⏹ Stop (${Math.floor((now()-parseInt(activeFeedStart))/60000)}m)`; }, 60000);
+    const tick = () => { btn.innerHTML = `⏹ Stop (${Math.floor((Date.now()-parseInt(activeFeedStart))/60000)}m)`; };
+    tick(); // Call immediately
+    feedTimerInterval = setInterval(tick, 60000);
   }
   if(activeSleepStart) {
     const btn = document.getElementById('sleep-timer-btn');
     btn.style.color = 'var(--red)'; btn.style.borderColor = 'var(--red)';
-    sleepTimerInterval = setInterval(() => { btn.innerHTML = `⏹ Wake Up (${fmtDuration(Math.floor((now()-parseInt(activeSleepStart))/60000))})`; }, 60000);
+    const tick = () => { btn.innerHTML = `⏹ Wake Up (${fmtDuration(Math.floor((Date.now()-parseInt(activeSleepStart))/60000))})`; };
+    tick(); // Call immediately
+    sleepTimerInterval = setInterval(tick, 60000);
   }
   setInterval(updateDashboard, 60000);
 }
