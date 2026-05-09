@@ -157,6 +157,16 @@
         <div id="vax-info">
           <div id="vax-next-title" style="font-size: 18px; font-weight: 800; line-height: 1.2; margin-bottom: 4px;">—</div>
           <div id="vax-next-desc" style="font-size: 12px; color: var(--text3); margin-bottom: 14px; line-height: 1.4;"></div>
+          
+          <!-- Appointment Date Block -->
+          <div id="vax-date-block" style="background:var(--card2); border:1px solid var(--border); border-radius:12px; padding:12px; margin-bottom:14px; display:flex; align-items:center; gap:12px;">
+            <div style="font-size:24px;">📅</div>
+            <div>
+                <div style="font-size:10px; font-weight:800; color:var(--text3); text-transform:uppercase; letter-spacing:1px;">Appointment Date</div>
+                <div id="vax-calculated-date" style="font-size:15px; font-weight:900; color:var(--text);">—</div>
+            </div>
+          </div>
+
           <div style="display:flex; align-items:center; justify-content:space-between;">
              <div id="vax-next-countdown" style="font-size: 13px; font-weight: 800; color: var(--amber); background: rgba(251,191,36,0.1); padding: 8px 12px; border-radius: 10px;"></div>
              <button id="vax-done-btn" onclick="markNextVaxDone()" style="background:var(--green); border:none; color:#fff; padding:8px 14px; border-radius:10px; font-weight:800; font-size:13px; cursor:pointer;">Mark Done ✓</button>
@@ -500,7 +510,6 @@ function load() {
     let raw = localStorage.getItem(STORE); 
     if (raw) data = { ...data, ...JSON.parse(raw) }; 
     
-    // Initialize default vaccines if array doesn't exist or is empty
     if (!data.vaccines || data.vaccines.length === 0) {
       data.vaccines = [
         { id: Date.now()+1, weeks: 6, label: "6 Week Vaccines", desc: "DTaP, IPV, HepB, Hib, RV, PCV", done: false },
@@ -558,12 +567,12 @@ function updateUI() {
   if (data.vitD === todayStr) { vitdCheck.classList.add('checked'); vitdCheck.textContent = '✓'; } 
   else { vitdCheck.classList.remove('checked'); vitdCheck.textContent = ''; }
 
-  // Editable Vaccine Card Logic
+  // Vaccine Card Logic
   const vaxCardInfo = document.getElementById('vax-info');
   const vaxAllDone = document.getElementById('vax-all-done');
+  const vaxCalculatedDate = document.getElementById('vax-calculated-date');
   
-  if (days !== null) {
-      // Find the next uncompleted vaccine, sorted by weeks
+  if (days !== null && data.profile.birthDate) {
       let pending = data.vaccines.filter(v => !v.done).sort((a,b) => a.weeks - b.weeks);
       
       if (pending.length > 0) {
@@ -574,6 +583,12 @@ function updateUI() {
           let targetDays = nextVax.weeks * 7;
           let diff = targetDays - days;
           
+          // Calculate specific date
+          let birth = new Date(data.profile.birthDate);
+          let apptDate = new Date(birth);
+          apptDate.setDate(birth.getDate() + targetDays);
+          vaxCalculatedDate.textContent = apptDate.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' });
+
           document.getElementById('vax-next-title').textContent = nextVax.label;
           document.getElementById('vax-next-desc').textContent = nextVax.desc;
           
@@ -592,7 +607,6 @@ function updateUI() {
               countdownEl.style.background = 'rgba(248,113,113,0.1)';
           }
       } else {
-          // All done or none scheduled
           vaxCardInfo.style.display = 'none';
           vaxAllDone.style.display = 'block';
       }
@@ -607,7 +621,7 @@ function updateUI() {
   const lastMed = data.meds[0];
   if (lastMed) {
     const mSince = minsSince(lastMed.timestamp);
-    if (mSince < 360) { // 6 hours
+    if (mSince < 360) {
       medAlert.style.display = 'block';
       const rem = 360 - mSince;
       document.getElementById('med-timer-val').textContent = fmtDur(rem);
@@ -745,8 +759,7 @@ function openLog(tab) {
 }
 function closeLog() { 
     document.getElementById('log-modal').classList.remove('open'); 
-    editIndex = { type: null, idx: -1 }; // reset edit context
-    document.getElementById('gr-submit-btn').textContent = "Save Growth";
+    editIndex = { type: null, idx: -1 };
 }
 function switchLogTab(tab) {
   document.querySelectorAll('#log-tabs .type-tab').forEach(el => el.classList.remove('active'));
@@ -818,10 +831,8 @@ function stopLiveTimer(type) {
     vibrate();
     let t = liveTimers[type];
     if (t.running) { t.elapsed += (now() - t.start); t.running = false; clearInterval(t.interval); }
-    
     let totalMins = Math.floor(t.elapsed / 60000);
     document.getElementById(type+'-dur').value = Math.max(1, totalMins); 
-    
     t.elapsed = 0; saveLiveTimers(); renderTimerUI(type);
     document.getElementById(type+'-live-timer').style.display = 'none';
     document.getElementById(type+'-timer-btn-wrap').style.display = 'flex';
@@ -843,22 +854,18 @@ function startTimerLoop(type) {
     renderTimerUI(type);
     document.getElementById(type+'-live-timer').style.display = 'block';
     document.getElementById(type+'-timer-btn-wrap').style.display = 'none';
-    document.getElementById(type+'-pause-btn').innerHTML = '⏸ Pause';
 }
 
 function renderTimerUI(type) {
     let t = liveTimers[type];
     let totalMs = t.elapsed;
     if (t.running) totalMs += (now() - t.start);
-    
     let secs = Math.floor(totalMs / 1000) % 60;
     let mins = Math.floor(totalMs / 60000) % 60;
     let hrs = Math.floor(totalMs / 3600000);
-    
     let str = hrs > 0 ? 
         `${hrs}:${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}` :
         `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
-        
     document.getElementById(type+'-timer-display').textContent = str;
 }
 
@@ -866,11 +873,9 @@ function getFinalDuration(type) {
     let t = liveTimers[type];
     let durInput = document.getElementById(type+'-dur').value;
     if (durInput) return parseInt(durInput); 
-    
     if (t.running || t.elapsed > 0) {
         if (t.running) { t.elapsed += (now() - t.start); }
         let totalMins = Math.max(1, Math.floor(t.elapsed / 60000));
-        
         t.running = false; t.elapsed = 0; clearInterval(t.interval); saveLiveTimers();
         document.getElementById(type+'-live-timer').style.display = 'none';
         document.getElementById(type+'-timer-btn-wrap').style.display = 'flex';
@@ -885,9 +890,7 @@ function submitFeed() {
   const vol = parseFloat(document.getElementById('feed-vol').value);
   if (state.feedType === 'Pump' && vol) data.stash += vol;
   if (state.feedType === 'Bottle' && vol) data.stash = Math.max(0, data.stash - vol);
-  
   const side = state.feedType === 'Nursing' ? state.breastSide : null;
-  
   data.feeds.unshift({ id: now(), timestamp: new Date().toISOString(), type: state.feedType, side: side, dur: dur||null, vol: vol||null });
   save(); document.getElementById('feed-dur').value=''; document.getElementById('feed-vol').value=''; closeLog(); updateUI();
 }
@@ -904,13 +907,11 @@ function submitGrowth() {
   const w = parseFloat(document.getElementById('gr-weight').value), l = parseFloat(document.getElementById('gr-length').value), h = parseFloat(document.getElementById('gr-head').value);
   const d = document.getElementById('gr-date').value;
   if(!d || (!w && !l && !h)) return alert("Enter date and at least one metric.");
-  
   if (editIndex.type === 'weight' && editIndex.idx > -1) {
      data.weights[editIndex.idx] = { ...data.weights[editIndex.idx], date: d, weight: w||null, length: l||null, head: h||null };
   } else {
      data.weights.push({ id: now(), date: d, weight: w||null, length: l||null, head: h||null });
   }
-  
   data.weights.sort((a,b)=>new Date(b.date)-new Date(a.date));
   save(); document.querySelectorAll('#form-growth input[type="number"]').forEach(i=>i.value=''); closeLog(); updateUI();
   if(currView==='history') renderHistory();
@@ -930,7 +931,7 @@ function submitParent() {
   const w = document.getElementById('p-water').checked, s = document.getElementById('p-shower').checked;
   data.parent.unshift({ id: now(), timestamp: new Date().toISOString(), mood: state.parentMood, water: w, shower: s });
   save(); document.getElementById('p-water').checked=false; document.getElementById('p-shower').checked=false; closeLog();
-  if(state.parentMood === 'Struggling') setTimeout(()=>alert("The 4th trimester is incredibly hard. Please reach out to your partner, family, or doctor. You are doing a great job, and it's okay to ask for help."), 500);
+  if(state.parentMood === 'Struggling') setTimeout(()=>alert("The 4th trimester is incredibly hard. Please reach out to your partner, family, or doctor."), 500);
 }
 
 /* ═══════════════════════════════════════ HISTORY, EDIT & SWIPE ═══ */
@@ -938,7 +939,6 @@ function renderHistory() {
   const list = document.getElementById('history-list');
   const arr = data[currSeg + 's'] || []; 
   if(!arr.length) { list.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text3)">No entries.</div>`; return; }
-  
   list.innerHTML = arr.slice(0, 20).map((item, i) => {
     let icon, title, meta;
     if(currSeg === 'feed') { 
@@ -951,16 +951,11 @@ function renderHistory() {
     else if(currSeg === 'diaper') { icon = item.type==='Dirty'?'💩':item.type==='Both'?'💧💩':'💧'; title = item.type + ' Diaper'; meta = `${fmtDate(item.timestamp)} · ${fmtTime(item.timestamp)}`;}
     else if(currSeg === 'food') { icon = item.react==='Severe'?'🚨':item.react==='Mild'?'⚠️':'✅'; title = item.food; meta = `${fmtDate(item.timestamp)} · ${fmtTime(item.timestamp)}`;}
     else if(currSeg === 'weight') { icon = '📏'; title = `W: ${item.weight||'--'}kg | L: ${item.length||'--'}cm | H: ${item.head||'--'}cm`; meta = `${fmtDate(item.date)}`; }
-
     const editBtn = currSeg === 'weight' ? `<div class="swipe-action" style="background:var(--blue);" onclick="editEntry('${currSeg}', ${i})">Edit</div>` : '';
-
     return `
     <div class="swipe-container">
       <div class="swipe-content"><span class="log-icon">${icon}</span><div class="log-body"><div class="log-title">${title}</div><div class="log-meta">${meta}</div></div></div>
-      <div class="swipe-actions">
-        ${editBtn}
-        <div class="swipe-action" style="background:var(--red); border-radius: 0 16px 16px 0;" onclick="delEntry('${currSeg}', ${i})">Del</div>
-      </div>
+      <div class="swipe-actions"><div class="swipe-action" style="background:var(--red); border-radius: 0 16px 16px 0;" onclick="delEntry('${currSeg}', ${i})">Del</div></div>
     </div>`;
   }).join('');
 }
@@ -973,20 +968,17 @@ function editEntry(t, i) {
         document.getElementById('gr-length').value = item.length || '';
         document.getElementById('gr-head').value = item.head || '';
         document.getElementById('gr-date').value = item.date || '';
-        
         editIndex = { type: 'weight', idx: i };
         document.getElementById('gr-submit-btn').textContent = "Update Growth";
         openLog('growth');
     }
 }
-
 function delEntry(t, i) { vibrate(); if(confirm('Delete?')) { data[t+'s'].splice(i,1); save(); updateUI(); renderHistory(); } }
 
 /* ═══════════════════════════════════════ MILESTONES ═══ */
 function renderMilestones() {
   const container = document.getElementById('milestone-content');
   const ageMonths = getAgeDays() ? Math.floor(getAgeDays() / 30.4) : 0;
-  
   container.innerHTML = MILESTONES.map(ms => {
     const isPast = ageMonths >= ms.m;
     return `
@@ -1007,34 +999,25 @@ function renderCharts() {
   const slp = data.sleeps.filter(x=>new Date(x.timestamp).getTime()>h24).map(s=>({x:toHr(s.timestamp), y:3}));
   const dia = data.diapers.filter(x=>new Date(x.timestamp).getTime()>h24).map(d=>({x:toHr(d.timestamp), y:2}));
   const fds = data.feeds.filter(x=>new Date(x.timestamp).getTime()>h24).map(f=>({x:toHr(f.timestamp), y:1}));
-  
   const tc = document.documentElement.dataset.theme==='dark'?'#8b9ab5':'#5a6a85';
   charts.timeline = new Chart(ctxT, {
-    type: 'scatter',
-    data: { datasets: [{data:slp, backgroundColor:'#c084fc'}, {data:dia, backgroundColor:'#38bdf8'}, {data:fds, backgroundColor:'#34d399'}] },
+    type: 'scatter', data: { datasets: [{data:slp, backgroundColor:'#c084fc'}, {data:dia, backgroundColor:'#38bdf8'}, {data:fds, backgroundColor:'#34d399'}] },
     options: { responsive: true, maintainAspectRatio: false, plugins: { legend: {display:false} },
       scales: { x: {min:0, max:24, ticks:{color:tc, callback:v=>new Date(h24+(v*3600000)).getHours()+'h'}}, y: {min:0.5, max:3.5, ticks:{color:tc, callback:v=>v===1?'Feed':v===2?'Diaper':v===3?'Sleep':''}} }
     }
   });
   renderWeightChart();
 }
-
 function renderWeightChart() {
   const ctxW = document.getElementById('weight-chart').getContext('2d');
   if(charts.growth) charts.growth.destroy();
-  
   const sortedWeights = [...data.weights].sort((a,b)=>new Date(a.date)-new Date(b.date));
-  
   if(sortedWeights.length < 2) return;
   const metric = document.getElementById('growth-metric').value; 
   const pts = sortedWeights.filter(w => w[metric] !== null);
   if(!pts.length) return;
-
-  const lbls = pts.map(w => w.date.substring(5));
-  const vals = pts.map(w => w[metric]);
-
   charts.growth = new Chart(ctxW, {
-    type: 'line', data: { labels: lbls, datasets: [{ data: vals, borderColor: '#f472b6', tension: 0.4, pointBackgroundColor: '#db2777' }] },
+    type: 'line', data: { labels: pts.map(w => w.date.substring(5)), datasets: [{ data: pts.map(w => w[metric]), borderColor: '#f472b6', tension: 0.4, pointBackgroundColor: '#db2777' }] },
     options: { responsive: true, maintainAspectRatio: false, plugins: { legend: {display:false} } }
   });
 }
@@ -1073,12 +1056,9 @@ function pruneData() {
 
 /* ═══════════════════════════════════════ INIT ═══ */
 function init() { 
-    load(); 
-    document.documentElement.dataset.theme = data.theme; 
+    load(); document.documentElement.dataset.theme = data.theme; 
     data.weights.sort((a,b)=>new Date(b.date)-new Date(a.date)); 
-    updateUI(); 
-    loadLiveTimers(); 
-    setInterval(updateUI, 60000); 
+    updateUI(); loadLiveTimers(); setInterval(updateUI, 60000); 
 }
 init();
 </script>
