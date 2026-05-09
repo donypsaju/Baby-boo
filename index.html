@@ -108,12 +108,12 @@
   /* ── STAT GRID ── */
   .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
   .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 18px; }
-  .stat-num { font-size: 44px; font-weight: 900; line-height: 1; margin: 4px 0; }
+  .stat-num { font-size: 38px; font-weight: 900; line-height: 1; margin: 4px 0; }
   .stat-sub { font-size: 11px; color: var(--text3); font-weight: 600; }
   .stat-note { font-size: 11px; font-weight: 700; margin-top: 8px; }
 
   /* ── ACTION BUTTONS ── */
-  .action-btn { width: 100%; padding: 20px; border-radius: 18px; border: none; color: #fff; cursor: pointer; display: flex; align-items: center; gap: 14px; margin-bottom: 10px; text-align: left; font-family: 'Nunito', sans-serif; }
+  .action-btn { width: 100%; padding: 20px; border-radius: 18px; border: none; color: #fff; cursor: pointer; display: flex; align-items: center; gap: 14px; margin-bottom: 10px; text-align: left; font-family: 'Nunito', sans-serif; position: relative; }
   .action-btn .btn-emoji { font-size: 28px; flex-shrink: 0; }
   .action-btn .btn-text-main { display: block; font-size: 16px; font-weight: 800;}
   .action-btn .btn-text-sub { display: block; font-size: 12px; font-weight: 600; opacity: 0.8; }
@@ -121,30 +121,34 @@
   .btn-sleep { background: linear-gradient(135deg, #c084fc, #7e22ce); }
   .btn-diaper { background: linear-gradient(135deg, #38bdf8, #0ea5e9); }
   .btn-weight { background: linear-gradient(135deg, #f472b6, #db2777); }
+  
+  .predict-badge { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); background: var(--amber); color: #000; font-size: 10px; font-weight: 900; padding: 4px 8px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
 
-  /* ── LOG ITEMS ── */
-  .log-item { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 15px 18px; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; }
+  /* ── SWIPE LOG ITEMS ── */
+  .swipe-container { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; margin-bottom: 8px; border-radius: 16px; background: var(--red); }
+  .swipe-content { min-width: 100%; scroll-snap-align: start; background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 15px 18px; display: flex; align-items: center; gap: 12px; }
+  .swipe-action { min-width: 80px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 14px; scroll-snap-align: end; cursor: pointer; }
   .log-icon { font-size: 22px; }
   .log-body { flex: 1; }
   .log-title { font-size: 14px; font-weight: 800; }
   .log-meta { font-size: 11px; color: var(--text3); margin-top: 3px; font-weight: 600; }
-  .del-btn { background: rgba(248,113,113,0.12); border: none; border-radius: 10px; color: var(--red); width: 34px; height: 34px; cursor: pointer; font-size: 15px; }
+
+  .load-more-btn { width: 100%; padding: 14px; background: transparent; border: 1px dashed var(--border2); color: var(--text2); border-radius: 14px; font-weight: 800; margin-top: 10px; cursor: pointer; }
 
   /* ── ANALYTICS ── */
   .analytics-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 20px; margin-bottom: 14px; }
   .analytics-title { font-size: 15px; font-weight: 800; margin-bottom: 16px; }
   .chart-wrap { width: 100%; height: 220px; position: relative; }
-  .empty-chart-msg { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--text3); font-weight: 600; }
+  .empty-chart-msg { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--text3); font-weight: 600; text-align: center; padding: 20px;}
   .mini-stat-row { display: flex; gap: 10px; margin-bottom: 10px; }
   .mini-stat { flex: 1; background: var(--card2); border: 1px solid var(--border); border-radius: 14px; padding: 14px; text-align: center; }
-  .mini-stat-num { font-size: 28px; font-weight: 900; line-height: 1; }
+  .mini-stat-num { font-size: 24px; font-weight: 900; line-height: 1; }
   .mini-stat-label { font-size: 11px; color: var(--text3); font-weight: 700; margin-top: 4px; }
-  .alert-box { border-radius: 14px; padding: 14px; font-size: 13px; font-weight: 700; display: flex; gap: 10px; margin-top:10px; }
 
   /* ── MODALS ── */
   .modal-overlay { position: fixed; inset: 0; background: var(--overlay); z-index: 200; display: flex; align-items: flex-end; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
   .modal-overlay.open { opacity: 1; pointer-events: all; }
-  .modal-sheet { background: var(--card); border-radius: 28px 28px 0 0; padding: 12px 22px max(28px, env(safe-area-inset-bottom)); width: 100%; max-width: 480px; transform: translateY(100%); transition: transform 0.3s; }
+  .modal-sheet { background: var(--card); border-radius: 28px 28px 0 0; padding: 12px 22px max(28px, env(safe-area-inset-bottom)); width: 100%; max-width: 480px; transform: translateY(100%); transition: transform 0.3s; max-height: 90vh; overflow-y: auto; }
   .modal-overlay.open .modal-sheet { transform: translateY(0); }
   .modal-handle { width: 40px; height: 4px; background: var(--border2); border-radius: 2px; margin: 0 auto 22px; }
   .modal-center { align-items: center; padding: 20px; }
@@ -162,9 +166,13 @@
   
   .field-label { font-size: 13px; font-weight: 800; color: var(--text2); margin-bottom: 8px; display: block; }
   .field-input { width: 100%; padding: 15px 16px; border-radius: 14px; border: 1.5px solid var(--border2); background: var(--input); color: var(--text); font-size: 16px; font-family: 'Nunito', sans-serif; font-weight: 700; margin-bottom: 20px; outline: none; }
+  
   .submit-row { display: flex; gap: 10px; }
   .cancel-btn { padding: 16px 20px; border-radius: 16px; border: 1.5px solid var(--border2); background: transparent; color: var(--text2); font-size: 16px; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; }
   .submit-btn { flex: 1; padding: 16px; border-radius: 16px; border: none; color: #fff; font-size: 16px; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; }
+
+  .settings-group { border-top: 1px solid var(--border); margin-top: 20px; padding-top: 20px; }
+  .settings-row { display: flex; gap: 10px; margin-bottom: 10px; }
 
   .seg-tabs { display: flex; gap: 8px; margin-bottom: 18px; }
   .seg-tab { flex: 1; padding: 11px; border-radius: 14px; border: 1px solid var(--border); background: var(--card); color: var(--text2); font-size: 13px; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; }
@@ -221,6 +229,7 @@
       <button class="action-btn btn-feed" onclick="openLog('feed')">
         <span class="btn-emoji">🍼</span>
         <div><span class="btn-text-main">Log Feed</span><span class="btn-text-sub">Breastmilk, formula or solids</span></div>
+        <div id="feed-predict-badge" class="predict-badge" style="display:none">Due soon</div>
       </button>
       <button class="action-btn btn-sleep" onclick="openLog('sleep')">
         <span class="btn-emoji">💤</span>
@@ -238,12 +247,14 @@
 
     <!-- HISTORY VIEW -->
     <div id="view-history" style="display:none">
+      <div style="font-size:11px; text-align:center; color:var(--text3); margin-bottom: 10px;">Swipe items left to delete</div>
       <div class="seg-tabs">
         <button class="seg-tab active" id="seg-feed" onclick="switchSeg('feed')">🍼 Feed</button>
         <button class="seg-tab" id="seg-sleep" onclick="switchSeg('sleep')">💤 Sleep</button>
         <button class="seg-tab" id="seg-diaper" onclick="switchSeg('diaper')">💧 Diaper</button>
       </div>
       <div id="history-list"></div>
+      <button id="load-more-btn" class="load-more-btn" style="display:none" onclick="loadMoreHistory()">Load Older Entries</button>
     </div>
 
     <!-- ANALYTICS VIEW -->
@@ -258,15 +269,20 @@
       </div>
 
       <div class="analytics-card">
+        <div class="analytics-title">📅 7-Day Averages</div>
+        <div id="averages-summary"></div>
+      </div>
+
+      <div class="analytics-card">
         <div class="analytics-title">🍼 Feed Summary (24h)</div>
         <div id="feed-summary"></div>
       </div>
 
       <div class="analytics-card">
-        <div class="analytics-title">⚖️ Weight Progress</div>
+        <div class="analytics-title">⚖️ Weight Progress vs Standard</div>
         <div class="chart-wrap">
           <canvas id="weight-chart"></canvas>
-          <div id="weight-empty" class="empty-chart-msg" style="display:none">Log weight 2+ times to see chart</div>
+          <div id="weight-empty" class="empty-chart-msg" style="display:none">Log weight 2+ times to see growth curve comparison</div>
         </div>
       </div>
 
@@ -302,7 +318,7 @@
         <button class="choice-btn" data-val="Pumped" onclick="pickFeedType(this)"><span class="choice-emoji">🥛</span>Pumped</button>
       </div>
       
-      <!-- Side selector (Only for Breastmilk) -->
+      <!-- Side selector -->
       <div id="breast-side-row" style="display:block;">
         <label class="field-label">Side</label>
         <div class="choice-row" id="side-choice-row">
@@ -377,7 +393,17 @@
     <input class="field-input" id="profile-birth" type="date">
     <div class="submit-row">
       <button class="cancel-btn" onclick="closeProfile()">Cancel</button>
-      <button class="submit-btn" style="background:var(--accent)" onclick="saveProfile()">Save ✓</button>
+      <button class="submit-btn" style="background:var(--accent)" onclick="saveProfile()">Save Profile ✓</button>
+    </div>
+
+    <div class="settings-group">
+      <div style="font-size: 14px; font-weight: 800; margin-bottom: 15px;">Data & Backup</div>
+      <div class="settings-row">
+        <button class="choice-btn" onclick="exportData()">💾 Export Data</button>
+        <button class="choice-btn" onclick="document.getElementById('import-file').click()">📂 Import Data</button>
+        <input type="file" id="import-file" accept=".json" style="display:none" onchange="handleImport(event)">
+      </div>
+      <button class="choice-btn" style="width: 100%; border-color:rgba(248,113,113,0.3); color:var(--red);" onclick="pruneData()">🧹 Clear Data Older Than 6 Months</button>
     </div>
   </div>
 </div>
@@ -387,26 +413,36 @@
 const STORE = 'baby-tracker-v3';
 let data = {
   profile: { name: '', birthDate: '' },
-  feeds: [],
-  diapers: [],
-  weights: [],
-  sleeps: [],
-  theme: 'dark'
+  feeds: [], diapers: [], weights: [], sleeps: [],
+  theme: 'dark', explicitlySetTheme: false
 };
 
+let historyLimit = 15;
 let activeFeedStart = localStorage.getItem('activeFeedStart') || null;
 let feedTimerInterval = null;
-
 let activeSleepStart = localStorage.getItem('activeSleepStart') || null;
 let sleepTimerInterval = null;
+let timelineChart = null; let weightChart = null;
 
-let timelineChart = null;
-let weightChart = null;
-
-function load() { try { const raw = localStorage.getItem(STORE); if (raw) data = Object.assign(data, JSON.parse(raw)); } catch(e) {} }
+function load() { 
+  try { 
+    const raw = localStorage.getItem(STORE); 
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      data = Object.assign(data, parsed); 
+      // Handle theme logic for backward compatibility
+      if(!parsed.explicitlySetTheme && window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+         data.theme = 'light';
+      }
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+      data.theme = 'light';
+    }
+  } catch(e) {} 
+}
 function save() { try { localStorage.setItem(STORE, JSON.stringify(data)); } catch(e) {} }
 
 /* ═══════════════════════════════════════ UTILS ═══ */
+function vibrate() { if(navigator.vibrate) navigator.vibrate(50); }
 function minsSince(ts) { return Math.floor((Date.now() - new Date(ts).getTime()) / 60000); }
 function fmtDuration(mins) {
   if (mins < 1) return 'Just now';
@@ -424,6 +460,7 @@ function fmtDate(ts) {
 
 /* ═══════════════════════════════════════ TIMERS ═══ */
 function toggleFeedTimer() {
+  vibrate();
   const btn = document.getElementById('feed-timer-btn');
   const input = document.getElementById('feed-duration');
   if (!activeFeedStart) {
@@ -443,6 +480,7 @@ function toggleFeedTimer() {
 }
 
 function toggleSleepTimer() {
+  vibrate();
   const btn = document.getElementById('sleep-timer-btn');
   const input = document.getElementById('sleep-duration');
   if (!activeSleepStart) {
@@ -464,10 +502,7 @@ function toggleSleepTimer() {
 /* ═══════════════════════════════════════ DASHBOARD ═══ */
 function updateAgeDisplay() {
   const ageEl = document.getElementById('header-age');
-  if (!data.profile.birthDate) {
-    ageEl.textContent = 'Tap ⚙️ to add birth date';
-    return;
-  }
+  if (!data.profile.birthDate) { ageEl.textContent = 'Tap ⚙️ to add birth date'; return; }
   const diffTime = Math.abs(Date.now() - new Date(data.profile.birthDate).getTime());
   const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
   
@@ -478,14 +513,14 @@ function updateAgeDisplay() {
 }
 
 function updateDashboard() {
-  // Feed Timer Card
   const lastF = data.feeds[0];
   const tv = document.getElementById('timer-value');
   const tp = document.getElementById('timer-prog-track');
   const pf = document.getElementById('timer-prog-fill');
   const tl = document.getElementById('timer-last');
+  const badge = document.getElementById('feed-predict-badge');
   
-  if (!lastF) { tv.textContent = 'No feed'; tp.style.display = 'none'; tl.textContent = ''; } 
+  if (!lastF) { tv.textContent = 'No feed'; tp.style.display = 'none'; tl.textContent = ''; badge.style.display = 'none'; } 
   else {
     const m = minsSince(lastF.timestamp);
     tv.textContent = fmtDuration(m);
@@ -496,6 +531,26 @@ function updateDashboard() {
     
     let sideStr = lastF.side ? ` (${lastF.side})` : '';
     tl.textContent = `Last: ${lastF.type}${sideStr} at ${fmtTime(lastF.timestamp)}`;
+
+    // Predictive Feed UI
+    const h7d = Date.now() - (7 * 86400000);
+    const recentFeeds = data.feeds.filter(f => new Date(f.timestamp).getTime() > h7d);
+    let avgFeedGap = 180; // default 3h
+    if (recentFeeds.length > 5) {
+        let gaps = [];
+        for(let i=0; i<recentFeeds.length-1; i++) {
+           let gap = (new Date(recentFeeds[i].timestamp) - new Date(recentFeeds[i+1].timestamp))/60000;
+           if (gap > 45 && gap < 600) gaps.push(gap);
+        }
+        if (gaps.length) avgFeedGap = gaps.reduce((a,b)=>a+b,0)/gaps.length;
+    }
+    
+    if (m >= avgFeedGap - 30 && m <= avgFeedGap + 60) {
+        badge.style.display = 'block';
+        badge.textContent = m > avgFeedGap ? 'Past due' : 'Due soon';
+        badge.style.background = m > avgFeedGap ? 'var(--red)' : 'var(--amber)';
+        badge.style.color = m > avgFeedGap ? '#fff' : '#000';
+    } else { badge.style.display = 'none'; }
   }
 
   // Stat Grid
@@ -510,19 +565,21 @@ function updateDashboard() {
 /* ═══════════════════════════════════════ VIEWS & TABS ═══ */
 let currentView = 'dashboard';
 function switchView(v) {
+  vibrate();
   ['dashboard','history','analytics'].forEach(id => {
     document.getElementById('view-'+id).style.display = (id===v)?'block':'none';
     document.getElementById('nav-'+id).classList.toggle('active', id===v);
     document.getElementById('dot-'+id).style.visibility = (id===v)?'visible':'hidden';
   });
   currentView = v;
-  if(v==='history') renderHistory();
+  if(v==='history') { historyLimit = 15; renderHistory(); }
   if(v==='analytics') renderAnalytics();
 }
 
 let currentSeg = 'feed';
 function switchSeg(seg) {
-  currentSeg = seg;
+  vibrate();
+  currentSeg = seg; historyLimit = 15;
   ['feed','sleep','diaper'].forEach(s => document.getElementById('seg-'+s).classList.toggle('active', s===seg));
   renderHistory();
 }
@@ -531,13 +588,12 @@ function switchSeg(seg) {
 let feedType = 'Breastmilk', breastSide = 'Left', diaperType = 'Wet';
 
 function openLog(tab) {
+  vibrate();
   switchLogTab(tab);
   document.getElementById('log-modal').classList.add('open');
   if(tab==='weight') {
-    // Generate local timezone date string instead of UTC
     const today = new Date();
-    const localDate = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
-    document.getElementById('weight-date').value = localDate;
+    document.getElementById('weight-date').value = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
   }
 }
 function closeLog() { document.getElementById('log-modal').classList.remove('open'); }
@@ -551,36 +607,33 @@ function switchLogTab(tab) {
 }
 
 function pickFeedType(btn) {
-  feedType = btn.dataset.val;
+  vibrate(); feedType = btn.dataset.val;
   document.querySelectorAll('#feed-type-row .choice-btn').forEach(b => {
     const act = b===btn;
-    b.style.borderColor = act?'var(--green)':'var(--border2)';
-    b.style.color = act?'var(--green)':'var(--text2)';
+    b.style.borderColor = act?'var(--green)':'var(--border2)'; b.style.color = act?'var(--green)':'var(--text2)';
   });
-  // Show side only if Breastmilk
   document.getElementById('breast-side-row').style.display = (feedType === 'Breastmilk') ? 'block' : 'none';
 }
 
 function pickSide(btn) {
-  breastSide = btn.dataset.val;
+  vibrate(); breastSide = btn.dataset.val;
   document.querySelectorAll('#side-choice-row .choice-btn').forEach(b => {
     const act = b===btn;
-    b.style.borderColor = act?'var(--green)':'var(--border2)';
-    b.style.color = act?'var(--green)':'var(--text2)';
+    b.style.borderColor = act?'var(--green)':'var(--border2)'; b.style.color = act?'var(--green)':'var(--text2)';
   });
 }
 
 function pickDiaperType(btn) {
-  diaperType = btn.dataset.val;
+  vibrate(); diaperType = btn.dataset.val;
   document.querySelectorAll('#diaper-type-row .choice-btn').forEach(b => {
     const act = b===btn;
-    b.style.borderColor = act?'var(--blue)':'var(--border2)';
-    b.style.color = act?'var(--blue)':'var(--text2)';
+    b.style.borderColor = act?'var(--blue)':'var(--border2)'; b.style.color = act?'var(--blue)':'var(--text2)';
   });
 }
 
 /* ═══════════════════════════════════════ SUBMIT ═══ */
 function submitFeed() {
+  vibrate();
   const dur = parseInt(document.getElementById('feed-duration').value);
   if(activeFeedStart) { activeFeedStart=null; localStorage.removeItem('activeFeedStart'); clearInterval(feedTimerInterval); }
   data.feeds.unshift({ id: Date.now(), timestamp: new Date().toISOString(), type: feedType, side: (feedType==='Breastmilk'?breastSide:null), duration: dur||null });
@@ -588,6 +641,7 @@ function submitFeed() {
 }
 
 function submitSleep() {
+  vibrate();
   const dur = parseInt(document.getElementById('sleep-duration').value);
   const notes = document.getElementById('sleep-notes').value;
   if(activeSleepStart) { activeSleepStart=null; localStorage.removeItem('activeSleepStart'); clearInterval(sleepTimerInterval); }
@@ -596,30 +650,34 @@ function submitSleep() {
 }
 
 function submitDiaper() {
+  vibrate();
   data.diapers.unshift({ id: Date.now(), timestamp: new Date().toISOString(), condition: diaperType });
   save(); closeLog(); updateDashboard(); if(currentView==='history') renderHistory();
 }
 
 function submitWeight() {
+  vibrate();
   const w = parseFloat(document.getElementById('weight-value').value);
   const d = document.getElementById('weight-date').value;
-  if(!w || !d) {
-    alert("Please enter a valid weight and date.");
-    return;
-  }
+  if(!w || !d) { alert("Please enter a valid weight and date."); return; }
   data.weights.push({ id: Date.now(), date: d, weight: w });
   data.weights.sort((a,b)=>new Date(a.date)-new Date(b.date));
-  save(); 
-  document.getElementById('weight-value').value=''; 
-  closeLog();
+  save(); document.getElementById('weight-value').value=''; closeLog();
 }
 
-/* ═══════════════════════════════════════ HISTORY ═══ */
+/* ═══════════════════════════════════════ HISTORY (PAGINATED & SWIPE) ═══ */
 function renderHistory() {
   const list = document.getElementById('history-list');
-  const arr = data[currentSeg + 's'] || [];
+  const btn = document.getElementById('load-more-btn');
+  const fullArr = data[currentSeg + 's'] || [];
   
-  if(!arr.length) { list.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text3)">No entries yet.</div>`; return; }
+  if(!fullArr.length) { 
+    list.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text3)">No entries yet.</div>`; 
+    btn.style.display = 'none'; return; 
+  }
+
+  const arr = fullArr.slice(0, historyLimit);
+  btn.style.display = fullArr.length > historyLimit ? 'block' : 'none';
 
   list.innerHTML = arr.map((item, i) => {
     let icon, title, meta;
@@ -637,26 +695,59 @@ function renderHistory() {
       meta = `${fmtDate(item.timestamp)} · ${fmtTime(item.timestamp)}`;
     }
     
-    return `<div class="log-item">
-      <span class="log-icon">${icon}</span>
-      <div class="log-body">
-        <div class="log-title">${title}</div>
-        <div class="log-meta">${meta}</div>
+    // CSS-only Swipe-to-delete container
+    return `
+    <div class="swipe-container">
+      <div class="swipe-content">
+        <span class="log-icon">${icon}</span>
+        <div class="log-body">
+          <div class="log-title">${title}</div>
+          <div class="log-meta">${meta}</div>
+        </div>
       </div>
-      <button class="del-btn" onclick="deleteEntry('${currentSeg}', ${i})">🗑</button>
+      <div class="swipe-action" onclick="deleteEntry('${currentSeg}', ${i})">Delete</div>
     </div>`;
   }).join('');
 }
 
+function loadMoreHistory() { historyLimit += 15; renderHistory(); }
+
 function deleteEntry(type, idx) {
-  if(!confirm('Delete entry?')) return;
+  vibrate();
+  if(!confirm('Delete entry?')) { renderHistory(); return; } // re-render resets swipe position
   data[type+'s'].splice(idx, 1); save(); updateDashboard(); renderHistory();
 }
 
-/* ═══════════════════════════════════════ ANALYTICS (CHART.JS) ═══ */
+/* ═══════════════════════════════════════ ANALYTICS ═══ */
 function renderAnalytics() {
   renderTimelineChart();
   renderWeightChart();
+  renderAverages();
+}
+
+function renderAverages() {
+  const h7d = Date.now() - (7 * 86400000);
+  const recentFeeds = data.feeds.filter(x => new Date(x.timestamp).getTime() > h7d);
+  const recentSleeps = data.sleeps.filter(x => new Date(x.timestamp).getTime() > h7d);
+  
+  // Calculate active days in the last 7 days to avoid skewed averages
+  const firstDataPointTime = Math.min(
+    recentFeeds[recentFeeds.length-1]?.timestamp ? new Date(recentFeeds[recentFeeds.length-1].timestamp).getTime() : Date.now(),
+    recentSleeps[recentSleeps.length-1]?.timestamp ? new Date(recentSleeps[recentSleeps.length-1].timestamp).getTime() : Date.now()
+  );
+  let activeDays = Math.max(1, Math.ceil((Date.now() - firstDataPointTime) / 86400000));
+  activeDays = Math.min(activeDays, 7);
+
+  const avgFeeds = (recentFeeds.length / activeDays).toFixed(1);
+  const totalSleepMins = recentSleeps.reduce((acc, s) => acc + (s.duration||0), 0);
+  const avgSleepHrs = ((totalSleepMins / activeDays) / 60).toFixed(1);
+
+  document.getElementById('averages-summary').innerHTML = `
+    <div class="mini-stat-row">
+      <div class="mini-stat"><div class="mini-stat-num" style="color:var(--green)">${avgFeeds}</div><div class="mini-stat-label">Feeds / Day</div></div>
+      <div class="mini-stat"><div class="mini-stat-num" style="color:var(--purple)">${avgSleepHrs}h</div><div class="mini-stat-label">Sleep / Day</div></div>
+    </div>
+  `;
 }
 
 function renderTimelineChart() {
@@ -671,18 +762,13 @@ function renderTimelineChart() {
   const recentDiapers = filterRecent(data.diapers);
   const recentFeeds = filterRecent(data.feeds);
 
-  // Convert timestamp to a decimal hour (0-24) relative to 24h ago
   const toDecimalHour = (ts) => (new Date(ts).getTime() - h24) / 3600000;
-
   const sleepData = recentSleeps.map(s => ({ x: toDecimalHour(s.timestamp), y: 3 }));
   const diaperData = recentDiapers.map(d => ({ x: toDecimalHour(d.timestamp), y: 2 }));
   const feedData = recentFeeds.map(f => ({ x: toDecimalHour(f.timestamp), y: 1 }));
 
-  if (sleepData.length === 0 && diaperData.length === 0 && feedData.length === 0) {
-    emptyMsg.style.display = 'flex';
-  } else {
-    emptyMsg.style.display = 'none';
-  }
+  if (sleepData.length === 0 && diaperData.length === 0 && feedData.length === 0) emptyMsg.style.display = 'flex';
+  else emptyMsg.style.display = 'none';
 
   const isDark = document.documentElement.dataset.theme === 'dark';
   const gridColor = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
@@ -698,31 +784,14 @@ function renderTimelineChart() {
       ]
     },
     options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
+      responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
       scales: {
-        x: { 
-          min: 0, max: 24, grid: { color: gridColor },
-          ticks: { 
-            color: textColor, 
-            callback: (val) => {
-              // Convert the relative hour (val) back into local human-readable time
-              const d = new Date(h24 + (val * 3600000));
-              return d.toLocaleTimeString([], { hour: 'numeric' });
-            } 
-          } 
-        },
-        y: {
-          min: 0.5, max: 3.5, grid: { color: gridColor },
-          ticks: { color: textColor, callback: (val) => {
-            if(val===1) return 'Feed'; if(val===2) return 'Diaper'; if(val===3) return 'Sleep'; return '';
-          }}
-        }
+        x: { min: 0, max: 24, grid: { color: gridColor }, ticks: { color: textColor, callback: (val) => new Date(h24 + (val * 3600000)).toLocaleTimeString([], { hour: 'numeric' }) } },
+        y: { min: 0.5, max: 3.5, grid: { color: gridColor }, ticks: { color: textColor, callback: (val) => val===1?'Feed':val===2?'Diaper':val===3?'Sleep':'' } }
       }
     }
   });
 
-  // Simple Summary below chart
   const totalMins = recentFeeds.reduce((acc, f) => acc + (f.duration||0), 0);
   document.getElementById('feed-summary').innerHTML = `
     <div class="mini-stat-row">
@@ -737,24 +806,38 @@ function renderWeightChart() {
   const emptyMsg = document.getElementById('weight-empty');
   if(weightChart) weightChart.destroy();
   
-  if(data.weights.length < 2) {
-    emptyMsg.style.display = 'flex';
-    return;
-  }
-  
+  if(data.weights.length < 2) { emptyMsg.style.display = 'flex'; return; }
   emptyMsg.style.display = 'none';
-  const labels = data.weights.map(w => w.date.substring(5)); // Show MM-DD
+
+  const labels = data.weights.map(w => w.date.substring(5));
   const vals = data.weights.map(w => w.weight);
+
+  // Generate a rough WHO 50th percentile comparison line if birthdate exists
+  const datasets = [{ label: 'Baby Weight', data: vals, borderColor: '#f472b6', tension: 0.4, pointBackgroundColor: '#db2777' }];
+  
+  if (data.profile.birthDate) {
+      const birthTs = new Date(data.profile.birthDate).getTime();
+      // Rough 50th percentile array for first 12 months (kg)
+      const whoStandard = [3.3, 4.5, 5.6, 6.4, 7.0, 7.5, 7.9, 8.3, 8.6, 8.9, 9.2, 9.4, 9.6];
+      const standardVals = data.weights.map(w => {
+          const monthsOld = Math.floor((new Date(w.date).getTime() - birthTs) / (30.4 * 86400000));
+          return monthsOld >= 0 && monthsOld <= 12 ? whoStandard[monthsOld] : null;
+      });
+      if(standardVals.some(v => v !== null)) {
+          datasets.push({ label: 'WHO 50th %ile', data: standardVals, borderColor: 'rgba(139, 154, 181, 0.4)', borderDash: [5, 5], tension: 0.4, pointRadius: 0 });
+      }
+  }
 
   weightChart = new Chart(ctx, {
     type: 'line',
-    data: { labels, datasets: [{ data: vals, borderColor: '#f472b6', tension: 0.4, pointBackgroundColor: '#db2777' }] },
+    data: { labels, datasets },
     options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
   });
 }
 
-/* ═══════════════════════════════════════ SETTINGS ═══ */
+/* ═══════════════════════════════════════ SETTINGS & DATA ═══ */
 function openProfile() { 
+  vibrate();
   document.getElementById('profile-name').value = data.profile.name || '';
   document.getElementById('profile-birth').value = data.profile.birthDate || '';
   document.getElementById('profile-modal').classList.add('open'); 
@@ -762,20 +845,54 @@ function openProfile() {
 function closeProfile() { document.getElementById('profile-modal').classList.remove('open'); }
 function handleProfileOverlayClick(e) { if(e.target.id === 'profile-modal') closeProfile(); }
 function saveProfile() {
+  vibrate();
   data.profile.name = document.getElementById('profile-name').value;
   data.profile.birthDate = document.getElementById('profile-birth').value;
-  save(); 
-  closeProfile(); 
+  save(); closeProfile(); 
   document.getElementById('header-name').textContent = data.profile.name ? `🌙 ${data.profile.name}'s Tracker` : "🌙 Baby's Tracker";
   updateAgeDisplay();
 }
 
 function toggleTheme() {
+  vibrate();
   data.theme = data.theme === 'dark' ? 'light' : 'dark';
+  data.explicitlySetTheme = true;
   document.documentElement.dataset.theme = data.theme;
   document.getElementById('theme-btn').textContent = data.theme === 'dark' ? '☀️' : '🌙';
-  save(); 
-  if(currentView === 'analytics') renderAnalytics();
+  save(); if(currentView === 'analytics') renderAnalytics();
+}
+
+function exportData() {
+  const blob = new Blob([JSON.stringify(data)], {type: "application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `baby-tracker-backup-${new Date().toISOString().slice(0,10)}.json`;
+  a.click(); URL.revokeObjectURL(url);
+}
+
+function handleImport(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    try {
+      const imported = JSON.parse(event.target.result);
+      if (imported.profile && imported.feeds) {
+        data = imported; save(); alert('Data imported successfully!'); location.reload();
+      } else alert('Invalid backup file.');
+    } catch(err) { alert('Error reading file.'); }
+  };
+  reader.readAsText(file);
+}
+
+function pruneData() {
+  if(!confirm('Delete data older than 6 months? This cannot be undone.')) return;
+  const cutoff = Date.now() - (180 * 86400000);
+  data.feeds = data.feeds.filter(x => new Date(x.timestamp).getTime() > cutoff);
+  data.sleeps = data.sleeps.filter(x => new Date(x.timestamp).getTime() > cutoff);
+  data.diapers = data.diapers.filter(x => new Date(x.timestamp).getTime() > cutoff);
+  data.weights = data.weights.filter(x => new Date(x.date).getTime() > cutoff);
+  save(); alert('Old data pruned successfully.'); closeProfile();
 }
 
 /* ═══════════════════════════════════════ INIT ═══ */
@@ -787,20 +904,17 @@ function init() {
   updateAgeDisplay();
   updateDashboard();
   
-  // Resume timers
   if(activeFeedStart) {
     const btn = document.getElementById('feed-timer-btn');
     btn.style.color = 'var(--red)'; btn.style.borderColor = 'var(--red)';
     const tick = () => { btn.innerHTML = `⏹ Stop (${Math.floor((Date.now()-parseInt(activeFeedStart))/60000)}m)`; };
-    tick(); // Call immediately
-    feedTimerInterval = setInterval(tick, 60000);
+    tick(); feedTimerInterval = setInterval(tick, 60000);
   }
   if(activeSleepStart) {
     const btn = document.getElementById('sleep-timer-btn');
     btn.style.color = 'var(--red)'; btn.style.borderColor = 'var(--red)';
     const tick = () => { btn.innerHTML = `⏹ Wake Up (${fmtDuration(Math.floor((Date.now()-parseInt(activeSleepStart))/60000))})`; };
-    tick(); // Call immediately
-    sleepTimerInterval = setInterval(tick, 60000);
+    tick(); sleepTimerInterval = setInterval(tick, 60000);
   }
   setInterval(updateDashboard, 60000);
 }
