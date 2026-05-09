@@ -82,9 +82,10 @@
   .ms-item { background: var(--card2); border: 1px solid var(--border); border-radius: 14px; padding: 14px 16px; margin-bottom: 8px; font-size: 14px; font-weight: 700; color: var(--text2); display: flex; gap: 12px; }
 
   /* ── LOG ITEMS (SWIPE) ── */
-  .swipe-container { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; margin-bottom: 8px; border-radius: 16px; background: var(--red); }
-  .swipe-content { min-width: 100%; scroll-snap-align: start; background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 15px; display: flex; align-items: center; gap: 12px; }
-  .swipe-action { min-width: 80px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 14px; scroll-snap-align: end; cursor: pointer; }
+  .swipe-container { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; margin-bottom: 8px; border-radius: 16px; background: var(--card2); }
+  .swipe-content { min-width: 100%; scroll-snap-align: start; background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 15px; display: flex; align-items: center; gap: 12px; z-index: 2; }
+  .swipe-actions { min-width: 140px; display: flex; scroll-snap-align: end; }
+  .swipe-action { flex: 1; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 13px; cursor: pointer; }
   .log-icon { font-size: 22px; }
   .log-body { flex: 1; }
   .log-title { font-size: 14px; font-weight: 800; }
@@ -112,8 +113,17 @@
   .cancel-btn { padding: 16px; border-radius: 16px; border: 1.5px solid var(--border2); background: transparent; color: var(--text2); font-size: 16px; font-weight: 800; cursor: pointer; flex-shrink: 0;}
   .submit-btn { flex: 1; padding: 16px; border-radius: 16px; border: none; color: #fff; font-size: 16px; font-weight: 800; cursor: pointer; }
 
+  /* ── LIVE TIMERS ── */
+  .live-timer-container { background: var(--card2); border: 1px solid var(--border); border-radius: 16px; padding: 20px 16px; margin-bottom: 20px; text-align: center; }
+  .timer-display { font-size: 42px; font-weight: 900; font-variant-numeric: tabular-nums; margin-bottom: 16px; line-height: 1; letter-spacing: -1px;}
+  .timer-controls { display: flex; gap: 8px; justify-content: center; }
+  .timer-controls button { flex: 1; padding: 12px 8px; border-radius: 12px; border: none; font-weight: 800; cursor: pointer; font-size: 13px; display:flex; align-items:center; justify-content:center; gap:6px; }
+  .btn-pause { background: rgba(251, 191, 36, 0.15); color: var(--amber); }
+  .btn-stop { background: rgba(248, 113, 113, 0.15); color: var(--red); }
+  .btn-restart { background: var(--card); color: var(--text2); border: 1px solid var(--border2) !important; }
+
   .seg-tabs { display: flex; gap: 8px; margin-bottom: 18px; overflow-x: auto; padding-bottom:4px; }
-  .seg-tab { flex: 1; min-width: 80px; padding: 11px; border-radius: 14px; border: 1px solid var(--border); background: var(--card); color: var(--text2); font-size: 13px; font-weight: 800; cursor: pointer; text-align: center; }
+  .seg-tab { flex: 1; min-width: 70px; padding: 11px; border-radius: 14px; border: 1px solid var(--border); background: var(--card); color: var(--text2); font-size: 13px; font-weight: 800; cursor: pointer; text-align: center; }
   .seg-tab.active { background: linear-gradient(135deg, var(--accent), var(--blue)); color: #fff; }
   
   .chart-wrap { width: 100%; height: 240px; position: relative; margin-top: 10px; }
@@ -195,11 +205,13 @@
 
     <!-- HISTORY VIEW -->
     <div id="view-history" style="display:none">
+      <p style="font-size: 11px; color: var(--text3); text-align: center; margin-bottom: 12px;">Swipe items left to edit or delete</p>
       <div class="seg-tabs">
         <button class="seg-tab active" id="seg-feed" onclick="switchSeg('feed')">🍼 Feed</button>
         <button class="seg-tab" id="seg-sleep" onclick="switchSeg('sleep')">💤 Sleep</button>
         <button class="seg-tab" id="seg-diaper" onclick="switchSeg('diaper')">💧 Diaper</button>
         <button class="seg-tab" id="seg-food" onclick="switchSeg('food')">🥑 Food</button>
+        <button class="seg-tab" id="seg-weight" onclick="switchSeg('weight')">📏 Growth</button>
       </div>
       <div id="history-list"></div>
     </div>
@@ -270,20 +282,45 @@
         <p style="font-size:11px; color:var(--text3); margin-top:-10px; margin-bottom:20px;">Pumping adds to stash. Bottle feeding pumped milk subtracts.</p>
       </div>
 
-      <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-        <button id="feed-timer-btn" class="choice-btn" onclick="toggleFeedTimer()" style="flex: 1; background: rgba(52,211,153,0.1); color: var(--green); border-color: var(--green);">⏱ Start Timer</button>
+      <label class="field-label">Duration (minutes)</label>
+      
+      <!-- Feed Live Timer Block -->
+      <div class="live-timer-container" id="feed-live-timer" style="display:none;">
+          <div class="timer-display" id="feed-timer-display">00:00</div>
+          <div class="timer-controls">
+              <button class="btn-pause" id="feed-pause-btn" type="button" onclick="pauseLiveTimer('feed')">⏸ Pause</button>
+              <button class="btn-stop" type="button" onclick="stopLiveTimer('feed')">⏹ Stop</button>
+              <button class="btn-restart" type="button" onclick="restartLiveTimer('feed')">🔄 Restart</button>
+          </div>
+      </div>
+
+      <div id="feed-timer-btn-wrap" style="display: flex; gap: 10px; margin-bottom: 20px;">
+        <button class="choice-btn" type="button" onclick="startLiveTimer('feed')" style="flex: 1; background: rgba(52,211,153,0.1); color: var(--green); border-color: var(--green);">⏱ Start Timer</button>
         <input class="field-input" id="feed-dur" type="number" placeholder="Mins" style="margin-bottom: 0; flex: 1;">
       </div>
+
       <div class="submit-row"><button class="cancel-btn" onclick="closeLog()">✕</button><button class="submit-btn" style="background:var(--green)" onclick="submitFeed()">Save Feed</button></div>
     </div>
 
     <!-- SLEEP FORM -->
     <div id="form-sleep" class="log-form" style="display:none">
       <label class="field-label">Sleep (minutes)</label>
-      <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-        <button id="sleep-timer-btn" class="choice-btn" onclick="toggleSleepTimer()" style="flex: 1; background: rgba(192,132,252,0.1); color: var(--purple); border-color: var(--purple);">⏱ Sleep</button>
+
+      <!-- Sleep Live Timer Block -->
+      <div class="live-timer-container" id="sleep-live-timer" style="display:none;">
+          <div class="timer-display" id="sleep-timer-display">00:00</div>
+          <div class="timer-controls">
+              <button class="btn-pause" id="sleep-pause-btn" type="button" onclick="pauseLiveTimer('sleep')">⏸ Pause</button>
+              <button class="btn-stop" type="button" onclick="stopLiveTimer('sleep')">⏹ Wake Up</button>
+              <button class="btn-restart" type="button" onclick="restartLiveTimer('sleep')">🔄 Restart</button>
+          </div>
+      </div>
+
+      <div id="sleep-timer-btn-wrap" style="display: flex; gap: 10px; margin-bottom: 20px;">
+        <button class="choice-btn" type="button" onclick="startLiveTimer('sleep')" style="flex: 1; background: rgba(192,132,252,0.1); color: var(--purple); border-color: var(--purple);">⏱ Start Sleep</button>
         <input class="field-input" id="sleep-dur" type="number" placeholder="Mins" style="margin-bottom: 0; flex: 1;">
       </div>
+
       <div class="submit-row"><button class="cancel-btn" onclick="closeLog()">✕</button><button class="submit-btn" style="background:var(--purple)" onclick="submitSleep()">Save Sleep</button></div>
     </div>
 
@@ -306,7 +343,7 @@
         <div><label class="field-label">Head (cm)</label><input class="field-input" id="gr-head" type="number" step="0.1"></div>
         <div><label class="field-label">Date</label><input class="field-input" id="gr-date" type="date"></div>
       </div>
-      <div class="submit-row"><button class="cancel-btn" onclick="closeLog()">✕</button><button class="submit-btn" style="background:var(--pink)" onclick="submitGrowth()">Save Growth</button></div>
+      <div class="submit-row"><button class="cancel-btn" onclick="closeLog()">✕</button><button class="submit-btn" id="gr-submit-btn" style="background:var(--pink)" onclick="submitGrowth()">Save Growth</button></div>
     </div>
 
     <!-- MEDS FORM -->
@@ -402,7 +439,13 @@ const MILESTONES = [
 ];
 
 let state = { feedType: 'Nursing', diaperType: 'Wet', medType: 'Acetaminophen', foodReact: 'None', parentMood: 'Great' };
-let timers = { feed: null, sleep: null, med: null };
+let editIndex = { type: null, idx: -1 }; // Used for editing existing logs
+
+let liveTimers = {
+  feed: { start: 0, elapsed: 0, running: false, interval: null },
+  sleep: { start: 0, elapsed: 0, running: false, interval: null }
+};
+
 let charts = { timeline: null, growth: null };
 
 function load() { 
@@ -499,7 +542,7 @@ function switchView(v) {
 }
 function switchSeg(seg) {
   vibrate(); currSeg = seg;
-  ['feed','sleep','diaper','food'].forEach(s => document.getElementById('seg-'+s).classList.toggle('active', s===seg));
+  ['feed','sleep','diaper','food','weight'].forEach(s => document.getElementById('seg-'+s).classList.toggle('active', s===seg));
   renderHistory();
 }
 
@@ -507,9 +550,16 @@ function switchSeg(seg) {
 function openLog(tab) {
   vibrate(); switchLogTab(tab);
   document.getElementById('log-modal').classList.add('open');
-  if(tab==='growth') document.getElementById('gr-date').value = new Date().getFullYear() + '-' + String(new Date().getMonth() + 1).padStart(2, '0') + '-' + String(new Date().getDate()).padStart(2, '0');
+  if(tab==='growth' && editIndex.idx === -1) {
+    document.getElementById('gr-date').value = new Date().getFullYear() + '-' + String(new Date().getMonth() + 1).padStart(2, '0') + '-' + String(new Date().getDate()).padStart(2, '0');
+    document.getElementById('gr-submit-btn').textContent = "Save Growth";
+  }
 }
-function closeLog() { document.getElementById('log-modal').classList.remove('open'); }
+function closeLog() { 
+    document.getElementById('log-modal').classList.remove('open'); 
+    editIndex = { type: null, idx: -1 }; // reset edit context
+    document.getElementById('gr-submit-btn').textContent = "Save Growth";
+}
 function switchLogTab(tab) {
   document.querySelectorAll('#log-tabs .type-tab').forEach(el => el.classList.remove('active'));
   document.getElementById('tab-'+tab).classList.add('active');
@@ -527,50 +577,129 @@ function pickOpt(btn, stateKey) {
   if(stateKey === 'feedType') document.getElementById('feed-vol-wrap').style.display = (state.feedType==='Bottle'||state.feedType==='Pump')?'block':'none';
 }
 
-/* ═══════════════════════════════════════ TIMERS ═══ */
-function initTimers() {
-  const fStart = localStorage.getItem('tf'), sStart = localStorage.getItem('ts');
-  if(fStart) timers.feed = setInterval(() => { document.getElementById('feed-timer-btn').innerHTML = `⏹ (${minsSince(parseInt(fStart))}m)`; }, 60000);
-  if(sStart) timers.sleep = setInterval(() => { document.getElementById('sleep-timer-btn').innerHTML = `⏹ (${minsSince(parseInt(sStart))}m)`; }, 60000);
+/* ═══════════════════════════════════════ ADVANCED LIVE TIMERS ═══ */
+function loadLiveTimers() {
+    try {
+        let saved = localStorage.getItem('bt_liveTimers');
+        if (saved) {
+            let parsed = JSON.parse(saved);
+            ['feed', 'sleep'].forEach(type => {
+                liveTimers[type] = parsed[type];
+                if(liveTimers[type].running) startTimerLoop(type);
+                else if(liveTimers[type].elapsed > 0) renderTimerUI(type);
+            });
+        }
+    } catch(e){}
 }
-function toggleFeedTimer() {
-  vibrate(); let fStart = localStorage.getItem('tf');
-  if (!fStart) {
-    localStorage.setItem('tf', now());
-    document.getElementById('feed-timer-btn').innerHTML = '⏹ (0m)';
-    timers.feed = setInterval(() => { document.getElementById('feed-timer-btn').innerHTML = `⏹ (${minsSince(parseInt(localStorage.getItem('tf')))}m)`; }, 60000);
-  } else {
-    document.getElementById('feed-dur').value = minsSince(parseInt(fStart));
-    localStorage.removeItem('tf'); clearInterval(timers.feed);
-    document.getElementById('feed-timer-btn').innerHTML = '⏱ Timer';
-  }
+function saveLiveTimers() { localStorage.setItem('bt_liveTimers', JSON.stringify(liveTimers)); }
+
+function startLiveTimer(type) {
+    vibrate();
+    document.getElementById(type+'-timer-btn-wrap').style.display = 'none';
+    document.getElementById(type+'-live-timer').style.display = 'block';
+    if (!liveTimers[type].running && liveTimers[type].elapsed === 0) {
+        liveTimers[type].start = now();
+        liveTimers[type].running = true;
+        startTimerLoop(type);
+        saveLiveTimers();
+    }
 }
-function toggleSleepTimer() {
-  vibrate(); let sStart = localStorage.getItem('ts');
-  if (!sStart) {
-    localStorage.setItem('ts', now());
-    document.getElementById('sleep-timer-btn').innerHTML = '⏹ (0m)';
-    timers.sleep = setInterval(() => { document.getElementById('sleep-timer-btn').innerHTML = `⏹ (${minsSince(parseInt(localStorage.getItem('ts')))}m)`; }, 60000);
-  } else {
-    document.getElementById('sleep-dur').value = minsSince(parseInt(sStart));
-    localStorage.removeItem('ts'); clearInterval(timers.sleep);
-    document.getElementById('sleep-timer-btn').innerHTML = '⏱ Sleep';
-  }
+
+function pauseLiveTimer(type) {
+    vibrate();
+    let t = liveTimers[type];
+    if (t.running) {
+        t.elapsed += (now() - t.start);
+        t.running = false;
+        clearInterval(t.interval);
+        renderTimerUI(type);
+        document.getElementById(type+'-pause-btn').innerHTML = '▶️ Resume';
+    } else {
+        t.start = now();
+        t.running = true;
+        startTimerLoop(type);
+        document.getElementById(type+'-pause-btn').innerHTML = '⏸ Pause';
+    }
+    saveLiveTimers();
+}
+
+function stopLiveTimer(type) {
+    vibrate();
+    let t = liveTimers[type];
+    if (t.running) { t.elapsed += (now() - t.start); t.running = false; clearInterval(t.interval); }
+    
+    let totalMins = Math.floor(t.elapsed / 60000);
+    document.getElementById(type+'-dur').value = Math.max(1, totalMins); 
+    
+    t.elapsed = 0; saveLiveTimers(); renderTimerUI(type);
+    document.getElementById(type+'-live-timer').style.display = 'none';
+    document.getElementById(type+'-timer-btn-wrap').style.display = 'flex';
+}
+
+function restartLiveTimer(type) {
+    vibrate();
+    if(confirm('Restart timer?')) {
+        let t = liveTimers[type];
+        t.start = now(); t.elapsed = 0; t.running = true;
+        clearInterval(t.interval); startTimerLoop(type); saveLiveTimers();
+        document.getElementById(type+'-pause-btn').innerHTML = '⏸ Pause';
+    }
+}
+
+function startTimerLoop(type) {
+    clearInterval(liveTimers[type].interval);
+    liveTimers[type].interval = setInterval(() => renderTimerUI(type), 1000);
+    renderTimerUI(type);
+    document.getElementById(type+'-live-timer').style.display = 'block';
+    document.getElementById(type+'-timer-btn-wrap').style.display = 'none';
+    document.getElementById(type+'-pause-btn').innerHTML = '⏸ Pause';
+}
+
+function renderTimerUI(type) {
+    let t = liveTimers[type];
+    let totalMs = t.elapsed;
+    if (t.running) totalMs += (now() - t.start);
+    
+    let secs = Math.floor(totalMs / 1000) % 60;
+    let mins = Math.floor(totalMs / 60000) % 60;
+    let hrs = Math.floor(totalMs / 3600000);
+    
+    let str = hrs > 0 ? 
+        `${hrs}:${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}` :
+        `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
+        
+    document.getElementById(type+'-timer-display').textContent = str;
+}
+
+// Auto-Capture active timer if user clicks save without stopping it first
+function getFinalDuration(type) {
+    let t = liveTimers[type];
+    let durInput = document.getElementById(type+'-dur').value;
+    if (durInput) return parseInt(durInput); 
+    
+    if (t.running || t.elapsed > 0) {
+        if (t.running) { t.elapsed += (now() - t.start); }
+        let totalMins = Math.max(1, Math.floor(t.elapsed / 60000));
+        
+        t.running = false; t.elapsed = 0; clearInterval(t.interval); saveLiveTimers();
+        document.getElementById(type+'-live-timer').style.display = 'none';
+        document.getElementById(type+'-timer-btn-wrap').style.display = 'flex';
+        return totalMins;
+    }
+    return null;
 }
 
 /* ═══════════════════════════════════════ SUBMIT ACTIONS ═══ */
 function submitFeed() {
-  const dur = parseInt(document.getElementById('feed-dur').value);
+  const dur = getFinalDuration('feed');
   const vol = parseFloat(document.getElementById('feed-vol').value);
-  if(localStorage.getItem('tf')) toggleFeedTimer(); // stop if running
   if (state.feedType === 'Pump' && vol) data.stash += vol;
   if (state.feedType === 'Bottle' && vol) data.stash = Math.max(0, data.stash - vol);
   data.feeds.unshift({ id: now(), timestamp: new Date().toISOString(), type: state.feedType, dur: dur||null, vol: vol||null });
   save(); document.getElementById('feed-dur').value=''; document.getElementById('feed-vol').value=''; closeLog(); updateUI();
 }
 function submitSleep() {
-  const dur = parseInt(document.getElementById('sleep-dur').value);
-  if(localStorage.getItem('ts')) toggleSleepTimer();
+  const dur = getFinalDuration('sleep');
   data.sleeps.unshift({ id: now(), timestamp: new Date().toISOString(), dur: dur||0 });
   save(); document.getElementById('sleep-dur').value=''; closeLog(); updateUI();
 }
@@ -582,9 +711,16 @@ function submitGrowth() {
   const w = parseFloat(document.getElementById('gr-weight').value), l = parseFloat(document.getElementById('gr-length').value), h = parseFloat(document.getElementById('gr-head').value);
   const d = document.getElementById('gr-date').value;
   if(!d || (!w && !l && !h)) return alert("Enter date and at least one metric.");
-  data.weights.push({ id: now(), date: d, weight: w||null, length: l||null, head: h||null });
-  data.weights.sort((a,b)=>new Date(a.date)-new Date(b.date));
-  save(); document.querySelectorAll('#form-growth input[type="number"]').forEach(i=>i.value=''); closeLog();
+  
+  if (editIndex.type === 'weight' && editIndex.idx > -1) {
+     data.weights[editIndex.idx] = { ...data.weights[editIndex.idx], date: d, weight: w||null, length: l||null, head: h||null };
+  } else {
+     data.weights.push({ id: now(), date: d, weight: w||null, length: l||null, head: h||null });
+  }
+  
+  data.weights.sort((a,b)=>new Date(b.date)-new Date(a.date)); // Sort newest first for history view
+  save(); document.querySelectorAll('#form-growth input[type="number"]').forEach(i=>i.value=''); closeLog(); updateUI();
+  if(currView==='history') renderHistory();
 }
 function submitMed() {
   const note = document.getElementById('med-note').value;
@@ -604,26 +740,49 @@ function submitParent() {
   if(state.parentMood === 'Struggling') setTimeout(()=>alert("The 4th trimester is incredibly hard. Please reach out to your partner, family, or doctor. You are doing a great job, and it's okay to ask for help."), 500);
 }
 
-/* ═══════════════════════════════════════ HISTORY & SWIPE ═══ */
+/* ═══════════════════════════════════════ HISTORY, EDIT & SWIPE ═══ */
 function renderHistory() {
   const list = document.getElementById('history-list');
-  const arr = data[currSeg + 's'] || [];
+  const arr = data[currSeg + 's'] || []; // maps to data.weights if currSeg is 'weight'
   if(!arr.length) { list.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text3)">No entries.</div>`; return; }
   
   list.innerHTML = arr.slice(0, 20).map((item, i) => {
     let icon, title, meta;
-    if(currSeg === 'feed') { icon = item.type==='Nursing'?'🤱':item.type==='Pump'?'🥛':'🍼'; title = item.type + (item.vol?` · ${item.vol}oz`:'') + (item.dur?` · ${item.dur}m`:''); }
-    else if(currSeg === 'sleep') { icon = '💤'; title = `Sleep · ${fmtDur(item.dur)}`; }
-    else if(currSeg === 'diaper') { icon = item.type==='Dirty'?'💩':item.type==='Both'?'💧💩':'💧'; title = item.type + ' Diaper'; }
-    else if(currSeg === 'food') { icon = item.react==='Severe'?'🚨':item.react==='Mild'?'⚠️':'✅'; title = item.food; }
-    meta = `${fmtDate(item.timestamp)} · ${fmtTime(item.timestamp)}`;
+    if(currSeg === 'feed') { icon = item.type==='Nursing'?'🤱':item.type==='Pump'?'🥛':'🍼'; title = item.type + (item.vol?` · ${item.vol}oz`:'') + (item.dur?` · ${item.dur}m`:''); meta = `${fmtDate(item.timestamp)} · ${fmtTime(item.timestamp)}`;}
+    else if(currSeg === 'sleep') { icon = '💤'; title = `Sleep · ${fmtDur(item.dur)}`; meta = `${fmtDate(item.timestamp)} · ${fmtTime(item.timestamp)}`;}
+    else if(currSeg === 'diaper') { icon = item.type==='Dirty'?'💩':item.type==='Both'?'💧💩':'💧'; title = item.type + ' Diaper'; meta = `${fmtDate(item.timestamp)} · ${fmtTime(item.timestamp)}`;}
+    else if(currSeg === 'food') { icon = item.react==='Severe'?'🚨':item.react==='Mild'?'⚠️':'✅'; title = item.food; meta = `${fmtDate(item.timestamp)} · ${fmtTime(item.timestamp)}`;}
+    else if(currSeg === 'weight') { icon = '📏'; title = `W: ${item.weight||'--'}kg | L: ${item.length||'--'}cm | H: ${item.head||'--'}cm`; meta = `${fmtDate(item.date)}`; }
+
+    // Conditional Edit Button
+    const editBtn = currSeg === 'weight' ? `<div class="swipe-action" style="background:var(--blue);" onclick="editEntry('${currSeg}', ${i})">Edit</div>` : '';
+
     return `
     <div class="swipe-container">
       <div class="swipe-content"><span class="log-icon">${icon}</span><div class="log-body"><div class="log-title">${title}</div><div class="log-meta">${meta}</div></div></div>
-      <div class="swipe-action" onclick="delEntry('${currSeg}', ${i})">Delete</div>
+      <div class="swipe-actions">
+        ${editBtn}
+        <div class="swipe-action" style="background:var(--red); border-radius: 0 16px 16px 0;" onclick="delEntry('${currSeg}', ${i})">Del</div>
+      </div>
     </div>`;
   }).join('');
 }
+
+function editEntry(t, i) {
+    vibrate();
+    if(t === 'weight') {
+        const item = data.weights[i];
+        document.getElementById('gr-weight').value = item.weight || '';
+        document.getElementById('gr-length').value = item.length || '';
+        document.getElementById('gr-head').value = item.head || '';
+        document.getElementById('gr-date').value = item.date || '';
+        
+        editIndex = { type: 'weight', idx: i };
+        document.getElementById('gr-submit-btn').textContent = "Update Growth";
+        openLog('growth');
+    }
+}
+
 function delEntry(t, i) { vibrate(); if(confirm('Delete?')) { data[t+'s'].splice(i,1); save(); updateUI(); renderHistory(); } }
 
 /* ═══════════════════════════════════════ MILESTONES ═══ */
@@ -644,7 +803,6 @@ function renderMilestones() {
 
 /* ═══════════════════════════════════════ CHARTS ═══ */
 function renderCharts() {
-  // Timeline (24h)
   const ctxT = document.getElementById('timeline-chart').getContext('2d');
   if(charts.timeline) charts.timeline.destroy();
   const h24 = now() - 86400000;
@@ -667,10 +825,13 @@ function renderCharts() {
 function renderWeightChart() {
   const ctxW = document.getElementById('weight-chart').getContext('2d');
   if(charts.growth) charts.growth.destroy();
-  if(data.weights.length < 2) return;
   
-  const metric = document.getElementById('growth-metric').value; // weight, length, head
-  const pts = data.weights.filter(w => w[metric] !== null);
+  // Sort weights ascending just for the chart
+  const sortedWeights = [...data.weights].sort((a,b)=>new Date(a.date)-new Date(b.date));
+  
+  if(sortedWeights.length < 2) return;
+  const metric = document.getElementById('growth-metric').value; 
+  const pts = sortedWeights.filter(w => w[metric] !== null);
   if(!pts.length) return;
 
   const lbls = pts.map(w => w.date.substring(5));
@@ -715,7 +876,14 @@ function pruneData() {
 }
 
 /* ═══════════════════════════════════════ INIT ═══ */
-function init() { load(); document.documentElement.dataset.theme = data.theme; updateUI(); initTimers(); setInterval(updateUI, 60000); }
+function init() { 
+    load(); 
+    document.documentElement.dataset.theme = data.theme; 
+    data.weights.sort((a,b)=>new Date(b.date)-new Date(a.date)); // Ensure newest first on load
+    updateUI(); 
+    loadLiveTimers(); 
+    setInterval(updateUI, 60000); 
+}
 init();
 </script>
 </body>
