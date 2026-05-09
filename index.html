@@ -51,7 +51,6 @@
   .card { background: var(--card); border: 1px solid var(--border); border-radius: 22px; padding: 22px; margin-bottom: 14px; position: relative; }
   .card-label { font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--text3); margin-bottom: 6px; }
   
-  .alert-banner { background: rgba(251, 191, 36, 0.1); border: 1px solid var(--amber); color: var(--amber); border-radius: 16px; padding: 12px 16px; font-size: 13px; font-weight: 800; display: flex; gap: 10px; align-items: center; margin-bottom: 14px; }
   .daily-check { display: flex; align-items: center; justify-content: space-between; background: var(--card2); padding: 14px; border-radius: 14px; border: 1px solid var(--border); margin-bottom: 14px; cursor: pointer; }
   .daily-check-text { font-size: 14px; font-weight: 800; }
   .checkbox { width: 24px; height: 24px; border-radius: 8px; border: 2px solid var(--border2); display: flex; align-items: center; justify-content: center; font-size: 14px; transition: 0.2s; }
@@ -76,10 +75,11 @@
   .btn-food { background: linear-gradient(135deg, #a3e635, #65a30d); color: #000; }
   .btn-parent { background: linear-gradient(135deg, #a78bfa, #6366f1); grid-column: span 2; flex-direction: row; align-items: center; padding: 20px; }
   
-  /* ── MILESTONES ── */
+  /* ── MILESTONES & VACCINES ── */
   .ms-group { margin-bottom: 24px; }
   .ms-title { font-size: 16px; font-weight: 900; color: var(--text); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
   .ms-item { background: var(--card2); border: 1px solid var(--border); border-radius: 14px; padding: 14px 16px; margin-bottom: 8px; font-size: 14px; font-weight: 700; color: var(--text2); display: flex; gap: 12px; }
+  .vax-list-item { background: var(--input); border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;}
 
   /* ── LOG ITEMS (SWIPE) ── */
   .swipe-container { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; margin-bottom: 8px; border-radius: 16px; background: var(--card2); }
@@ -148,7 +148,24 @@
     <!-- DASHBOARD VIEW -->
     <div id="view-dashboard">
       
-      <div id="vaccine-alert" class="alert-banner" style="display:none"></div>
+      <!-- VACCINATION CARD -->
+      <div class="card" id="vaccine-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <p class="card-label" style="margin:0; color:var(--blue);">Next Vaccination</p>
+          <button class="icon-btn" style="width:30px; height:30px; font-size:14px; background:var(--card2)" onclick="openVaxManage()">⚙️</button>
+        </div>
+        <div id="vax-info">
+          <div id="vax-next-title" style="font-size: 18px; font-weight: 800; line-height: 1.2; margin-bottom: 4px;">—</div>
+          <div id="vax-next-desc" style="font-size: 12px; color: var(--text3); margin-bottom: 14px; line-height: 1.4;"></div>
+          <div style="display:flex; align-items:center; justify-content:space-between;">
+             <div id="vax-next-countdown" style="font-size: 13px; font-weight: 800; color: var(--amber); background: rgba(251,191,36,0.1); padding: 8px 12px; border-radius: 10px;"></div>
+             <button id="vax-done-btn" onclick="markNextVaxDone()" style="background:var(--green); border:none; color:#fff; padding:8px 14px; border-radius:10px; font-weight:800; font-size:13px; cursor:pointer;">Mark Done ✓</button>
+          </div>
+        </div>
+        <div id="vax-all-done" style="display:none; font-size:14px; font-weight:700; color:var(--green); text-align:center; padding: 10px 0;">
+          All scheduled vaccinations completed! 🎉
+        </div>
+      </div>
 
       <div class="daily-check" onclick="toggleVitD()">
         <span class="daily-check-text">☀️ Vitamin D Drops Today?</span>
@@ -250,6 +267,32 @@
     <button class="nav-btn" id="nav-milestones" onclick="switchView('milestones')"><span class="nav-icon">⭐</span><span class="nav-label">Milestones</span><div class="nav-dot"></div></button>
     <button class="nav-btn" id="nav-analytics" onclick="switchView('analytics')"><span class="nav-icon">📊</span><span class="nav-label">Analytics</span><div class="nav-dot"></div></button>
   </nav>
+</div>
+
+<!-- VACCINE MANAGEMENT MODAL -->
+<div class="modal-overlay" id="vax-modal" onclick="if(event.target.id === 'vax-modal') closeVaxManage()">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <h2 style="margin-bottom: 16px;">Manage Schedule</h2>
+    <div id="vax-list" style="max-height: 35vh; overflow-y: auto; margin-bottom:16px;"></div>
+    <div style="background:var(--card2); padding:16px; border-radius:16px;">
+      <h3 style="font-size:14px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;" id="vax-form-title">
+        <span>Add / Edit Vaccine</span>
+        <button onclick="clearVaxForm()" style="background:none; border:none; color:var(--text3); font-size:12px; cursor:pointer;">Reset Form</button>
+      </h3>
+      <input type="hidden" id="vax-edit-id">
+      <div style="display:flex; gap:10px;">
+        <div style="flex:2"><label class="field-label">Label</label><input class="field-input" id="vax-label" type="text" placeholder="e.g. 6 Week"></div>
+        <div style="flex:1"><label class="field-label">Weeks</label><input class="field-input" id="vax-weeks" type="number" placeholder="6"></div>
+      </div>
+      <label class="field-label">Vaccines Included</label>
+      <input class="field-input" id="vax-desc" type="text" placeholder="e.g. HepB, DTaP, Polio">
+      <div class="submit-row">
+        <button class="cancel-btn" onclick="closeVaxManage()">Done</button>
+        <button class="submit-btn" style="background:var(--blue)" onclick="saveVaxItem()">Save to Schedule</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- LOG MODAL -->
@@ -430,16 +473,9 @@
 const STORE = 'baby-tracker-v4';
 let data = {
   profile: { name: '', birthDate: '' },
-  feeds: [], sleeps: [], diapers: [], weights: [], meds: [], foods: [], parent: [],
+  feeds: [], sleeps: [], diapers: [], weights: [], meds: [], foods: [], parent: [], vaccines: [],
   stash: 0, vitD: '', theme: 'dark', explicitlySetTheme: false
 };
-
-const VACCINES = [
-  { months: 2, label: "2 Month Vaccines", vax: "HepB, RV, DTaP, Hib, PCV15, Polio" },
-  { months: 4, label: "4 Month Vaccines", vax: "RV, DTaP, Hib, PCV15, Polio" },
-  { months: 6, label: "6 Month Vaccines", vax: "HepB, RV, DTaP, Hib, PCV15, Polio" },
-  { months: 12, label: "12 Month Vaccines", vax: "MMR, Varicella, HepA, PCV15" }
-];
 
 const MILESTONES = [
   { m: 2, text: ["Smiles at people", "Coos or gurgles", "Holds head up when on tummy"] },
@@ -450,7 +486,7 @@ const MILESTONES = [
 ];
 
 let state = { feedType: 'Nursing', breastSide: 'Left', diaperType: 'Wet', medType: 'Acetaminophen', foodReact: 'None', parentMood: 'Great' };
-let editIndex = { type: null, idx: -1 }; // Used for editing existing logs
+let editIndex = { type: null, idx: -1 }; 
 
 let liveTimers = {
   feed: { start: 0, elapsed: 0, running: false, interval: null },
@@ -463,6 +499,18 @@ function load() {
   try { 
     let raw = localStorage.getItem(STORE); 
     if (raw) data = { ...data, ...JSON.parse(raw) }; 
+    
+    // Initialize default vaccines if array doesn't exist or is empty
+    if (!data.vaccines || data.vaccines.length === 0) {
+      data.vaccines = [
+        { id: Date.now()+1, weeks: 6, label: "6 Week Vaccines", desc: "DTaP, IPV, HepB, Hib, RV, PCV", done: false },
+        { id: Date.now()+2, weeks: 10, label: "10 Week Vaccines", desc: "DTaP, IPV, Hib, RV, PCV", done: false },
+        { id: Date.now()+3, weeks: 14, label: "14 Week Vaccines", desc: "DTaP, IPV, HepB, Hib, RV, PCV", done: false },
+        { id: Date.now()+4, weeks: 24, label: "6 Month (24 Wk) Vaccines", desc: "HepB, RV, DTaP, Hib, PCV, IPV", done: false },
+        { id: Date.now()+5, weeks: 52, label: "1 Year (52 Wk) Vaccines", desc: "MMR, Varicella, HepA, PCV", done: false }
+      ];
+    }
+
     if(!data.explicitlySetTheme && window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) data.theme = 'light';
   } catch(e) {} 
 }
@@ -510,13 +558,49 @@ function updateUI() {
   if (data.vitD === todayStr) { vitdCheck.classList.add('checked'); vitdCheck.textContent = '✓'; } 
   else { vitdCheck.classList.remove('checked'); vitdCheck.textContent = ''; }
 
-  // Vaccine Alert
-  const vaxAlert = document.getElementById('vaccine-alert');
+  // Editable Vaccine Card Logic
+  const vaxCardInfo = document.getElementById('vax-info');
+  const vaxAllDone = document.getElementById('vax-all-done');
+  
   if (days !== null) {
-    const upcoming = VACCINES.find(v => (v.months * 30.4) > days && ((v.months * 30.4) - days) <= 14);
-    if (upcoming) { vaxAlert.style.display = 'flex'; vaxAlert.innerHTML = `⚠️ ${upcoming.label} due soon (${upcoming.vax})`; }
-    else vaxAlert.style.display = 'none';
-  } else vaxAlert.style.display = 'none';
+      // Find the next uncompleted vaccine, sorted by weeks
+      let pending = data.vaccines.filter(v => !v.done).sort((a,b) => a.weeks - b.weeks);
+      
+      if (pending.length > 0) {
+          vaxCardInfo.style.display = 'block';
+          vaxAllDone.style.display = 'none';
+          
+          let nextVax = pending[0];
+          let targetDays = nextVax.weeks * 7;
+          let diff = targetDays - days;
+          
+          document.getElementById('vax-next-title').textContent = nextVax.label;
+          document.getElementById('vax-next-desc').textContent = nextVax.desc;
+          
+          let countdownEl = document.getElementById('vax-next-countdown');
+          if (diff > 0) {
+              countdownEl.textContent = `Due in ${diff} day${diff>1?'s':''}`;
+              countdownEl.style.color = 'var(--text)';
+              countdownEl.style.background = 'var(--card2)';
+          } else if (diff === 0) {
+              countdownEl.textContent = `Due Today`;
+              countdownEl.style.color = 'var(--amber)';
+              countdownEl.style.background = 'rgba(251,191,36,0.1)';
+          } else {
+              countdownEl.textContent = `Past due by ${Math.abs(diff)} day${Math.abs(diff)>1?'s':''}`;
+              countdownEl.style.color = 'var(--red)';
+              countdownEl.style.background = 'rgba(248,113,113,0.1)';
+          }
+      } else {
+          // All done or none scheduled
+          vaxCardInfo.style.display = 'none';
+          vaxAllDone.style.display = 'block';
+      }
+  } else {
+      vaxCardInfo.style.display = 'none';
+      vaxAllDone.style.display = 'block';
+      vaxAllDone.textContent = "Please add birth date to see schedule";
+  }
 
   // Med Timer
   const medAlert = document.getElementById('med-timer-card');
@@ -556,6 +640,98 @@ function switchSeg(seg) {
   vibrate(); currSeg = seg;
   ['feed','sleep','diaper','food','weight'].forEach(s => document.getElementById('seg-'+s).classList.toggle('active', s===seg));
   renderHistory();
+}
+
+/* ═══════════════════════════════════════ VACCINE MANAGEMENT ═══ */
+function openVaxManage() {
+    vibrate();
+    document.getElementById('vax-modal').classList.add('open');
+    renderVaxList();
+    clearVaxForm();
+}
+function closeVaxManage() {
+    document.getElementById('vax-modal').classList.remove('open');
+}
+function renderVaxList() {
+    const list = document.getElementById('vax-list');
+    data.vaccines.sort((a,b) => a.weeks - b.weeks);
+    
+    if(data.vaccines.length === 0) {
+        list.innerHTML = `<div style="text-align:center; padding: 20px; color:var(--text3)">No vaccines scheduled.</div>`;
+        return;
+    }
+    
+    list.innerHTML = data.vaccines.map(v => `
+        <div class="vax-list-item" style="opacity: ${v.done ? 0.5 : 1}">
+            <div style="flex:1;">
+                <div style="font-size:14px; font-weight:800; text-decoration: ${v.done?'line-through':'none'}">${v.label} <span style="font-size:11px; color:var(--text3); font-weight:600">(${v.weeks} Wks)</span></div>
+                <div style="font-size:11px; color:var(--text3); margin-top:2px;">${v.desc}</div>
+            </div>
+            <div style="display:flex; gap:8px;">
+                <button onclick="toggleVaxDone(${v.id})" style="background:var(--card2); border:1px solid var(--border); color:${v.done?'var(--green)':'var(--text2)'}; padding:4px 8px; border-radius:8px; cursor:pointer;">${v.done?'Undo':'Done'}</button>
+                <button onclick="editVaxItem(${v.id})" style="background:var(--blue); border:none; color:#fff; padding:4px 8px; border-radius:8px; cursor:pointer;">Edit</button>
+                <button onclick="delVaxItem(${v.id})" style="background:var(--red); border:none; color:#fff; padding:4px 8px; border-radius:8px; cursor:pointer;">X</button>
+            </div>
+        </div>
+    `).join('');
+}
+function clearVaxForm() {
+    document.getElementById('vax-edit-id').value = '';
+    document.getElementById('vax-label').value = '';
+    document.getElementById('vax-weeks').value = '';
+    document.getElementById('vax-desc').value = '';
+    document.getElementById('vax-form-title').innerHTML = '<span>Add New Vaccine</span><button onclick="clearVaxForm()" style="background:none; border:none; color:var(--text3); font-size:12px; cursor:pointer;">Clear Form</button>';
+}
+function saveVaxItem() {
+    vibrate();
+    const id = document.getElementById('vax-edit-id').value;
+    const label = document.getElementById('vax-label').value;
+    const weeks = parseInt(document.getElementById('vax-weeks').value);
+    const desc = document.getElementById('vax-desc').value;
+    
+    if(!label || isNaN(weeks)) return alert("Label and Weeks are required.");
+    
+    if (id) {
+        let idx = data.vaccines.findIndex(v => v.id == id);
+        if(idx > -1) {
+            data.vaccines[idx] = { ...data.vaccines[idx], label, weeks, desc };
+        }
+    } else {
+        data.vaccines.push({ id: Date.now(), weeks, label, desc, done: false });
+    }
+    
+    save(); clearVaxForm(); renderVaxList(); updateUI();
+}
+function editVaxItem(id) {
+    vibrate();
+    const v = data.vaccines.find(x => x.id === id);
+    if(v) {
+        document.getElementById('vax-edit-id').value = v.id;
+        document.getElementById('vax-label').value = v.label;
+        document.getElementById('vax-weeks').value = v.weeks;
+        document.getElementById('vax-desc').value = v.desc;
+        document.getElementById('vax-form-title').innerHTML = '<span>Edit Vaccine</span><button onclick="clearVaxForm()" style="background:none; border:none; color:var(--text3); font-size:12px; cursor:pointer;">Cancel Edit</button>';
+    }
+}
+function delVaxItem(id) {
+    vibrate();
+    if(confirm("Delete this vaccine from schedule?")) {
+        data.vaccines = data.vaccines.filter(v => v.id !== id);
+        save(); renderVaxList(); updateUI();
+    }
+}
+function toggleVaxDone(id) {
+    vibrate();
+    let v = data.vaccines.find(x => x.id === id);
+    if(v) { v.done = !v.done; save(); renderVaxList(); updateUI(); }
+}
+function markNextVaxDone() {
+    vibrate();
+    let pending = data.vaccines.filter(v => !v.done).sort((a,b) => a.weeks - b.weeks);
+    if(pending.length > 0) {
+        pending[0].done = true;
+        save(); updateUI();
+    }
 }
 
 /* ═══════════════════════════════════════ MODAL LOGIC ═══ */
@@ -686,7 +862,6 @@ function renderTimerUI(type) {
     document.getElementById(type+'-timer-display').textContent = str;
 }
 
-// Auto-Capture active timer if user clicks save without stopping it first
 function getFinalDuration(type) {
     let t = liveTimers[type];
     let durInput = document.getElementById(type+'-dur').value;
@@ -736,7 +911,7 @@ function submitGrowth() {
      data.weights.push({ id: now(), date: d, weight: w||null, length: l||null, head: h||null });
   }
   
-  data.weights.sort((a,b)=>new Date(b.date)-new Date(a.date)); // Sort newest first for history view
+  data.weights.sort((a,b)=>new Date(b.date)-new Date(a.date));
   save(); document.querySelectorAll('#form-growth input[type="number"]').forEach(i=>i.value=''); closeLog(); updateUI();
   if(currView==='history') renderHistory();
 }
@@ -761,7 +936,7 @@ function submitParent() {
 /* ═══════════════════════════════════════ HISTORY, EDIT & SWIPE ═══ */
 function renderHistory() {
   const list = document.getElementById('history-list');
-  const arr = data[currSeg + 's'] || []; // maps to data.weights if currSeg is 'weight'
+  const arr = data[currSeg + 's'] || []; 
   if(!arr.length) { list.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text3)">No entries.</div>`; return; }
   
   list.innerHTML = arr.slice(0, 20).map((item, i) => {
@@ -777,7 +952,6 @@ function renderHistory() {
     else if(currSeg === 'food') { icon = item.react==='Severe'?'🚨':item.react==='Mild'?'⚠️':'✅'; title = item.food; meta = `${fmtDate(item.timestamp)} · ${fmtTime(item.timestamp)}`;}
     else if(currSeg === 'weight') { icon = '📏'; title = `W: ${item.weight||'--'}kg | L: ${item.length||'--'}cm | H: ${item.head||'--'}cm`; meta = `${fmtDate(item.date)}`; }
 
-    // Conditional Edit Button
     const editBtn = currSeg === 'weight' ? `<div class="swipe-action" style="background:var(--blue);" onclick="editEntry('${currSeg}', ${i})">Edit</div>` : '';
 
     return `
@@ -849,7 +1023,6 @@ function renderWeightChart() {
   const ctxW = document.getElementById('weight-chart').getContext('2d');
   if(charts.growth) charts.growth.destroy();
   
-  // Sort weights ascending just for the chart
   const sortedWeights = [...data.weights].sort((a,b)=>new Date(a.date)-new Date(b.date));
   
   if(sortedWeights.length < 2) return;
@@ -902,7 +1075,7 @@ function pruneData() {
 function init() { 
     load(); 
     document.documentElement.dataset.theme = data.theme; 
-    data.weights.sort((a,b)=>new Date(b.date)-new Date(a.date)); // Ensure newest first on load
+    data.weights.sort((a,b)=>new Date(b.date)-new Date(a.date)); 
     updateUI(); 
     loadLiveTimers(); 
     setInterval(updateUI, 60000); 
