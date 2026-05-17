@@ -57,9 +57,9 @@
   .checkbox.checked { background: var(--green); border-color: var(--green); color: #fff; }
 
   /* ── HERO TIMERS ── */
-  .timer-wrap { text-align: center; }
-  .timer-val { font-size: 52px; font-weight: 900; line-height: 1; letter-spacing: -2px; margin-bottom: 4px; }
-  .timer-sub { font-size: 12px; color: var(--text3); font-weight: 600; }
+  .timer-wrap { text-align: center; flex: 1; }
+  .timer-val { font-size: 28px; font-weight: 900; line-height: 1; letter-spacing: -1px; margin-bottom: 4px; }
+  .timer-sub { font-size: 11px; color: var(--text3); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
   .med-timer-val { font-size: 32px; font-weight: 900; color: var(--orange); }
 
   /* ── QUICK LOG GRID ── */
@@ -145,10 +145,8 @@
   </header>
 
   <div id="scroll-area">
-    <!-- DASHBOARD VIEW -->
     <div id="view-dashboard">
       
-      <!-- VACCINATION CARD -->
       <div class="card" id="vaccine-card">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
           <p class="card-label" style="margin:0; color:var(--blue);">Next Vaccination</p>
@@ -158,7 +156,6 @@
           <div id="vax-next-title" style="font-size: 18px; font-weight: 800; line-height: 1.2; margin-bottom: 4px;">—</div>
           <div id="vax-next-desc" style="font-size: 12px; color: var(--text3); margin-bottom: 14px; line-height: 1.4;"></div>
           
-          <!-- Appointment Date Block -->
           <div id="vax-date-block" style="background:var(--card2); border:1px solid var(--border); border-radius:12px; padding:12px; margin-bottom:14px; display:flex; align-items:center; gap:12px;">
             <div style="font-size:24px;">📅</div>
             <div>
@@ -182,17 +179,22 @@
         <div class="checkbox" id="vitd-check"></div>
       </div>
 
-      <div class="card" style="display: flex; justify-content: space-around; align-items: center;">
+      <div class="card" style="display: flex; justify-content: space-between; align-items: center; padding: 16px;">
         <div class="timer-wrap">
           <p class="card-label">Last Feed</p>
           <div id="timer-val" class="timer-val">—</div>
           <div id="timer-sub" class="timer-sub"></div>
         </div>
-        <div style="width:1px; height:60px; background:var(--border)"></div>
+        <div style="width:1px; height:50px; background:var(--border); margin: 0 10px;"></div>
+        <div class="timer-wrap">
+          <p class="card-label">Diaper</p>
+          <div id="diaper-val" class="timer-val">—</div>
+          <div id="diaper-sub" class="timer-sub"></div>
+        </div>
+        <div style="width:1px; height:50px; background:var(--border); margin: 0 10px;"></div>
         <div class="timer-wrap" id="stash-wrap">
-          <p class="card-label">Milk Stash</p>
+          <p class="card-label">Stash (oz)</p>
           <div id="stash-val" class="timer-val" style="color:var(--teal)">0</div>
-          <div class="timer-sub">oz available</div>
         </div>
       </div>
 
@@ -230,7 +232,6 @@
       </div>
     </div>
 
-    <!-- HISTORY VIEW -->
     <div id="view-history" style="display:none">
       <p style="font-size: 11px; color: var(--text3); text-align: center; margin-bottom: 12px;">Swipe items left to edit or delete</p>
       <div class="seg-tabs">
@@ -243,13 +244,11 @@
       <div id="history-list"></div>
     </div>
 
-    <!-- MILESTONES VIEW -->
     <div id="view-milestones" style="display:none">
       <p style="font-size: 13px; color: var(--text3); margin-bottom: 20px; line-height: 1.5;">Checklists based on CDC/AAP guidelines. Bring up any concerns at your next pediatrician visit.</p>
       <div id="milestone-content"></div>
     </div>
 
-    <!-- ANALYTICS VIEW -->
     <div id="view-analytics" style="display:none">
       <div class="card">
         <div style="font-size: 15px; font-weight: 800; margin-bottom: 16px;">📊 24-Hour Timeline</div>
@@ -270,7 +269,6 @@
     </div>
   </div>
 
-  <!-- NAV -->
   <nav>
     <button class="nav-btn active" id="nav-dashboard" onclick="switchView('dashboard')"><span class="nav-icon">🏠</span><span class="nav-label">Home</span><div class="nav-dot"></div></button>
     <button class="nav-btn" id="nav-history" onclick="switchView('history')"><span class="nav-icon">📋</span><span class="nav-label">History</span><div class="nav-dot"></div></button>
@@ -279,7 +277,6 @@
   </nav>
 </div>
 
-<!-- VACCINE MANAGEMENT MODAL -->
 <div class="modal-overlay" id="vax-modal" onclick="if(event.target.id === 'vax-modal') closeVaxManage()">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
@@ -305,7 +302,6 @@
   </div>
 </div>
 
-<!-- LOG MODAL -->
 <div class="modal-overlay" id="log-modal" onclick="if(event.target.id === 'log-modal') closeLog()">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
@@ -320,7 +316,6 @@
       <button class="type-tab" id="tab-parent" onclick="switchLogTab('parent')">❤️ Parent</button>
     </div>
 
-    <!-- FEED FORM -->
     <div id="form-feed" class="log-form">
       <label class="field-label">Feed type</label>
       <div class="choice-row" id="feed-type-row">
@@ -329,7 +324,6 @@
         <button class="choice-btn" data-val="Pump" onclick="pickOpt(this, 'feedType')"><span class="emoji">🥛</span>Pump</button>
       </div>
 
-      <!-- Breast Side Selector -->
       <div id="feed-side-wrap" style="display:block;">
         <label class="field-label">Side</label>
         <div class="choice-row" id="side-choice-row">
@@ -339,7 +333,6 @@
         </div>
       </div>
       
-      <!-- Bottle/Pump Volume Input -->
       <div id="feed-vol-wrap" style="display:none;">
         <label class="field-label">Volume (oz)</label>
         <input class="field-input" id="feed-vol" type="number" step="0.5" placeholder="e.g. 4">
@@ -348,7 +341,6 @@
 
       <label class="field-label">Duration (minutes)</label>
       
-      <!-- Feed Live Timer Block -->
       <div class="live-timer-container" id="feed-live-timer" style="display:none;">
           <div class="timer-display" id="feed-timer-display">00:00</div>
           <div class="timer-controls">
@@ -366,11 +358,9 @@
       <div class="submit-row"><button class="cancel-btn" onclick="closeLog()">✕</button><button class="submit-btn" style="background:var(--green)" onclick="submitFeed()">Save Feed</button></div>
     </div>
 
-    <!-- SLEEP FORM -->
     <div id="form-sleep" class="log-form" style="display:none">
       <label class="field-label">Sleep (minutes)</label>
 
-      <!-- Sleep Live Timer Block -->
       <div class="live-timer-container" id="sleep-live-timer" style="display:none;">
           <div class="timer-display" id="sleep-timer-display">00:00</div>
           <div class="timer-controls">
@@ -388,7 +378,6 @@
       <div class="submit-row"><button class="cancel-btn" onclick="closeLog()">✕</button><button class="submit-btn" style="background:var(--purple)" onclick="submitSleep()">Save Sleep</button></div>
     </div>
 
-    <!-- DIAPER FORM -->
     <div id="form-diaper" class="log-form" style="display:none">
       <label class="field-label">Condition</label>
       <div class="choice-row" id="diaper-type-row">
@@ -399,7 +388,6 @@
       <div class="submit-row"><button class="cancel-btn" onclick="closeLog()">✕</button><button class="submit-btn" style="background:var(--blue)" onclick="submitDiaper()">Save Diaper</button></div>
     </div>
 
-    <!-- GROWTH FORM -->
     <div id="form-growth" class="log-form" style="display:none">
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
         <div><label class="field-label">Weight (kg)</label><input class="field-input" id="gr-weight" type="number" step="0.01"></div>
@@ -410,7 +398,6 @@
       <div class="submit-row"><button class="cancel-btn" onclick="closeLog()">✕</button><button class="submit-btn" id="gr-submit-btn" style="background:var(--pink)" onclick="submitGrowth()">Save Growth</button></div>
     </div>
 
-    <!-- MEDS FORM -->
     <div id="form-meds" class="log-form" style="display:none">
       <label class="field-label">Medication</label>
       <div class="choice-row" id="med-type-row">
@@ -423,7 +410,6 @@
       <div class="submit-row"><button class="cancel-btn" onclick="closeLog()">✕</button><button class="submit-btn" style="background:var(--orange)" onclick="submitMed()">Save Meds & Start Timer</button></div>
     </div>
 
-    <!-- FOOD/ALLERGY FORM -->
     <div id="form-food" class="log-form" style="display:none">
       <label class="field-label">Food Introduced</label>
       <input class="field-input" id="food-name" type="text" placeholder="e.g. Peanut Butter, Eggs">
@@ -436,7 +422,6 @@
       <div class="submit-row"><button class="cancel-btn" onclick="closeLog()">✕</button><button class="submit-btn" style="background:var(--teal)" onclick="submitFood()">Save Food</button></div>
     </div>
 
-    <!-- PARENT FORM -->
     <div id="form-parent" class="log-form" style="display:none">
       <div style="text-align:center; margin-bottom:20px;">
         <h3 style="margin-bottom:5px;">How are you feeling?</h3>
@@ -458,7 +443,6 @@
   </div>
 </div>
 
-<!-- PROFILE/SETTINGS -->
 <div class="modal-overlay" id="profile-modal" onclick="if(event.target.id === 'profile-modal') closeProfile()">
   <div class="modal-sheet" style="border-radius: 24px; max-width:400px; margin: 0 auto; transform: scale(0.95);">
     <div style="font-size: 20px; font-weight: 900; margin-bottom: 20px;">👶 Profile & Data</div>
@@ -467,6 +451,12 @@
     <div class="submit-row"><button class="cancel-btn" onclick="closeProfile()">Cancel</button><button class="submit-btn" style="background:var(--accent)" onclick="saveProfile()">Save ✓</button></div>
     
     <div style="border-top: 1px solid var(--border); margin-top: 20px; padding-top: 20px;">
+      <div style="font-size: 14px; font-weight: 800; margin-bottom: 10px;">Alerts & Notifications</div>
+      <button class="choice-btn" id="btn-enable-alerts" style="width: 100%; margin-bottom: 10px; text-align:center;" onclick="requestNotificationPermission()">🔔 Enable System Alerts</button>
+      <p style="font-size:11px; color:var(--text3); margin-top:-5px; margin-bottom:15px; line-height:1.4;">Alerts trigger if it has been 3 hours since a feed or 2 hours since a diaper change. <br><strong style="color:var(--red)">Note:</strong> Mobile OS will block these if your screen is locked or you are using another app.</p>
+    </div>
+
+    <div style="border-top: 1px solid var(--border); margin-top: 10px; padding-top: 20px;">
       <div style="font-size: 14px; font-weight: 800; margin-bottom: 10px;">Data Management</div>
       <div style="display:flex; gap:10px; margin-bottom:10px;">
         <button class="choice-btn" onclick="exportData()">💾 Export</button>
@@ -480,11 +470,11 @@
 
 <script>
 /* ═══════════════════════════════════════ DATA & CONSTANTS ═══ */
-const STORE = 'baby-tracker-v4';
+const STORE = 'baby-tracker-v5';
 let data = {
   profile: { name: '', birthDate: '' },
   feeds: [], sleeps: [], diapers: [], weights: [], meds: [], foods: [], parent: [], vaccines: [],
-  stash: 0, vitD: '', theme: 'dark', explicitlySetTheme: false
+  stash: 0, vitD: '', theme: 'dark', explicitlySetTheme: false, alertsEnabled: false
 };
 
 const MILESTONES = [
@@ -504,6 +494,8 @@ let liveTimers = {
 };
 
 let charts = { timeline: null, growth: null };
+let notifiedFeedId = null;
+let notifiedDiaperId = null;
 
 function load() { 
   try { 
@@ -525,11 +517,22 @@ function load() {
 }
 function save() { try { localStorage.setItem(STORE, JSON.stringify(data)); } catch(e) {} }
 
+/* ═══════════════════════════════════════ NOTIFICATIONS ═══ */
+function requestNotificationPermission() {
+  if (!("Notification" in window)) return alert("This browser does not support desktop notification");
+  Notification.requestPermission().then(permission => {
+    if (permission === "granted") {
+      data.alertsEnabled = true; save(); updateUI();
+      new Notification("Alerts Enabled", { body: "Tracking 3h feeds and 2h diapers." });
+    }
+  });
+}
+
 /* ═══════════════════════════════════════ UTILS ═══ */
 const now = () => Date.now();
 const vibrate = () => { if(navigator.vibrate) navigator.vibrate(50); };
 const minsSince = (ts) => Math.floor((now() - new Date(ts).getTime()) / 60000);
-function fmtDur(m) { if (m < 1) return 'Just now'; if (m < 60) return m + 'm'; return Math.floor(m/60) + 'h ' + (m%60) + 'm'; }
+function fmtDur(m) { if (m < 1) return '—'; if (m < 60) return m + 'm'; return Math.floor(m/60) + 'h ' + (m%60) + 'm'; }
 function fmtTime(ts) { return new Date(ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); }
 function fmtDate(ts) {
   const d = new Date(ts), t = new Date(), y = new Date(t - 86400000);
@@ -551,13 +554,41 @@ function updateUI() {
   // Hero Feed Timer
   const lastF = data.feeds[0];
   const tv = document.getElementById('timer-val'), ts = document.getElementById('timer-sub');
+  let fMins = -1;
   if (!lastF) { tv.textContent = '—'; ts.textContent = 'No feed logged'; } 
   else {
-    const m = minsSince(lastF.timestamp);
-    tv.textContent = fmtDur(m);
-    tv.style.color = m > 180 ? 'var(--red)' : m > 120 ? 'var(--amber)' : 'var(--green)';
+    fMins = minsSince(lastF.timestamp);
+    tv.textContent = fmtDur(fMins);
+    tv.style.color = fMins >= 180 ? 'var(--red)' : fMins >= 120 ? 'var(--amber)' : 'var(--green)';
     let sideStr = lastF.side ? ` (${lastF.side})` : '';
-    ts.textContent = `${lastF.type}${sideStr} at ${fmtTime(lastF.timestamp)}`;
+    ts.textContent = `${lastF.type}${sideStr}`;
+  }
+
+  // Hero Diaper Timer
+  const lastD = data.diapers[0];
+  const dv = document.getElementById('diaper-val'), ds = document.getElementById('diaper-sub');
+  let dMins = -1;
+  if (!lastD) { dv.textContent = '—'; ds.textContent = 'No diaper logged'; }
+  else {
+    dMins = minsSince(lastD.timestamp);
+    dv.textContent = fmtDur(dMins);
+    dv.style.color = dMins >= 180 ? 'var(--red)' : dMins >= 120 ? 'var(--amber)' : 'var(--blue)';
+    ds.textContent = lastD.type;
+  }
+
+  // System Alerts Check
+  if (data.alertsEnabled && Notification.permission === "granted") {
+      const alertBtn = document.getElementById('btn-enable-alerts');
+      if (alertBtn) { alertBtn.innerHTML = "✅ Alerts Enabled"; alertBtn.style.color = "var(--green)"; alertBtn.style.borderColor = "var(--green)"; alertBtn.style.background = "rgba(52,211,153,0.1)"; }
+      
+      if (lastF && fMins >= 180 && notifiedFeedId !== lastF.id) {
+          new Notification("Feeding Time", {body: "It has been 3 hours since the last feed."});
+          notifiedFeedId = lastF.id;
+      }
+      if (lastD && dMins >= 120 && notifiedDiaperId !== lastD.id) {
+          new Notification("Diaper Check", {body: "It has been 2 hours since the last diaper change."});
+          notifiedDiaperId = lastD.id;
+      }
   }
 
   // Stash & Vit D
@@ -931,7 +962,6 @@ function submitParent() {
   const w = document.getElementById('p-water').checked, s = document.getElementById('p-shower').checked;
   data.parent.unshift({ id: now(), timestamp: new Date().toISOString(), mood: state.parentMood, water: w, shower: s });
   save(); document.getElementById('p-water').checked=false; document.getElementById('p-shower').checked=false; closeLog();
-  if(state.parentMood === 'Struggling') setTimeout(()=>alert("The 4th trimester is incredibly hard. Please reach out to your partner, family, or doctor."), 500);
 }
 
 /* ═══════════════════════════════════════ HISTORY, EDIT & SWIPE ═══ */
@@ -1025,6 +1055,7 @@ function renderWeightChart() {
 /* ═══════════════════════════════════════ SETTINGS ═══ */
 function openProfile() { 
   document.getElementById('p-name').value = data.profile.name||''; document.getElementById('p-birth').value = data.profile.birthDate||'';
+  updateUI(); // Refreshes the alerts UI button state
   document.getElementById('profile-modal').classList.add('open'); 
 }
 function closeProfile() { document.getElementById('profile-modal').classList.remove('open'); }
