@@ -33,14 +33,15 @@
   .header-left h1 { font-size: 20px; font-weight: 900; background: linear-gradient(130deg, var(--accent), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
   .header-left p { font-size: 11px; color: var(--text3); margin-top: 2px; font-weight: 600; }
   .header-right { display: flex; gap: 8px; }
-  .icon-btn { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--border2); background: var(--card); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 17px; color: var(--text2); }
+  .icon-btn { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--border2); background: var(--card); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 17px; color: var(--text2); transition: all 0.2s; }
+  .icon-btn:hover { background: var(--card2); transform: scale(1.05); }
 
   #scroll-area { flex: 1; overflow-y: auto; padding: 20px 16px 24px; scrollbar-width: none; }
   #scroll-area::-webkit-scrollbar { display: none; }
 
   /* ── NAV ── */
   nav { display: flex; background: var(--surface); border-top: 1px solid var(--border); padding: 8px 0 max(12px, env(safe-area-inset-bottom)); flex-shrink: 0; }
-  .nav-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; background: none; border: none; cursor: pointer; padding: 6px 0; }
+  .nav-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; background: none; border: none; cursor: pointer; padding: 6px 0; transition: all 0.2s; }
   .nav-icon { font-size: 21px; }
   .nav-label { font-size: 10px; font-weight: 700; color: var(--text3); }
   .nav-btn.active .nav-label { color: var(--accent); }
@@ -48,23 +49,26 @@
   .nav-btn.active .nav-dot { visibility: visible; }
 
   /* ── CARDS & ALERTS ── */
-  .card { background: var(--card); border: 1px solid var(--border); border-radius: 22px; padding: 22px; margin-bottom: 14px; position: relative; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 22px; padding: 22px; margin-bottom: 14px; position: relative; transition: transform 0.2s; }
+  .card:hover { transform: translateY(-2px); }
   .card-label { font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--text3); margin-bottom: 6px; }
   
-  .daily-check { display: flex; align-items: center; justify-content: space-between; background: var(--card2); padding: 14px; border-radius: 14px; border: 1px solid var(--border); margin-bottom: 14px; cursor: pointer; }
+  .daily-check { display: flex; align-items: center; justify-content: space-between; background: var(--card2); padding: 14px; border-radius: 14px; border: 1px solid var(--border); margin-bottom: 14px; cursor: pointer; transition: all 0.2s; }
+  .daily-check:hover { border-color: var(--accent); }
   .daily-check-text { font-size: 14px; font-weight: 800; }
   .checkbox { width: 24px; height: 24px; border-radius: 8px; border: 2px solid var(--border2); display: flex; align-items: center; justify-content: center; font-size: 14px; transition: 0.2s; }
   .checkbox.checked { background: var(--green); border-color: var(--green); color: #fff; }
 
   /* ── HERO TIMERS ── */
   .timer-wrap { text-align: center; flex: 1; }
-  .timer-val { font-size: 28px; font-weight: 900; line-height: 1; letter-spacing: -1px; margin-bottom: 4px; }
+  .timer-val { font-size: 28px; font-weight: 900; line-height: 1; letter-spacing: -1px; margin-bottom: 4px; transition: color 0.3s; }
   .timer-sub { font-size: 11px; color: var(--text3); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
   .med-timer-val { font-size: 32px; font-weight: 900; color: var(--orange); }
 
   /* ── QUICK LOG GRID ── */
   .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-  .action-btn { padding: 16px; border-radius: 18px; border: none; color: #fff; cursor: pointer; display: flex; flex-direction: column; gap: 8px; text-align: left; font-family: 'Nunito', sans-serif; position: relative; }
+  .action-btn { padding: 16px; border-radius: 18px; border: none; color: #fff; cursor: pointer; display: flex; flex-direction: column; gap: 8px; text-align: left; font-family: 'Nunito', sans-serif; position: relative; transition: all 0.2s; }
+  .action-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
   .action-btn .btn-emoji { font-size: 26px; }
   .action-btn .btn-text-main { font-size: 15px; font-weight: 800; line-height: 1.2; }
   .btn-feed { background: linear-gradient(135deg, #34d399, #059669); }
@@ -78,14 +82,17 @@
   /* ── MILESTONES & VACCINES ── */
   .ms-group { margin-bottom: 24px; }
   .ms-title { font-size: 16px; font-weight: 900; color: var(--text); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-  .ms-item { background: var(--card2); border: 1px solid var(--border); border-radius: 14px; padding: 14px 16px; margin-bottom: 8px; font-size: 14px; font-weight: 700; color: var(--text2); display: flex; gap: 12px; }
-  .vax-list-item { background: var(--input); border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;}
+  .ms-item { background: var(--card2); border: 1px solid var(--border); border-radius: 14px; padding: 14px 16px; margin-bottom: 8px; font-size: 14px; font-weight: 700; color: var(--text2); display: flex; gap: 12px; transition: all 0.2s; }
+  .ms-item:hover { border-color: var(--accent); }
+  .vax-list-item { background: var(--input); border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; transition: all 0.2s; }
+  .vax-list-item:hover { border-color: var(--accent); }
 
   /* ── LOG ITEMS (SWIPE) ── */
   .swipe-container { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; margin-bottom: 8px; border-radius: 16px; background: var(--card2); }
   .swipe-content { min-width: 100%; scroll-snap-align: start; background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 15px; display: flex; align-items: center; gap: 12px; z-index: 2; }
   .swipe-actions { min-width: 140px; display: flex; scroll-snap-align: end; }
-  .swipe-action { flex: 1; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 13px; cursor: pointer; }
+  .swipe-action { flex: 1; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 13px; cursor: pointer; transition: all 0.2s; }
+  .swipe-action:hover { opacity: 0.9; }
   .log-icon { font-size: 22px; }
   .log-body { flex: 1; }
   .log-title { font-size: 14px; font-weight: 800; }
@@ -99,34 +106,46 @@
   .modal-handle { width: 40px; height: 4px; background: var(--border2); border-radius: 2px; margin: 0 auto 22px; }
   
   .type-tabs { display: flex; gap: 4px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 4px;}
-  .type-tab { flex: 1; min-width: 70px; padding: 10px 4px; border-radius: 14px; border: 1px solid var(--border); background: var(--card2); color: var(--text3); font-size: 12px; font-weight: 800; cursor: pointer; text-align: center; }
+  .type-tab { flex: 1; min-width: 70px; padding: 10px 4px; border-radius: 14px; border: 1px solid var(--border); background: var(--card2); color: var(--text3); font-size: 12px; font-weight: 800; cursor: pointer; text-align: center; transition: all 0.2s; }
   .type-tab.active { background: linear-gradient(135deg, var(--accent), var(--blue)); color: #fff; border-color: transparent; }
+  .type-tab:hover:not(.active) { border-color: var(--accent); }
   
   .choice-row { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
-  .choice-btn { flex: 1; min-width: calc(33% - 8px); padding: 12px 4px; border-radius: 14px; border: 2px solid var(--border2); background: var(--input); color: var(--text2); font-size: 13px; font-weight: 800; cursor: pointer; text-align: center; }
+  .choice-btn { flex: 1; min-width: calc(33% - 8px); padding: 12px 4px; border-radius: 14px; border: 2px solid var(--border2); background: var(--input); color: var(--text2); font-size: 13px; font-weight: 800; cursor: pointer; text-align: center; transition: all 0.2s; }
+  .choice-btn:hover { border-color: var(--accent); transform: translateY(-1px); }
   .choice-btn .emoji { display: block; font-size: 20px; margin-bottom: 4px; }
   
   .field-label { font-size: 13px; font-weight: 800; color: var(--text2); margin-bottom: 8px; display: block; }
-  .field-input { width: 100%; padding: 15px 16px; border-radius: 14px; border: 1.5px solid var(--border2); background: var(--input); color: var(--text); font-size: 16px; font-weight: 700; margin-bottom: 20px; outline: none; }
+  .field-input { width: 100%; padding: 15px 16px; border-radius: 14px; border: 1.5px solid var(--border2); background: var(--input); color: var(--text); font-size: 16px; font-weight: 700; margin-bottom: 20px; outline: none; transition: all 0.2s; }
+  .field-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.1); }
   
   .submit-row { display: flex; gap: 10px; }
-  .cancel-btn { padding: 16px; border-radius: 16px; border: 1.5px solid var(--border2); background: transparent; color: var(--text2); font-size: 16px; font-weight: 800; cursor: pointer; flex-shrink: 0;}
-  .submit-btn { flex: 1; padding: 16px; border-radius: 16px; border: none; color: #fff; font-size: 16px; font-weight: 800; cursor: pointer; }
+  .cancel-btn { padding: 16px; border-radius: 16px; border: 1.5px solid var(--border2); background: transparent; color: var(--text2); font-size: 16px; font-weight: 800; cursor: pointer; flex-shrink: 0; transition: all 0.2s; }
+  .cancel-btn:hover { border-color: var(--red); color: var(--red); }
+  .submit-btn { flex: 1; padding: 16px; border-radius: 16px; border: none; color: #fff; font-size: 16px; font-weight: 800; cursor: pointer; transition: all 0.2s; }
+  .submit-btn:hover { opacity: 0.9; transform: translateY(-1px); }
 
   /* ── LIVE TIMERS ── */
   .live-timer-container { background: var(--card2); border: 1px solid var(--border); border-radius: 16px; padding: 20px 16px; margin-bottom: 20px; text-align: center; }
   .timer-display { font-size: 42px; font-weight: 900; font-variant-numeric: tabular-nums; margin-bottom: 16px; line-height: 1; letter-spacing: -1px;}
   .timer-controls { display: flex; gap: 8px; justify-content: center; }
-  .timer-controls button { flex: 1; padding: 12px 8px; border-radius: 12px; border: none; font-weight: 800; cursor: pointer; font-size: 13px; display:flex; align-items:center; justify-content:center; gap:6px; }
+  .timer-controls button { flex: 1; padding: 12px 8px; border-radius: 12px; border: none; font-weight: 800; cursor: pointer; font-size: 13px; display:flex; align-items:center; justify-content:center; gap:6px; transition: all 0.2s; }
+  .timer-controls button:hover { transform: translateY(-1px); }
   .btn-pause { background: rgba(251, 191, 36, 0.15); color: var(--amber); }
   .btn-stop { background: rgba(248, 113, 113, 0.15); color: var(--red); }
   .btn-restart { background: var(--card); color: var(--text2); border: 1px solid var(--border2) !important; }
 
   .seg-tabs { display: flex; gap: 8px; margin-bottom: 18px; overflow-x: auto; padding-bottom:4px; }
-  .seg-tab { flex: 1; min-width: 70px; padding: 11px; border-radius: 14px; border: 1px solid var(--border); background: var(--card); color: var(--text2); font-size: 13px; font-weight: 800; cursor: pointer; text-align: center; }
+  .seg-tab { flex: 1; min-width: 70px; padding: 11px; border-radius: 14px; border: 1px solid var(--border); background: var(--card); color: var(--text2); font-size: 13px; font-weight: 800; cursor: pointer; text-align: center; transition: all 0.2s; }
   .seg-tab.active { background: linear-gradient(135deg, var(--accent), var(--blue)); color: #fff; }
+  .seg-tab:hover:not(.active) { border-color: var(--accent); }
   
   .chart-wrap { width: 100%; height: 240px; position: relative; margin-top: 10px; }
+  
+  /* New chart cards */
+  .chart-card { margin-bottom: 14px; }
+  .chart-card-title { font-size: 14px; font-weight: 800; color: var(--text); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  
   * { scrollbar-width: none; } *::-webkit-scrollbar { display: none; }
 </style>
 </head>
@@ -166,7 +185,7 @@
 
           <div style="display:flex; align-items:center; justify-content:space-between;">
              <div id="vax-next-countdown" style="font-size: 13px; font-weight: 800; color: var(--amber); background: rgba(251,191,36,0.1); padding: 8px 12px; border-radius: 10px;"></div>
-             <button id="vax-done-btn" onclick="markNextVaxDone()" style="background:var(--green); border:none; color:#fff; padding:8px 14px; border-radius:10px; font-weight:800; font-size:13px; cursor:pointer;">Mark Done ✓</button>
+             <button id="vax-done-btn" onclick="markNextVaxDone()" style="background:var(--green); border:none; color:#fff; padding:8px 14px; border-radius:10px; font-weight:800; font-size:13px; cursor:pointer; transition: all 0.2s;">Mark Done ✓</button>
           </div>
         </div>
         <div id="vax-all-done" style="display:none; font-size:14px; font-weight:700; color:var(--green); text-align:center; padding: 10px 0;">
@@ -250,13 +269,28 @@
     </div>
 
     <div id="view-analytics" style="display:none">
-      <div class="card">
-        <div style="font-size: 15px; font-weight: 800; margin-bottom: 16px;">📊 24-Hour Timeline</div>
+      <div class="card chart-card">
+        <div class="chart-card-title">📊 24-Hour Activity Timeline</div>
         <div class="chart-wrap"><canvas id="timeline-chart"></canvas></div>
       </div>
 
-      <div class="card">
-        <div style="font-size: 15px; font-weight: 800; margin-bottom: 16px; display:flex; justify-content:space-between; align-items:center;">
+      <div class="card chart-card">
+        <div class="chart-card-title">☀️ Vitamin D Compliance (Last 7 Days)</div>
+        <div class="chart-wrap"><canvas id="vitd-chart"></canvas></div>
+      </div>
+
+      <div class="card chart-card">
+        <div class="chart-card-title">🍼 Feeding Distribution</div>
+        <div class="chart-wrap"><canvas id="feeding-distribution-chart"></canvas></div>
+      </div>
+
+      <div class="card chart-card">
+        <div class="chart-card-title">💧 Diaper Changes (Last 7 Days)</div>
+        <div class="chart-wrap"><canvas id="diaper-trend-chart"></canvas></div>
+      </div>
+
+      <div class="card chart-card">
+        <div class="chart-card-title" style="display:flex; justify-content:space-between; align-items:center;">
           <span>📏 Growth Curve</span>
           <select id="growth-metric" onchange="renderWeightChart()" style="background:var(--input); border:1px solid var(--border); color:var(--text); padding:4px 8px; border-radius:8px; font-weight:700;">
             <option value="weight">Weight</option>
@@ -265,6 +299,11 @@
           </select>
         </div>
         <div class="chart-wrap"><canvas id="weight-chart"></canvas></div>
+      </div>
+
+      <div class="card chart-card">
+        <div class="chart-card-title">❤️ Parent Well-being Trends</div>
+        <div class="chart-wrap"><canvas id="parent-mood-chart"></canvas></div>
       </div>
     </div>
   </div>
@@ -459,7 +498,8 @@
     <div style="border-top: 1px solid var(--border); margin-top: 10px; padding-top: 20px;">
       <div style="font-size: 14px; font-weight: 800; margin-bottom: 10px;">Data Management</div>
       <div style="display:flex; gap:10px; margin-bottom:10px;">
-        <button class="choice-btn" onclick="exportData()">💾 Export</button>
+        <button class="choice-btn" onclick="exportData('json')">💾 Export JSON</button>
+        <button class="choice-btn" onclick="exportData('csv')">📊 Export CSV</button>
         <button class="choice-btn" onclick="document.getElementById('import-file').click()">📂 Import</button>
         <input type="file" id="import-file" accept=".json" style="display:none" onchange="handleImport(event)">
       </div>
@@ -470,7 +510,7 @@
 
 <script>
 /* ═══════════════════════════════════════ DATA & CONSTANTS ═══ */
-const STORE = 'baby-tracker-v5';
+const STORE = 'baby-tracker-v6';
 let data = {
   profile: { name: '', birthDate: '' },
   feeds: [], sleeps: [], diapers: [], weights: [], meds: [], foods: [], parent: [], vaccines: [],
@@ -493,7 +533,7 @@ let liveTimers = {
   sleep: { start: 0, elapsed: 0, running: false, interval: null }
 };
 
-let charts = { timeline: null, growth: null };
+let charts = { timeline: null, growth: null, vitD: null, feedingDist: null, diaperTrend: null, parentMood: null };
 let notifiedFeedId = null;
 let notifiedDiaperId = null;
 
@@ -501,6 +541,12 @@ function load() {
   try { 
     let raw = localStorage.getItem(STORE); 
     if (raw) data = { ...data, ...JSON.parse(raw) }; 
+    
+    // Sort data consistently
+    ['feeds', 'sleeps', 'diapers', 'meds', 'foods', 'parent'].forEach(k => {
+      if (data[k]) data[k].sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+    });
+    if (data.weights) data.weights.sort((a,b) => new Date(b.date) - new Date(a.date));
     
     if (!data.vaccines || data.vaccines.length === 0) {
       data.vaccines = [
@@ -513,9 +559,9 @@ function load() {
     }
 
     if(!data.explicitlySetTheme && window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) data.theme = 'light';
-  } catch(e) {} 
+  } catch(e) { console.error('Load error:', e); }
 }
-function save() { try { localStorage.setItem(STORE, JSON.stringify(data)); } catch(e) {} }
+function save() { try { localStorage.setItem(STORE, JSON.stringify(data)); } catch(e) { console.error('Save error:', e); } }
 
 /* ═══════════════════════════════════════ NOTIFICATIONS ═══ */
 function requestNotificationPermission() {
@@ -680,6 +726,7 @@ function switchView(v) {
   if(v==='history') renderHistory();
   if(v==='milestones') renderMilestones();
   if(v==='analytics') renderCharts();
+  if(v==='dashboard') updateUI(); // Ensure Vitamin D checkbox updates
 }
 function switchSeg(seg) {
   vibrate(); currSeg = seg;
@@ -696,6 +743,7 @@ function openVaxManage() {
 }
 function closeVaxManage() {
     document.getElementById('vax-modal').classList.remove('open');
+    updateUI(); // Update dashboard when modal closes
 }
 function renderVaxList() {
     const list = document.getElementById('vax-list');
@@ -713,9 +761,9 @@ function renderVaxList() {
                 <div style="font-size:11px; color:var(--text3); margin-top:2px;">${v.desc}</div>
             </div>
             <div style="display:flex; gap:8px;">
-                <button onclick="toggleVaxDone(${v.id})" style="background:var(--card2); border:1px solid var(--border); color:${v.done?'var(--green)':'var(--text2)'}; padding:4px 8px; border-radius:8px; cursor:pointer;">${v.done?'Undo':'Done'}</button>
-                <button onclick="editVaxItem(${v.id})" style="background:var(--blue); border:none; color:#fff; padding:4px 8px; border-radius:8px; cursor:pointer;">Edit</button>
-                <button onclick="delVaxItem(${v.id})" style="background:var(--red); border:none; color:#fff; padding:4px 8px; border-radius:8px; cursor:pointer;">X</button>
+                <button onclick="toggleVaxDone(${v.id})" style="background:var(--card2); border:1px solid var(--border); color:${v.done?'var(--green)':'var(--text2)'}; padding:4px 8px; border-radius:8px; cursor:pointer; transition: all 0.2s;">${v.done?'Undo':'Done'}</button>
+                <button onclick="editVaxItem(${v.id})" style="background:var(--blue); border:none; color:#fff; padding:4px 8px; border-radius:8px; cursor:pointer; transition: all 0.2s;">Edit</button>
+                <button onclick="delVaxItem(${v.id})" style="background:var(--red); border:none; color:#fff; padding:4px 8px; border-radius:8px; cursor:pointer; transition: all 0.2s;">X</button>
             </div>
         </div>
     `).join('');
@@ -784,7 +832,7 @@ function openLog(tab) {
   vibrate(); switchLogTab(tab);
   document.getElementById('log-modal').classList.add('open');
   if(tab==='growth' && editIndex.idx === -1) {
-    document.getElementById('gr-date').value = new Date().getFullYear() + '-' + String(new Date().getMonth() + 1).padStart(2, '0') + '-' + String(new Date().getDate()).padStart(2, '0');
+    document.getElementById('gr-date').value = new Date().toISOString().split('T')[0];
     document.getElementById('gr-submit-btn').textContent = "Save Growth";
   }
 }
@@ -981,11 +1029,13 @@ function renderHistory() {
     else if(currSeg === 'diaper') { icon = item.type==='Dirty'?'💩':item.type==='Both'?'💧💩':'💧'; title = item.type + ' Diaper'; meta = `${fmtDate(item.timestamp)} · ${fmtTime(item.timestamp)}`;}
     else if(currSeg === 'food') { icon = item.react==='Severe'?'🚨':item.react==='Mild'?'⚠️':'✅'; title = item.food; meta = `${fmtDate(item.timestamp)} · ${fmtTime(item.timestamp)}`;}
     else if(currSeg === 'weight') { icon = '📏'; title = `W: ${item.weight||'--'}kg | L: ${item.length||'--'}cm | H: ${item.head||'--'}cm`; meta = `${fmtDate(item.date)}`; }
-    const editBtn = currSeg === 'weight' ? `<div class="swipe-action" style="background:var(--blue);" onclick="editEntry('${currSeg}', ${i})">Edit</div>` : '';
     return `
     <div class="swipe-container">
       <div class="swipe-content"><span class="log-icon">${icon}</span><div class="log-body"><div class="log-title">${title}</div><div class="log-meta">${meta}</div></div></div>
-      <div class="swipe-actions"><div class="swipe-action" style="background:var(--red); border-radius: 0 16px 16px 0;" onclick="delEntry('${currSeg}', ${i})">Del</div></div>
+      <div class="swipe-actions">
+        ${currSeg === 'weight' ? `<div class="swipe-action" style="background:var(--blue);" onclick="editEntry('${currSeg}', ${i})">Edit</div>` : ''}
+        <div class="swipe-action" style="background:var(--red); border-radius: 0 16px 16px 0;" onclick="delEntry('${currSeg}', ${i})">Del</div>
+      </div>
     </div>`;
   }).join('');
 }
@@ -1021,75 +1071,352 @@ function renderMilestones() {
 }
 
 /* ═══════════════════════════════════════ CHARTS ═══ */
+function destroyAllCharts() {
+  Object.keys(charts).forEach(key => {
+    if(charts[key]) { charts[key].destroy(); charts[key] = null; }
+  });
+}
+
 function renderCharts() {
+  destroyAllCharts();
+  
+  const tc = document.documentElement.dataset.theme==='dark'?'#8b9ab5':'#5a6a85';
+  
+  // 24-Hour Timeline
   const ctxT = document.getElementById('timeline-chart').getContext('2d');
-  if(charts.timeline) charts.timeline.destroy();
   const h24 = now() - 86400000;
   const toHr = (ts) => (new Date(ts).getTime() - h24) / 3600000;
   const slp = data.sleeps.filter(x=>new Date(x.timestamp).getTime()>h24).map(s=>({x:toHr(s.timestamp), y:3}));
   const dia = data.diapers.filter(x=>new Date(x.timestamp).getTime()>h24).map(d=>({x:toHr(d.timestamp), y:2}));
   const fds = data.feeds.filter(x=>new Date(x.timestamp).getTime()>h24).map(f=>({x:toHr(f.timestamp), y:1}));
-  const tc = document.documentElement.dataset.theme==='dark'?'#8b9ab5':'#5a6a85';
+  
   charts.timeline = new Chart(ctxT, {
-    type: 'scatter', data: { datasets: [{data:slp, backgroundColor:'#c084fc'}, {data:dia, backgroundColor:'#38bdf8'}, {data:fds, backgroundColor:'#34d399'}] },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: {display:false} },
-      scales: { x: {min:0, max:24, ticks:{color:tc, callback:v=>new Date(h24+(v*3600000)).getHours()+'h'}}, y: {min:0.5, max:3.5, ticks:{color:tc, callback:v=>v===1?'Feed':v===2?'Diaper':v===3?'Sleep':''}} }
+    type: 'scatter', 
+    data: { 
+      datasets: [
+        {label: 'Sleep', data:slp, backgroundColor:'#c084fc', pointRadius: 6},
+        {label: 'Diaper', data:dia, backgroundColor:'#38bdf8', pointRadius: 6},
+        {label: 'Feed', data:fds, backgroundColor:'#34d399', pointRadius: 6}
+      ] 
+    },
+    options: { 
+      responsive: true, 
+      maintainAspectRatio: false, 
+      plugins: { legend: {display:true, labels: {color: tc, font: {size: 10}}} },
+      scales: { 
+        x: {min:0, max:24, ticks:{color:tc, callback:v=>Math.floor(v)+'h'}, grid: {color: 'rgba(255,255,255,0.1)'}}, 
+        y: {min:0.5, max:3.5, ticks:{color:tc, callback:v=>v===1?'Feed':v===2?'Diaper':v===3?'Sleep':''}, grid: {display: false}} 
+      }
     }
   });
+
+  // Vitamin D Compliance Chart (Last 7 Days)
+  const ctxVD = document.getElementById('vitd-chart').getContext('2d');
+  const last7Days = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(now() - i * 86400000);
+    last7Days.push({
+      date: d.toDateString(),
+      label: d.toLocaleDateString([], {weekday: 'short'}),
+      taken: data.vitD === d.toDateString() ? 1 : 0
+    });
+  }
+  
+  charts.vitD = new Chart(ctxVD, {
+    type: 'bar',
+    data: {
+      labels: last7Days.map(d => d.label),
+      datasets: [{
+        label: 'Vitamin D Taken',
+        data: last7Days.map(d => d.taken),
+        backgroundColor: last7Days.map(d => d.taken ? '#34d399' : 'rgba(248,113,113,0.5)'),
+        borderColor: last7Days.map(d => d.taken ? '#059669' : '#f87171'),
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: 1,
+          ticks: {
+            stepSize: 1,
+            callback: v => v === 1 ? '✓' : '✗',
+            color: tc
+          }
+        },
+        x: {
+          ticks: { color: tc }
+        }
+      },
+      plugins: {
+        legend: { display: false }
+      }
+    }
+  });
+
+  // Feeding Distribution Chart
+  const ctxFD = document.getElementById('feeding-distribution-chart').getContext('2d');
+  const feedTypes = ['Nursing', 'Bottle', 'Pump'];
+  const feedCounts = feedTypes.map(type => 
+    data.feeds.filter(f => f.type === type).length
+  );
+  
+  charts.feedingDist = new Chart(ctxFD, {
+    type: 'doughnut',
+    data: {
+      labels: feedTypes,
+      datasets: [{
+        data: feedCounts,
+        backgroundColor: ['#34d399', '#38bdf8', '#f472b6'],
+        borderColor: 'transparent'
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: { color: tc, padding: 15 }
+        }
+      }
+    }
+  });
+
+  // Diaper Change Trend (Last 7 Days)
+  const ctxDT = document.getElementById('diaper-trend-chart').getContext('2d');
+  const diaperLast7Days = last7Days.map(day => {
+    return data.diapers.filter(d => 
+      new Date(d.timestamp).toDateString() === day.date
+    ).length;
+  });
+  
+  charts.diaperTrend = new Chart(ctxDT, {
+    type: 'line',
+    data: {
+      labels: last7Days.map(d => d.label),
+      datasets: [{
+        label: 'Diaper Changes',
+        data: diaperLast7Days,
+        borderColor: '#38bdf8',
+        backgroundColor: 'rgba(56,189,248,0.1)',
+        tension: 0.4,
+        fill: true
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: { color: tc, stepSize: 1 }
+        },
+        x: {
+          ticks: { color: tc }
+        }
+      }
+    }
+  });
+
+  // Parent Mood Chart
+  const ctxPM = document.getElementById('parent-mood-chart').getContext('2d');
+  const moodValues = { 'Great': 3, 'Okay': 2, 'Struggling': 1 };
+  const recentMoods = data.parent.slice(0, 7).reverse();
+  
+  charts.parentMood = new Chart(ctxPM, {
+    type: 'line',
+    data: {
+      labels: recentMoods.map(m => fmtDate(m.timestamp)),
+      datasets: [{
+        label: 'Mood',
+        data: recentMoods.map(m => moodValues[m.mood] || 0),
+        borderColor: '#a78bfa',
+        backgroundColor: 'rgba(167,139,250,0.1)',
+        tension: 0.4,
+        fill: true
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          min: 0,
+          max: 3,
+          ticks: {
+            callback: v => v === 3 ? '😊' : v === 2 ? '😐' : v === 1 ? '🌧️' : '',
+            color: tc
+          }
+        },
+        x: {
+          ticks: { color: tc }
+        }
+      }
+    }
+  });
+
   renderWeightChart();
 }
+
 function renderWeightChart() {
-  const ctxW = document.getElementById('weight-chart').getContext('2d');
   if(charts.growth) charts.growth.destroy();
+  
+  const ctxW = document.getElementById('weight-chart').getContext('2d');
   const sortedWeights = [...data.weights].sort((a,b)=>new Date(a.date)-new Date(b.date));
-  if(sortedWeights.length < 2) return;
+  
+  if(sortedWeights.length === 0) return;
+  
   const metric = document.getElementById('growth-metric').value; 
   const pts = sortedWeights.filter(w => w[metric] !== null);
-  if(!pts.length) return;
+  
+  if(pts.length === 0) return;
+  
   charts.growth = new Chart(ctxW, {
-    type: 'line', data: { labels: pts.map(w => w.date.substring(5)), datasets: [{ data: pts.map(w => w[metric]), borderColor: '#f472b6', tension: 0.4, pointBackgroundColor: '#db2777' }] },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: {display:false} } }
+    type: 'line', 
+    data: { 
+      labels: pts.map(w => w.date.substring(5)), 
+      datasets: [{ 
+        data: pts.map(w => w[metric]), 
+        borderColor: '#f472b6', 
+        backgroundColor: 'rgba(244,114,182,0.1)',
+        tension: 0.4, 
+        pointBackgroundColor: '#db2777',
+        fill: true
+      }] 
+    },
+    options: { 
+      responsive: true, 
+      maintainAspectRatio: false, 
+      plugins: { legend: {display: false} },
+      scales: {
+        x: { ticks: { color: document.documentElement.dataset.theme==='dark'?'#8b9ab5':'#5a6a85' } },
+        y: { ticks: { color: document.documentElement.dataset.theme==='dark'?'#8b9ab5':'#5a6a85' } }
+      }
+    }
   });
 }
 
 /* ═══════════════════════════════════════ SETTINGS ═══ */
 function openProfile() { 
-  document.getElementById('p-name').value = data.profile.name||''; document.getElementById('p-birth').value = data.profile.birthDate||'';
+  document.getElementById('p-name').value = data.profile.name||''; 
+  document.getElementById('p-birth').value = data.profile.birthDate||'';
   updateUI(); // Refreshes the alerts UI button state
   document.getElementById('profile-modal').classList.add('open'); 
 }
 function closeProfile() { document.getElementById('profile-modal').classList.remove('open'); }
 function saveProfile() {
-  data.profile.name = document.getElementById('p-name').value; data.profile.birthDate = document.getElementById('p-birth').value;
-  save(); closeProfile(); updateUI(); if(currView==='milestones') renderMilestones();
+  data.profile.name = document.getElementById('p-name').value; 
+  data.profile.birthDate = document.getElementById('p-birth').value;
+  save(); closeProfile(); updateUI(); 
+  if(currView==='milestones') renderMilestones();
+  if(currView==='analytics') renderCharts();
 }
 function toggleTheme() {
-  data.theme = data.theme === 'dark' ? 'light' : 'dark'; data.explicitlySetTheme = true;
-  document.documentElement.dataset.theme = data.theme; save(); if(currView==='analytics') renderCharts();
+  data.theme = data.theme === 'dark' ? 'light' : 'dark'; 
+  data.explicitlySetTheme = true;
+  document.documentElement.dataset.theme = data.theme; 
+  
+  const themeBtn = document.getElementById('theme-btn');
+  themeBtn.textContent = data.theme === 'dark' ? '☀️' : '🌙';
+  
+  save(); 
+  if(currView==='analytics') renderCharts();
 }
-function exportData() {
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([JSON.stringify(data)], {type: "application/json"}));
-  a.download = `baby-data-${new Date().toISOString().slice(0,10)}.json`; a.click();
+function exportData(format = 'json') {
+  if (format === 'csv') {
+    // Create CSV with all data
+    let csv = 'Type,Timestamp,Details\n';
+    
+    data.feeds.forEach(f => {
+      csv += `Feed,${f.timestamp},"${f.type} ${f.side||''} ${f.dur||''}min ${f.vol||''}oz"\n`;
+    });
+    data.sleeps.forEach(s => {
+      csv += `Sleep,${s.timestamp},"${s.dur}min"\n`;
+    });
+    data.diapers.forEach(d => {
+      csv += `Diaper,${d.timestamp},"${d.type}"\n`;
+    });
+    data.weights.forEach(w => {
+      csv += `Growth,${w.date},"W:${w.weight}kg L:${w.length}cm H:${w.head}cm"\n`;
+    });
+    data.foods.forEach(f => {
+      csv += `Food,${f.timestamp},"${f.food} - ${f.react}"\n`;
+    });
+    data.meds.forEach(m => {
+      csv += `Medicine,${m.timestamp},"${m.type}: ${m.note}"\n`;
+    });
+    data.parent.forEach(p => {
+      csv += `Parent,${p.timestamp},"Mood: ${p.mood} Water:${p.water} Shower:${p.shower}"\n`;
+    });
+    
+    const blob = new Blob([csv], {type: 'text/csv'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `baby-data-${new Date().toISOString().slice(0,10)}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  } else {
+    // JSON export (original)
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], {type: "application/json"}));
+    a.download = `baby-data-${new Date().toISOString().slice(0,10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
 }
 function handleImport(e) {
   const reader = new FileReader();
-  reader.onload = (ev) => { try { data = JSON.parse(ev.target.result); save(); alert('Imported!'); location.reload(); } catch(err) { alert('Error reading file.'); } };
+  reader.onload = (ev) => { 
+    try { 
+      data = JSON.parse(ev.target.result); 
+      save(); 
+      alert('Data imported successfully!'); 
+      location.reload(); 
+    } catch(err) { 
+      alert('Error reading file. Please check the format.'); 
+    } 
+  };
   if(e.target.files[0]) reader.readAsText(e.target.files[0]);
 }
 function pruneData() {
-  if(!confirm('Delete old data?')) return;
+  if(!confirm('Delete data older than 6 months? This cannot be undone.')) return;
   const cut = now() - (180 * 86400000);
   ['feeds','sleeps','diapers','meds','foods','parent'].forEach(k => data[k] = data[k].filter(x => new Date(x.timestamp).getTime() > cut));
   data.weights = data.weights.filter(x => new Date(x.date).getTime() > cut);
-  save(); alert('Pruned.'); closeProfile();
+  save(); 
+  alert('Old data pruned successfully.'); 
+  closeProfile();
+  updateUI();
 }
 
 /* ═══════════════════════════════════════ INIT ═══ */
 function init() { 
-    load(); document.documentElement.dataset.theme = data.theme; 
+    load(); 
+    document.documentElement.dataset.theme = data.theme; 
+    document.getElementById('theme-btn').textContent = data.theme === 'dark' ? '☀️' : '🌙';
+    
     data.weights.sort((a,b)=>new Date(b.date)-new Date(a.date)); 
-    updateUI(); loadLiveTimers(); setInterval(updateUI, 60000); 
+    updateUI(); 
+    loadLiveTimers(); 
+    
+    // Update every minute
+    setInterval(updateUI, 60000); 
+    
+    // Handle window resize for charts
+    window.addEventListener('resize', () => {
+      if(currView === 'analytics') {
+        clearTimeout(window.resizeTimer);
+        window.resizeTimer = setTimeout(() => renderCharts(), 250);
+      }
+    });
 }
 init();
 </script>
