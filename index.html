@@ -7,327 +7,351 @@
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
-  :root {
-    --bg: #06091a; --surface: #0c1228; --card: #111827; --card2: #161f35;
-    --border: rgba(255,255,255,0.07); --border2: rgba(255,255,255,0.12);
-    --text: #e8edf5; --text2: #8b9ab5; --text3: #4f617a;
-    --accent: #a78bfa; --accent2: #7c3aed;
-    --green: #34d399; --amber: #fbbf24; --red: #f87171;
-    --blue: #38bdf8; --pink: #f472b6; --purple: #c084fc; --teal: #2dd4bf; --orange: #fb923c;
-    --input: #0c1228; --overlay: rgba(0,0,0,0.8);
-  }
-  [data-theme="light"] {
-    --bg: #f0f4ff; --surface: #e8edf8; --card: #ffffff; --card2: #f5f7ff;
-    --border: rgba(0,0,0,0.07); --border2: rgba(0,0,0,0.13);
-    --text: #1a2035; --text2: #5a6a85; --text3: #9baabf;
-    --input: #f0f4ff; --overlay: rgba(0,0,0,0.55);
-  }
+/* ── ROOT TOKENS ── */
+:root {
+  --bg:#06091a; --surface:#0c1228; --card:#111827; --card2:#161f35;
+  --border:rgba(255,255,255,0.07); --border2:rgba(255,255,255,0.13);
+  --text:#e8edf5; --text2:#8b9ab5; --text3:#4f617a;
+  --accent:#a78bfa; --accent2:#7c3aed;
+  --green:#34d399; --amber:#fbbf24; --red:#f87171;
+  --blue:#38bdf8; --pink:#f472b6; --purple:#c084fc; --teal:#2dd4bf; --orange:#fb923c;
+  --input:#0c1228; --overlay:rgba(0,0,0,0.8);
+}
+[data-theme="light"] {
+  --bg:#f0f4ff; --surface:#e8edf8; --card:#ffffff; --card2:#f5f7ff;
+  --border:rgba(0,0,0,0.07); --border2:rgba(0,0,0,0.13);
+  --text:#1a2035; --text2:#5a6a85; --text3:#9baabf;
+  --input:#f0f4ff; --overlay:rgba(0,0,0,0.55);
+}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  html, body { height: 100%; overflow: hidden; }
-  body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--text); display: flex; justify-content: center; align-items: stretch; }
-  #app { width: 100%; max-width: 480px; display: flex; flex-direction: column; height: 100%; position: relative; background: var(--bg); }
+/* ── RESET & BASE ── */
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);display:flex;justify-content:center;}
+#app{width:100%;max-width:480px;display:flex;flex-direction:column;height:100%;background:var(--bg);}
+*{scrollbar-width:none;} *::-webkit-scrollbar{display:none;}
 
-  /* ── HEADER ── */
-  header { padding: 18px 20px 14px; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; z-index: 50; }
-  .header-left h1 { font-size: 20px; font-weight: 900; background: linear-gradient(130deg, var(--accent), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  .header-left p { font-size: 11px; color: var(--text3); margin-top: 2px; font-weight: 600; }
-  .header-right { display: flex; gap: 8px; }
-  .icon-btn { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--border2); background: var(--card); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 17px; color: var(--text2); transition: all 0.2s; }
-  .icon-btn:hover { background: var(--card2); transform: scale(1.05); }
+/* ── HEADER ── */
+header{padding:16px 18px 12px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-shrink:0;z-index:50;}
+.header-left h1{font-size:19px;font-weight:900;background:linear-gradient(130deg,var(--accent),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.header-left p{font-size:11px;color:var(--text3);margin-top:2px;font-weight:600;}
+.header-right{display:flex;gap:7px;}
+.icon-btn{width:36px;height:36px;border-radius:50%;border:1px solid var(--border2);background:var(--card);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--text2);transition:all 0.2s;}
+.icon-btn:hover{background:var(--card2);}
 
-  #scroll-area { flex: 1; overflow-y: auto; padding: 20px 16px 24px; scrollbar-width: none; }
-  #scroll-area::-webkit-scrollbar { display: none; }
+/* ── SCROLL ── */
+#scroll-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:18px 14px 22px;}
 
-  /* ── NAV ── */
-  nav { display: flex; background: var(--surface); border-top: 1px solid var(--border); padding: 8px 0 max(12px, env(safe-area-inset-bottom)); flex-shrink: 0; }
-  .nav-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; background: none; border: none; cursor: pointer; padding: 6px 0; transition: all 0.2s; }
-  .nav-icon { font-size: 21px; }
-  .nav-label { font-size: 10px; font-weight: 700; color: var(--text3); }
-  .nav-btn.active .nav-label { color: var(--accent); }
-  .nav-dot { width: 18px; height: 3px; border-radius: 2px; background: var(--accent); margin-top: 1px; visibility: hidden; }
-  .nav-btn.active .nav-dot { visibility: visible; }
+/* ── BOTTOM NAV ── */
+nav{display:flex;background:var(--surface);border-top:1px solid var(--border);padding:7px 0 max(11px,env(safe-area-inset-bottom));flex-shrink:0;}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;padding:5px 0;transition:transform 0.1s;}
+.nav-btn:active{transform:scale(0.9);}
+.nav-icon{font-size:20px;}
+.nav-label{font-size:10px;font-weight:700;color:var(--text3);font-family:'Nunito',sans-serif;transition:color 0.15s;}
+.nav-btn.active .nav-label{color:var(--accent);}
+.nav-dot{width:16px;height:3px;border-radius:2px;background:var(--accent);margin-top:1px;visibility:hidden;}
+.nav-btn.active .nav-dot{visibility:visible;}
 
-  /* ── CARDS & ALERTS ── */
-  .card { background: var(--card); border: 1px solid var(--border); border-radius: 22px; padding: 22px; margin-bottom: 14px; position: relative; transition: transform 0.2s; }
-  .card:hover { transform: translateY(-2px); }
-  .card-label { font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--text3); margin-bottom: 6px; }
-  
-  .daily-check { display: flex; align-items: center; justify-content: space-between; background: var(--card2); padding: 14px; border-radius: 14px; border: 1px solid var(--border); margin-bottom: 14px; cursor: pointer; transition: all 0.2s; }
-  .daily-check:hover { border-color: var(--accent); }
-  .daily-check-text { font-size: 14px; font-weight: 800; }
-  .checkbox { width: 24px; height: 24px; border-radius: 8px; border: 2px solid var(--border2); display: flex; align-items: center; justify-content: center; font-size: 14px; transition: 0.2s; }
-  .checkbox.checked { background: var(--green); border-color: var(--green); color: #fff; }
+/* ── CARDS ── */
+.card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:20px;margin-bottom:12px;position:relative;}
+.card-label{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:6px;}
 
-  /* ── HERO TIMERS ── */
-  .timer-wrap { text-align: center; flex: 1; }
-  .timer-val { font-size: 28px; font-weight: 900; line-height: 1; letter-spacing: -1px; margin-bottom: 4px; transition: color 0.3s; }
-  .timer-sub { font-size: 11px; color: var(--text3); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
-  .med-timer-val { font-size: 32px; font-weight: 900; color: var(--orange); }
+/* ── DAILY CHECK ── */
+.daily-check{display:flex;align-items:center;justify-content:space-between;background:var(--card);padding:14px 16px;border-radius:16px;border:1px solid var(--border);margin-bottom:12px;cursor:pointer;transition:border-color 0.2s;}
+.daily-check:hover{border-color:var(--accent);}
+.daily-check-text{font-size:14px;font-weight:800;}
+.checkbox{width:24px;height:24px;border-radius:8px;border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:14px;transition:all 0.2s;}
+.checkbox.checked{background:var(--green);border-color:var(--green);color:#fff;}
 
-  /* ── QUICK LOG GRID ── */
-  .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-  .action-btn { padding: 16px; border-radius: 18px; border: none; color: #fff; cursor: pointer; display: flex; flex-direction: column; gap: 8px; text-align: left; font-family: 'Nunito', sans-serif; position: relative; transition: all 0.2s; }
-  .action-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
-  .action-btn .btn-emoji { font-size: 26px; }
-  .action-btn .btn-text-main { font-size: 15px; font-weight: 800; line-height: 1.2; }
-  .btn-feed { background: linear-gradient(135deg, #34d399, #059669); }
-  .btn-sleep { background: linear-gradient(135deg, #c084fc, #7e22ce); }
-  .btn-diaper { background: linear-gradient(135deg, #38bdf8, #0ea5e9); }
-  .btn-growth { background: linear-gradient(135deg, #f472b6, #db2777); }
-  .btn-meds { background: linear-gradient(135deg, #fb923c, #ea580c); }
-  .btn-food { background: linear-gradient(135deg, #a3e635, #65a30d); color: #000; }
-  .btn-parent { background: linear-gradient(135deg, #a78bfa, #6366f1); grid-column: span 2; flex-direction: row; align-items: center; padding: 20px; }
-  
-  /* ── MILESTONES & VACCINES ── */
-  .ms-group { margin-bottom: 24px; }
-  .ms-title { font-size: 16px; font-weight: 900; color: var(--text); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-  .ms-item { background: var(--card2); border: 1px solid var(--border); border-radius: 14px; padding: 14px 16px; margin-bottom: 8px; font-size: 14px; font-weight: 700; color: var(--text2); display: flex; gap: 12px; transition: all 0.2s; }
-  .ms-item:hover { border-color: var(--accent); }
-  .vax-list-item { background: var(--input); border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; transition: all 0.2s; }
-  .vax-list-item:hover { border-color: var(--accent); }
+/* ── HERO TIMERS ── */
+.timer-wrap{text-align:center;flex:1;}
+.timer-val{font-size:26px;font-weight:900;line-height:1;letter-spacing:-1px;margin-bottom:3px;transition:color 0.3s;}
+.timer-sub{font-size:10.5px;color:var(--text3);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.med-timer-val{font-size:30px;font-weight:900;color:var(--orange);}
 
-  /* ── LOG ITEMS (SWIPE) ── */
-  .swipe-container { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; margin-bottom: 8px; border-radius: 16px; background: var(--card2); }
-  .swipe-content { min-width: 100%; scroll-snap-align: start; background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 15px; display: flex; align-items: center; gap: 12px; z-index: 2; }
-  .swipe-actions { min-width: 140px; display: flex; scroll-snap-align: end; }
-  .swipe-action { flex: 1; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 13px; cursor: pointer; transition: all 0.2s; }
-  .swipe-action:hover { opacity: 0.9; }
-  .log-icon { font-size: 22px; }
-  .log-body { flex: 1; }
-  .log-title { font-size: 14px; font-weight: 800; }
-  .log-meta { font-size: 11px; color: var(--text3); margin-top: 3px; font-weight: 600; }
+/* ── ACTION GRID ── */
+.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
+.action-btn{padding:16px;border-radius:17px;border:none;color:#fff;cursor:pointer;display:flex;flex-direction:column;gap:7px;text-align:left;font-family:'Nunito',sans-serif;transition:all 0.15s;}
+.action-btn:active{transform:scale(0.96);}
+.action-btn .btn-emoji{font-size:24px;}
+.action-btn .btn-text-main{font-size:14px;font-weight:800;line-height:1.2;}
+.btn-feed{background:linear-gradient(135deg,#34d399,#059669);}
+.btn-sleep{background:linear-gradient(135deg,#c084fc,#7e22ce);}
+.btn-diaper{background:linear-gradient(135deg,#38bdf8,#0ea5e9);}
+.btn-growth{background:linear-gradient(135deg,#f472b6,#db2777);}
+.btn-meds{background:linear-gradient(135deg,#fb923c,#ea580c);}
+.btn-food{background:linear-gradient(135deg,#a3e635,#65a30d);color:#000;}
+.btn-parent{background:linear-gradient(135deg,#a78bfa,#6366f1);grid-column:span 2;flex-direction:row;align-items:center;padding:18px;}
 
-  /* ── MODALS & FORMS ── */
-  .modal-overlay { position: fixed; inset: 0; background: var(--overlay); z-index: 200; display: flex; align-items: flex-end; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
-  .modal-overlay.open { opacity: 1; pointer-events: all; }
-  .modal-sheet { background: var(--card); border-radius: 28px 28px 0 0; padding: 12px 22px max(28px, env(safe-area-inset-bottom)); width: 100%; max-width: 480px; transform: translateY(100%); transition: transform 0.3s; max-height: 90vh; overflow-y: auto; }
-  .modal-overlay.open .modal-sheet { transform: translateY(0); }
-  .modal-handle { width: 40px; height: 4px; background: var(--border2); border-radius: 2px; margin: 0 auto 22px; }
-  
-  .type-tabs { display: flex; gap: 4px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 4px;}
-  .type-tab { flex: 1; min-width: 70px; padding: 10px 4px; border-radius: 14px; border: 1px solid var(--border); background: var(--card2); color: var(--text3); font-size: 12px; font-weight: 800; cursor: pointer; text-align: center; transition: all 0.2s; }
-  .type-tab.active { background: linear-gradient(135deg, var(--accent), var(--blue)); color: #fff; border-color: transparent; }
-  .type-tab:hover:not(.active) { border-color: var(--accent); }
-  
-  .choice-row { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
-  .choice-btn { flex: 1; min-width: calc(33% - 8px); padding: 12px 4px; border-radius: 14px; border: 2px solid var(--border2); background: var(--input); color: var(--text2); font-size: 13px; font-weight: 800; cursor: pointer; text-align: center; transition: all 0.2s; }
-  .choice-btn:hover { border-color: var(--accent); transform: translateY(-1px); }
-  .choice-btn .emoji { display: block; font-size: 20px; margin-bottom: 4px; }
-  
-  .field-label { font-size: 13px; font-weight: 800; color: var(--text2); margin-bottom: 8px; display: block; }
-  .field-input { width: 100%; padding: 15px 16px; border-radius: 14px; border: 1.5px solid var(--border2); background: var(--input); color: var(--text); font-size: 16px; font-weight: 700; margin-bottom: 20px; outline: none; transition: all 0.2s; }
-  .field-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.1); }
-  
-  .submit-row { display: flex; gap: 10px; }
-  .cancel-btn { padding: 16px; border-radius: 16px; border: 1.5px solid var(--border2); background: transparent; color: var(--text2); font-size: 16px; font-weight: 800; cursor: pointer; flex-shrink: 0; transition: all 0.2s; }
-  .cancel-btn:hover { border-color: var(--red); color: var(--red); }
-  .submit-btn { flex: 1; padding: 16px; border-radius: 16px; border: none; color: #fff; font-size: 16px; font-weight: 800; cursor: pointer; transition: all 0.2s; }
-  .submit-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+/* ── MILESTONES ── */
+.ms-group{margin-bottom:22px;}
+.ms-title{font-size:15px;font-weight:900;color:var(--text);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.ms-item{background:var(--card2);border:1px solid var(--border);border-radius:13px;padding:13px 15px;margin-bottom:7px;font-size:13.5px;font-weight:700;color:var(--text2);display:flex;gap:10px;align-items:flex-start;}
+.vax-list-item{background:var(--input);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;gap:8px;}
 
-  /* ── LIVE TIMERS ── */
-  .live-timer-container { background: var(--card2); border: 1px solid var(--border); border-radius: 16px; padding: 20px 16px; margin-bottom: 20px; text-align: center; }
-  .timer-display { font-size: 42px; font-weight: 900; font-variant-numeric: tabular-nums; margin-bottom: 16px; line-height: 1; letter-spacing: -1px;}
-  .timer-controls { display: flex; gap: 8px; justify-content: center; }
-  .timer-controls button { flex: 1; padding: 12px 8px; border-radius: 12px; border: none; font-weight: 800; cursor: pointer; font-size: 13px; display:flex; align-items:center; justify-content:center; gap:6px; transition: all 0.2s; }
-  .timer-controls button:hover { transform: translateY(-1px); }
-  .btn-pause { background: rgba(251, 191, 36, 0.15); color: var(--amber); }
-  .btn-stop { background: rgba(248, 113, 113, 0.15); color: var(--red); }
-  .btn-restart { background: var(--card); color: var(--text2); border: 1px solid var(--border2) !important; }
+/* ── HISTORY LOG ITEMS ── */
+.log-item{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:13px 15px;margin-bottom:8px;display:flex;align-items:center;gap:10px;}
+.log-icon{font-size:20px;flex-shrink:0;}
+.log-body{flex:1;min-width:0;}
+.log-title{font-size:13.5px;font-weight:800;}
+.log-meta{font-size:11px;color:var(--text3);margin-top:3px;font-weight:600;}
+.log-actions{display:flex;gap:5px;flex-shrink:0;}
+.btn-edit{background:rgba(56,189,248,0.12);border:none;border-radius:8px;color:var(--blue);padding:6px 10px;cursor:pointer;font-size:11.5px;font-weight:800;font-family:'Nunito',sans-serif;transition:background 0.15s;}
+.btn-edit:hover{background:rgba(56,189,248,0.22);}
+.btn-del{background:rgba(248,113,113,0.12);border:none;border-radius:8px;color:var(--red);padding:6px 10px;cursor:pointer;font-size:13px;transition:background 0.15s;}
+.btn-del:hover{background:rgba(248,113,113,0.22);}
+#load-more-btn{width:100%;padding:13px;border-radius:13px;border:1px solid var(--border);background:var(--card2);color:var(--text2);font-size:13px;font-weight:800;cursor:pointer;margin-top:8px;font-family:'Nunito',sans-serif;transition:background 0.15s;}
+#load-more-btn:hover{background:var(--card);}
 
-  .seg-tabs { display: flex; gap: 8px; margin-bottom: 18px; overflow-x: auto; padding-bottom:4px; }
-  .seg-tab { flex: 1; min-width: 70px; padding: 11px; border-radius: 14px; border: 1px solid var(--border); background: var(--card); color: var(--text2); font-size: 13px; font-weight: 800; cursor: pointer; text-align: center; transition: all 0.2s; }
-  .seg-tab.active { background: linear-gradient(135deg, var(--accent), var(--blue)); color: #fff; }
-  .seg-tab:hover:not(.active) { border-color: var(--accent); }
-  
-  .chart-wrap { width: 100%; height: 240px; position: relative; margin-top: 10px; }
-  
-  /* New chart cards */
-  .chart-card { margin-bottom: 14px; }
-  .chart-card-title { font-size: 14px; font-weight: 800; color: var(--text); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-  
-  * { scrollbar-width: none; } *::-webkit-scrollbar { display: none; }
+/* ── MODALS ── */
+.modal-overlay{position:fixed;inset:0;background:var(--overlay);z-index:200;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.2s;}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal-sheet{background:var(--card);border-radius:26px 26px 0 0;padding:10px 20px max(26px,env(safe-area-inset-bottom));width:100%;max-width:480px;transform:translateY(100%);transition:transform 0.3s cubic-bezier(0.34,1.1,0.64,1);max-height:92vh;overflow-y:auto;}
+.modal-overlay.open .modal-sheet{transform:translateY(0);}
+.modal-handle{width:38px;height:4px;background:var(--border2);border-radius:2px;margin:0 auto 20px;}
+
+/* Center modal (profile) — NO inline transform override */
+.modal-center{align-items:center;padding:18px;}
+.modal-center .modal-sheet{border-radius:22px;max-width:420px;transform:scale(0.9) translateY(30px);opacity:0;transition:transform 0.25s cubic-bezier(0.34,1.2,0.64,1),opacity 0.25s;}
+.modal-center.open .modal-sheet{transform:scale(1) translateY(0);opacity:1;}
+
+/* ── FORMS ── */
+.type-tabs{display:flex;gap:5px;margin-bottom:18px;overflow-x:auto;padding-bottom:3px;}
+.type-tab{flex:1;min-width:66px;padding:10px 4px;border-radius:13px;border:1px solid var(--border);background:var(--card2);color:var(--text3);font-size:11.5px;font-weight:800;cursor:pointer;text-align:center;transition:all 0.15s;font-family:'Nunito',sans-serif;}
+.type-tab.active{background:linear-gradient(135deg,var(--accent),var(--blue));color:#fff;border-color:transparent;}
+.choice-row{display:flex;gap:7px;margin-bottom:18px;flex-wrap:wrap;}
+.choice-btn{flex:1;min-width:calc(33% - 7px);padding:12px 4px;border-radius:13px;border:2px solid var(--border2);background:var(--input);color:var(--text2);font-size:12.5px;font-weight:800;cursor:pointer;text-align:center;transition:all 0.15s;font-family:'Nunito',sans-serif;}
+.choice-btn:hover{border-color:var(--accent);}
+.choice-btn .emoji{display:block;font-size:19px;margin-bottom:3px;}
+.field-label{font-size:12.5px;font-weight:800;color:var(--text2);margin-bottom:7px;display:block;}
+.field-input{width:100%;padding:14px 15px;border-radius:13px;border:1.5px solid var(--border2);background:var(--input);color:var(--text);font-size:15px;font-weight:700;margin-bottom:18px;outline:none;transition:border-color 0.2s;font-family:'Nunito',sans-serif;-webkit-appearance:none;}
+.field-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(167,139,250,0.1);}
+.field-hint{font-size:11px;color:var(--text3);margin-top:-10px;margin-bottom:16px;line-height:1.4;}
+.submit-row{display:flex;gap:9px;margin-top:4px;}
+.cancel-btn{padding:14px 16px;border-radius:14px;border:1.5px solid var(--border2);background:transparent;color:var(--text2);font-size:14px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.15s;}
+.cancel-btn:hover{border-color:var(--red);color:var(--red);}
+.submit-btn{flex:1;padding:14px;border-radius:14px;border:none;color:#fff;font-size:15px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.15s;}
+.submit-btn:hover{opacity:0.9;}
+.submit-btn:active{transform:scale(0.97);}
+
+/* ── LIVE TIMER WIDGET ── */
+.live-timer-container{background:var(--card2);border:1px solid var(--border);border-radius:14px;padding:18px 14px;margin-bottom:18px;text-align:center;}
+.timer-display{font-size:42px;font-weight:900;font-variant-numeric:tabular-nums;margin-bottom:14px;line-height:1;letter-spacing:-1px;}
+.timer-controls{display:flex;gap:7px;justify-content:center;}
+.timer-controls button{flex:1;padding:11px 6px;border-radius:11px;border:none;font-weight:800;cursor:pointer;font-size:12.5px;display:flex;align-items:center;justify-content:center;gap:5px;font-family:'Nunito',sans-serif;transition:all 0.15s;}
+.btn-pause{background:rgba(251,191,36,0.15);color:var(--amber);}
+.btn-stop{background:rgba(248,113,113,0.15);color:var(--red);}
+.btn-restart{background:var(--card);color:var(--text2);border:1px solid var(--border2) !important;}
+
+/* ── HISTORY SEGMENTS ── */
+.seg-tabs{display:flex;gap:7px;margin-bottom:16px;overflow-x:auto;padding-bottom:3px;}
+.seg-tab{flex:1;min-width:68px;padding:10px;border-radius:13px;border:1px solid var(--border);background:var(--card);color:var(--text2);font-size:12.5px;font-weight:800;cursor:pointer;text-align:center;font-family:'Nunito',sans-serif;transition:all 0.15s;white-space:nowrap;}
+.seg-tab.active{background:linear-gradient(135deg,var(--accent),var(--blue));color:#fff;border-color:transparent;}
+
+/* ── ANALYTICS ── */
+.chart-card{margin-bottom:12px;}
+.chart-card-title{font-size:13.5px;font-weight:800;color:var(--text);margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.chart-wrap{width:100%;height:220px;position:relative;}
+.chart-empty{text-align:center;padding:40px 20px;color:var(--text3);}
+.chart-empty .ce-emoji{font-size:34px;margin-bottom:10px;}
+.chart-empty p{font-weight:700;font-size:14px;margin-bottom:5px;color:var(--text2);}
+.chart-empty span{font-size:12px;}
+.alert-box{border-radius:13px;padding:12px 15px;font-size:13px;font-weight:700;display:flex;align-items:flex-start;gap:8px;margin-top:10px;}
+.alert-icon{font-size:17px;flex-shrink:0;}
+.alert-ok{background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.2);color:var(--green);}
+.alert-warn{background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.2);color:var(--amber);}
+.alert-bad{background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.2);color:var(--red);}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.view-enter{animation:fadeUp 0.18s ease both;}
 </style>
 </head>
 <body>
 <div id="app">
 
-  <header>
-    <div class="header-left">
-      <h1 id="header-name">🌙 Baby Tracker</h1>
-      <p id="header-age"></p>
-    </div>
-    <div class="header-right">
-      <button class="icon-btn" onclick="openProfile()">⚙️</button>
-      <button class="icon-btn" id="theme-btn" onclick="toggleTheme()">☀️</button>
-    </div>
-  </header>
+<!-- HEADER -->
+<header>
+  <div class="header-left">
+    <h1 id="header-name">🌙 Baby Tracker</h1>
+    <p id="header-age"></p>
+  </div>
+  <div class="header-right">
+    <button class="icon-btn" onclick="openProfile()">⚙️</button>
+    <button class="icon-btn" id="theme-btn" onclick="toggleTheme()">☀️</button>
+  </div>
+</header>
 
-  <div id="scroll-area">
-    <div id="view-dashboard">
-      
-      <div class="card" id="vaccine-card">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-          <p class="card-label" style="margin:0; color:var(--blue);">Next Vaccination</p>
-          <button class="icon-btn" style="width:30px; height:30px; font-size:14px; background:var(--card2)" onclick="openVaxManage()">⚙️</button>
-        </div>
-        <div id="vax-info">
-          <div id="vax-next-title" style="font-size: 18px; font-weight: 800; line-height: 1.2; margin-bottom: 4px;">—</div>
-          <div id="vax-next-desc" style="font-size: 12px; color: var(--text3); margin-bottom: 14px; line-height: 1.4;"></div>
-          
-          <div id="vax-date-block" style="background:var(--card2); border:1px solid var(--border); border-radius:12px; padding:12px; margin-bottom:14px; display:flex; align-items:center; gap:12px;">
-            <div style="font-size:24px;">📅</div>
-            <div>
-                <div style="font-size:10px; font-weight:800; color:var(--text3); text-transform:uppercase; letter-spacing:1px;">Appointment Date</div>
-                <div id="vax-calculated-date" style="font-size:15px; font-weight:900; color:var(--text);">—</div>
-            </div>
-          </div>
+<div id="scroll-area">
 
-          <div style="display:flex; align-items:center; justify-content:space-between;">
-             <div id="vax-next-countdown" style="font-size: 13px; font-weight: 800; color: var(--amber); background: rgba(251,191,36,0.1); padding: 8px 12px; border-radius: 10px;"></div>
-             <button id="vax-done-btn" onclick="markNextVaxDone()" style="background:var(--green); border:none; color:#fff; padding:8px 14px; border-radius:10px; font-weight:800; font-size:13px; cursor:pointer; transition: all 0.2s;">Mark Done ✓</button>
+  <!-- ── DASHBOARD ── -->
+  <div id="view-dashboard">
+
+    <div class="card" id="vaccine-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <p class="card-label" style="margin:0;color:var(--blue)">Next Vaccination</p>
+        <button class="icon-btn" style="width:30px;height:30px;font-size:13px;background:var(--card2)" onclick="openVaxManage()">⚙️</button>
+      </div>
+      <div id="vax-info">
+        <div id="vax-next-title" style="font-size:18px;font-weight:800;line-height:1.2;margin-bottom:4px">—</div>
+        <div id="vax-next-desc" style="font-size:12px;color:var(--text3);margin-bottom:12px;line-height:1.4"></div>
+        <div id="vax-date-block" style="background:var(--card2);border:1px solid var(--border);border-radius:11px;padding:11px;margin-bottom:12px;display:flex;align-items:center;gap:10px;">
+          <div style="font-size:22px">📅</div>
+          <div>
+            <div style="font-size:10px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:1px">Appointment Date</div>
+            <div id="vax-calculated-date" style="font-size:14px;font-weight:900;color:var(--text)">—</div>
           </div>
         </div>
-        <div id="vax-all-done" style="display:none; font-size:14px; font-weight:700; color:var(--green); text-align:center; padding: 10px 0;">
-          All scheduled vaccinations completed! 🎉
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
+          <div id="vax-next-countdown" style="font-size:13px;font-weight:800;padding:7px 11px;border-radius:9px;"></div>
+          <button id="vax-done-btn" onclick="markNextVaxDone()" style="background:var(--green);border:none;color:#fff;padding:8px 14px;border-radius:9px;font-weight:800;font-size:12.5px;cursor:pointer;font-family:'Nunito',sans-serif;">Mark Done ✓</button>
         </div>
       </div>
+      <div id="vax-all-done" style="display:none;font-size:14px;font-weight:700;color:var(--green);text-align:center;padding:10px 0"></div>
+    </div>
 
-      <div class="daily-check" onclick="toggleVitD()">
-        <span class="daily-check-text">☀️ Vitamin D Drops Today?</span>
-        <div class="checkbox" id="vitd-check"></div>
+    <div class="daily-check" onclick="toggleVitD()">
+      <span class="daily-check-text">☀️ Vitamin D Drops Today?</span>
+      <div class="checkbox" id="vitd-check"></div>
+    </div>
+
+    <div class="card" style="display:flex;justify-content:space-between;align-items:center;padding:15px;">
+      <div class="timer-wrap">
+        <p class="card-label">Last Feed</p>
+        <div id="timer-val" class="timer-val">—</div>
+        <div id="timer-sub" class="timer-sub"></div>
       </div>
-
-      <div class="card" style="display: flex; justify-content: space-between; align-items: center; padding: 16px;">
-        <div class="timer-wrap">
-          <p class="card-label">Last Feed</p>
-          <div id="timer-val" class="timer-val">—</div>
-          <div id="timer-sub" class="timer-sub"></div>
-        </div>
-        <div style="width:1px; height:50px; background:var(--border); margin: 0 10px;"></div>
-        <div class="timer-wrap">
-          <p class="card-label">Diaper</p>
-          <div id="diaper-val" class="timer-val">—</div>
-          <div id="diaper-sub" class="timer-sub"></div>
-        </div>
-        <div style="width:1px; height:50px; background:var(--border); margin: 0 10px;"></div>
-        <div class="timer-wrap" id="stash-wrap">
-          <p class="card-label">Stash (oz)</p>
-          <div id="stash-val" class="timer-val" style="color:var(--teal)">0</div>
-        </div>
+      <div style="width:1px;height:46px;background:var(--border);margin:0 8px;"></div>
+      <div class="timer-wrap">
+        <p class="card-label">Diaper</p>
+        <div id="diaper-val" class="timer-val">—</div>
+        <div id="diaper-sub" class="timer-sub"></div>
       </div>
-
-      <div class="card" id="med-timer-card" style="display:none; text-align:center; border-color:var(--orange)">
-        <p class="card-label" style="color:var(--orange)">Medication Safety Timer</p>
-        <div id="med-timer-val" class="med-timer-val"></div>
-        <div id="med-timer-sub" class="timer-sub" style="margin-top:4px"></div>
-      </div>
-
-      <div style="font-size: 14px; font-weight: 800; color: var(--text2); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1.5px;">Quick Log</div>
-      
-      <div class="action-grid">
-        <button class="action-btn btn-feed" onclick="openLog('feed')">
-          <span class="btn-emoji">🍼</span><span class="btn-text-main">Feed</span>
-        </button>
-        <button class="action-btn btn-sleep" onclick="openLog('sleep')">
-          <span class="btn-emoji">💤</span><span class="btn-text-main">Sleep</span>
-        </button>
-        <button class="action-btn btn-diaper" onclick="openLog('diaper')">
-          <span class="btn-emoji">💧</span><span class="btn-text-main">Diaper</span>
-        </button>
-        <button class="action-btn btn-growth" onclick="openLog('growth')">
-          <span class="btn-emoji">📏</span><span class="btn-text-main">Growth</span>
-        </button>
-        <button class="action-btn btn-meds" onclick="openLog('meds')">
-          <span class="btn-emoji">💊</span><span class="btn-text-main">Medicine</span>
-        </button>
-        <button class="action-btn btn-food" onclick="openLog('food')">
-          <span class="btn-emoji">🥑</span><span class="btn-text-main">Solids/Allergy</span>
-        </button>
-        <button class="action-btn btn-parent" onclick="openLog('parent')">
-          <span class="btn-emoji" style="margin-right:14px">❤️</span>
-          <div><span class="btn-text-main">Parent Check-in</span><div style="font-size:11px; opacity:0.8">How are you doing?</div></div>
-        </button>
+      <div style="width:1px;height:46px;background:var(--border);margin:0 8px;"></div>
+      <div class="timer-wrap">
+        <p class="card-label">Stash (oz)</p>
+        <div id="stash-val" class="timer-val" style="color:var(--teal)">0</div>
       </div>
     </div>
 
-    <div id="view-history" style="display:none">
-      <p style="font-size: 11px; color: var(--text3); text-align: center; margin-bottom: 12px;">Swipe items left to edit or delete</p>
-      <div class="seg-tabs">
-        <button class="seg-tab active" id="seg-feed" onclick="switchSeg('feed')">🍼 Feed</button>
-        <button class="seg-tab" id="seg-sleep" onclick="switchSeg('sleep')">💤 Sleep</button>
-        <button class="seg-tab" id="seg-diaper" onclick="switchSeg('diaper')">💧 Diaper</button>
-        <button class="seg-tab" id="seg-food" onclick="switchSeg('food')">🥑 Food</button>
-        <button class="seg-tab" id="seg-weight" onclick="switchSeg('weight')">📏 Growth</button>
-      </div>
-      <div id="history-list"></div>
+    <div class="card" id="med-timer-card" style="display:none;text-align:center;border-color:var(--orange)">
+      <p class="card-label" style="color:var(--orange)">Medication Safety Timer</p>
+      <div id="med-timer-val" class="med-timer-val"></div>
+      <div id="med-timer-sub" class="timer-sub" style="margin-top:3px"></div>
     </div>
 
-    <div id="view-milestones" style="display:none">
-      <p style="font-size: 13px; color: var(--text3); margin-bottom: 20px; line-height: 1.5;">Checklists based on CDC/AAP guidelines. Bring up any concerns at your next pediatrician visit.</p>
-      <div id="milestone-content"></div>
-    </div>
+    <div style="font-size:13px;font-weight:800;color:var(--text2);margin-bottom:11px;text-transform:uppercase;letter-spacing:1.5px;">Quick Log</div>
 
-    <div id="view-analytics" style="display:none">
-      <div class="card chart-card">
-        <div class="chart-card-title">📊 24-Hour Activity Timeline</div>
-        <div class="chart-wrap"><canvas id="timeline-chart"></canvas></div>
-      </div>
-
-      <div class="card chart-card">
-        <div class="chart-card-title">☀️ Vitamin D Compliance (Last 7 Days)</div>
-        <div class="chart-wrap"><canvas id="vitd-chart"></canvas></div>
-      </div>
-
-      <div class="card chart-card">
-        <div class="chart-card-title">🍼 Feeding Distribution</div>
-        <div class="chart-wrap"><canvas id="feeding-distribution-chart"></canvas></div>
-      </div>
-
-      <div class="card chart-card">
-        <div class="chart-card-title">💧 Diaper Changes (Last 7 Days)</div>
-        <div class="chart-wrap"><canvas id="diaper-trend-chart"></canvas></div>
-      </div>
-
-      <div class="card chart-card">
-        <div class="chart-card-title" style="display:flex; justify-content:space-between; align-items:center;">
-          <span>📏 Growth Curve</span>
-          <select id="growth-metric" onchange="renderWeightChart()" style="background:var(--input); border:1px solid var(--border); color:var(--text); padding:4px 8px; border-radius:8px; font-weight:700;">
-            <option value="weight">Weight</option>
-            <option value="length">Length</option>
-            <option value="head">Head Circ.</option>
-          </select>
-        </div>
-        <div class="chart-wrap"><canvas id="weight-chart"></canvas></div>
-      </div>
-
-      <div class="card chart-card">
-        <div class="chart-card-title">❤️ Parent Well-being Trends</div>
-        <div class="chart-wrap"><canvas id="parent-mood-chart"></canvas></div>
-      </div>
+    <div class="action-grid">
+      <button class="action-btn btn-feed"   onclick="openLog('feed')">  <span class="btn-emoji">🍼</span><span class="btn-text-main">Feed</span></button>
+      <button class="action-btn btn-sleep"  onclick="openLog('sleep')"> <span class="btn-emoji">💤</span><span class="btn-text-main">Sleep</span></button>
+      <button class="action-btn btn-diaper" onclick="openLog('diaper')"><span class="btn-emoji">💧</span><span class="btn-text-main">Diaper</span></button>
+      <button class="action-btn btn-growth" onclick="openLog('growth')"><span class="btn-emoji">📏</span><span class="btn-text-main">Growth</span></button>
+      <button class="action-btn btn-meds"   onclick="openLog('meds')">  <span class="btn-emoji">💊</span><span class="btn-text-main">Medicine</span></button>
+      <button class="action-btn btn-food"   onclick="openLog('food')">  <span class="btn-emoji">🥑</span><span class="btn-text-main">Solids / Allergy</span></button>
+      <button class="action-btn btn-parent" onclick="openLog('parent')">
+        <span class="btn-emoji" style="margin-right:12px">❤️</span>
+        <div><span class="btn-text-main">Parent Check-in</span><div style="font-size:11px;opacity:0.82;margin-top:2px">How are you doing?</div></div>
+      </button>
     </div>
   </div>
 
-  <nav>
-    <button class="nav-btn active" id="nav-dashboard" onclick="switchView('dashboard')"><span class="nav-icon">🏠</span><span class="nav-label">Home</span><div class="nav-dot"></div></button>
-    <button class="nav-btn" id="nav-history" onclick="switchView('history')"><span class="nav-icon">📋</span><span class="nav-label">History</span><div class="nav-dot"></div></button>
-    <button class="nav-btn" id="nav-milestones" onclick="switchView('milestones')"><span class="nav-icon">⭐</span><span class="nav-label">Milestones</span><div class="nav-dot"></div></button>
-    <button class="nav-btn" id="nav-analytics" onclick="switchView('analytics')"><span class="nav-icon">📊</span><span class="nav-label">Analytics</span><div class="nav-dot"></div></button>
-  </nav>
-</div>
+  <!-- ── HISTORY ── -->
+  <div id="view-history" style="display:none">
+    <div class="seg-tabs">
+      <button class="seg-tab active" id="seg-feed"   onclick="switchSeg('feed')">🍼 Feed</button>
+      <button class="seg-tab"        id="seg-sleep"  onclick="switchSeg('sleep')">💤 Sleep</button>
+      <button class="seg-tab"        id="seg-diaper" onclick="switchSeg('diaper')">💧 Diaper</button>
+      <button class="seg-tab"        id="seg-food"   onclick="switchSeg('food')">🥑 Food</button>
+      <button class="seg-tab"        id="seg-weight" onclick="switchSeg('weight')">📏 Growth</button>
+    </div>
+    <div id="history-list"></div>
+  </div>
 
-<div class="modal-overlay" id="vax-modal" onclick="if(event.target.id === 'vax-modal') closeVaxManage()">
+  <!-- ── MILESTONES ── -->
+  <div id="view-milestones" style="display:none">
+    <p style="font-size:12.5px;color:var(--text3);margin-bottom:18px;line-height:1.5;">Based on CDC/AAP guidelines. Bring up any concerns at your next pediatrician visit.</p>
+    <div id="milestone-content"></div>
+  </div>
+
+  <!-- ── ANALYTICS ── -->
+  <div id="view-analytics" style="display:none">
+
+    <div class="card chart-card">
+      <div class="chart-card-title">📊 24-Hour Activity Timeline</div>
+      <div id="timeline-empty" style="display:none"><div class="chart-empty"><div class="ce-emoji">📅</div><p>No activity yet</p><span>Log feeds, diapers or sleep to see the timeline</span></div></div>
+      <div id="timeline-wrap" class="chart-wrap"><canvas id="timeline-chart"></canvas></div>
+    </div>
+
+    <div class="card chart-card">
+      <div class="chart-card-title">😴 Sleep Trend (Last 7 Days)</div>
+      <div id="sleep-trend-empty" style="display:none"><div class="chart-empty"><div class="ce-emoji">😴</div><p>No sleep logged yet</p><span>Start logging sleep to see trends</span></div></div>
+      <div id="sleep-trend-wrap" class="chart-wrap"><canvas id="sleep-trend-chart"></canvas></div>
+      <div id="sleep-24h-box" style="display:none;margin-top:12px;"></div>
+    </div>
+
+    <div class="card chart-card">
+      <div class="chart-card-title">☀️ Vitamin D Compliance (Last 7 Days)</div>
+      <div id="vitd-empty" style="display:none"><div class="chart-empty"><div class="ce-emoji">☀️</div><p>No check-ins recorded</p><span>Tap the Vitamin D check on the home screen daily</span></div></div>
+      <div id="vitd-wrap" class="chart-wrap"><canvas id="vitd-chart"></canvas></div>
+    </div>
+
+    <div class="card chart-card">
+      <div class="chart-card-title">🍼 Feeding Distribution</div>
+      <div id="feed-dist-empty" style="display:none"><div class="chart-empty"><div class="ce-emoji">🍼</div><p>No feeds logged yet</p><span>Log your first feed to see the breakdown</span></div></div>
+      <div id="feed-dist-wrap" class="chart-wrap"><canvas id="feeding-distribution-chart"></canvas></div>
+    </div>
+
+    <div class="card chart-card">
+      <div class="chart-card-title">💧 Diaper Changes (Last 7 Days)</div>
+      <div id="diaper-trend-empty" style="display:none"><div class="chart-empty"><div class="ce-emoji">💧</div><p>No diapers logged yet</p><span>Start logging to see 7-day trends</span></div></div>
+      <div id="diaper-trend-wrap" class="chart-wrap"><canvas id="diaper-trend-chart"></canvas></div>
+    </div>
+
+    <div class="card chart-card">
+      <div class="chart-card-title">
+        <span>📏 Growth Curve</span>
+        <select id="growth-metric" onchange="rebuildGrowthChart()" style="background:var(--input);border:1px solid var(--border);color:var(--text);padding:4px 8px;border-radius:8px;font-weight:700;font-family:'Nunito',sans-serif;font-size:12px;">
+          <option value="weight">Weight (kg)</option>
+          <option value="length">Length (cm)</option>
+          <option value="head">Head Circ. (cm)</option>
+        </select>
+      </div>
+      <div id="growth-empty" style="display:none"><div class="chart-empty"><div class="ce-emoji">📏</div><p id="growth-empty-msg">No growth data yet</p><span>Log a measurement to start tracking</span></div></div>
+      <div id="growth-wrap" class="chart-wrap"><canvas id="weight-chart"></canvas></div>
+    </div>
+
+    <div class="card chart-card">
+      <div class="chart-card-title">❤️ Parent Well-being</div>
+      <div id="parent-empty" style="display:none"><div class="chart-empty"><div class="ce-emoji">❤️</div><p>No check-ins yet</p><span>Log how you're feeling using Parent Check-in</span></div></div>
+      <div id="parent-wrap" class="chart-wrap"><canvas id="parent-mood-chart"></canvas></div>
+    </div>
+
+  </div>
+</div><!-- /scroll-area -->
+
+<!-- BOTTOM NAV -->
+<nav>
+  <button class="nav-btn active" id="nav-dashboard"  onclick="switchView('dashboard')"> <span class="nav-icon">🏠</span><span class="nav-label">Home</span><div class="nav-dot"></div></button>
+  <button class="nav-btn"        id="nav-history"    onclick="switchView('history')">   <span class="nav-icon">📋</span><span class="nav-label">History</span><div class="nav-dot"></div></button>
+  <button class="nav-btn"        id="nav-milestones" onclick="switchView('milestones')"><span class="nav-icon">⭐</span><span class="nav-label">Milestones</span><div class="nav-dot"></div></button>
+  <button class="nav-btn"        id="nav-analytics"  onclick="switchView('analytics')"> <span class="nav-icon">📊</span><span class="nav-label">Analytics</span><div class="nav-dot"></div></button>
+</nav>
+</div><!-- /app -->
+
+<!-- ═══ VACCINE MODAL ═══ -->
+<div class="modal-overlay" id="vax-modal" onclick="if(event.target.id==='vax-modal')closeVaxManage()">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
-    <h2 style="margin-bottom: 16px;">Manage Schedule</h2>
-    <div id="vax-list" style="max-height: 35vh; overflow-y: auto; margin-bottom:16px;"></div>
-    <div style="background:var(--card2); padding:16px; border-radius:16px;">
-      <h3 style="font-size:14px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;" id="vax-form-title">
-        <span>Add / Edit Vaccine</span>
-        <button onclick="clearVaxForm()" style="background:none; border:none; color:var(--text3); font-size:12px; cursor:pointer;">Reset Form</button>
+    <h2 style="margin-bottom:16px;font-size:18px;">💉 Manage Schedule</h2>
+    <div id="vax-list" style="max-height:32vh;overflow-y:auto;margin-bottom:14px;"></div>
+    <div style="background:var(--card2);padding:16px;border-radius:16px;">
+      <h3 style="font-size:13px;margin-bottom:11px;display:flex;justify-content:space-between;align-items:center;" id="vax-form-title">
+        <span>Add Vaccine</span>
+        <button onclick="clearVaxForm()" style="background:none;border:none;color:var(--text3);font-size:12px;cursor:pointer;font-family:'Nunito',sans-serif;">Clear</button>
       </h3>
       <input type="hidden" id="vax-edit-id">
-      <div style="display:flex; gap:10px;">
+      <div style="display:flex;gap:9px;">
         <div style="flex:2"><label class="field-label">Label</label><input class="field-input" id="vax-label" type="text" placeholder="e.g. 6 Week"></div>
         <div style="flex:1"><label class="field-label">Weeks</label><input class="field-input" id="vax-weeks" type="number" placeholder="6"></div>
       </div>
@@ -341,1083 +365,1278 @@
   </div>
 </div>
 
-<div class="modal-overlay" id="log-modal" onclick="if(event.target.id === 'log-modal') closeLog()">
+<!-- ═══ LOG MODAL ═══ -->
+<div class="modal-overlay" id="log-modal" onclick="if(event.target.id==='log-modal')closeLog()">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
-
     <div class="type-tabs" id="log-tabs">
-      <button class="type-tab" id="tab-feed" onclick="switchLogTab('feed')">🍼 Feed</button>
-      <button class="type-tab" id="tab-sleep" onclick="switchLogTab('sleep')">💤 Sleep</button>
+      <button class="type-tab" id="tab-feed"   onclick="switchLogTab('feed')">🍼 Feed</button>
+      <button class="type-tab" id="tab-sleep"  onclick="switchLogTab('sleep')">💤 Sleep</button>
       <button class="type-tab" id="tab-diaper" onclick="switchLogTab('diaper')">💧 Diaper</button>
       <button class="type-tab" id="tab-growth" onclick="switchLogTab('growth')">📏 Growth</button>
-      <button class="type-tab" id="tab-meds" onclick="switchLogTab('meds')">💊 Meds</button>
-      <button class="type-tab" id="tab-food" onclick="switchLogTab('food')">🥑 Food</button>
+      <button class="type-tab" id="tab-meds"   onclick="switchLogTab('meds')">💊 Meds</button>
+      <button class="type-tab" id="tab-food"   onclick="switchLogTab('food')">🥑 Food</button>
       <button class="type-tab" id="tab-parent" onclick="switchLogTab('parent')">❤️ Parent</button>
     </div>
 
+    <!-- FEED -->
     <div id="form-feed" class="log-form">
       <label class="field-label">Feed type</label>
       <div class="choice-row" id="feed-type-row">
-        <button class="choice-btn active" data-val="Nursing" onclick="pickOpt(this, 'feedType')"><span class="emoji">🤱</span>Nursing</button>
-        <button class="choice-btn" data-val="Bottle" onclick="pickOpt(this, 'feedType')"><span class="emoji">🍼</span>Bottle</button>
-        <button class="choice-btn" data-val="Pump" onclick="pickOpt(this, 'feedType')"><span class="emoji">🥛</span>Pump</button>
+        <button class="choice-btn" data-val="Nursing" onclick="pickOpt(this,'feedType')"><span class="emoji">🤱</span>Nursing</button>
+        <button class="choice-btn" data-val="Bottle"  onclick="pickOpt(this,'feedType')"><span class="emoji">🍼</span>Bottle</button>
+        <button class="choice-btn" data-val="Pump"    onclick="pickOpt(this,'feedType')"><span class="emoji">🥛</span>Pump</button>
       </div>
-
-      <div id="feed-side-wrap" style="display:block;">
+      <div id="feed-side-wrap">
         <label class="field-label">Side</label>
         <div class="choice-row" id="side-choice-row">
-          <button class="choice-btn active" data-val="Left" onclick="pickOpt(this, 'breastSide')">Left</button>
-          <button class="choice-btn" data-val="Right" onclick="pickOpt(this, 'breastSide')">Right</button>
-          <button class="choice-btn" data-val="Both" onclick="pickOpt(this, 'breastSide')">Both</button>
+          <button class="choice-btn" data-val="Left"  onclick="pickOpt(this,'breastSide')">Left</button>
+          <button class="choice-btn" data-val="Right" onclick="pickOpt(this,'breastSide')">Right</button>
+          <button class="choice-btn" data-val="Both"  onclick="pickOpt(this,'breastSide')">Both</button>
         </div>
       </div>
-      
       <div id="feed-vol-wrap" style="display:none;">
         <label class="field-label">Volume (oz)</label>
         <input class="field-input" id="feed-vol" type="number" step="0.5" placeholder="e.g. 4">
-        <p style="font-size:11px; color:var(--text3); margin-top:-10px; margin-bottom:20px;">Pumping adds to stash. Bottle feeding pumped milk subtracts.</p>
+        <p class="field-hint">Pumping adds to stash. Bottle feeding pumped milk subtracts from stash.</p>
       </div>
-
-      <label class="field-label">Duration (minutes)</label>
-      
+      <label class="field-label">Duration — use timer or enter manually</label>
       <div class="live-timer-container" id="feed-live-timer" style="display:none;">
-          <div class="timer-display" id="feed-timer-display">00:00</div>
-          <div class="timer-controls">
-              <button class="btn-pause" id="feed-pause-btn" type="button" onclick="pauseLiveTimer('feed')">⏸ Pause</button>
-              <button class="btn-stop" type="button" onclick="stopLiveTimer('feed')">⏹ Stop</button>
-              <button class="btn-restart" type="button" onclick="restartLiveTimer('feed')">🔄 Restart</button>
-          </div>
+        <div class="timer-display" id="feed-timer-display">00:00</div>
+        <div class="timer-controls">
+          <button class="btn-pause" id="feed-pause-btn" type="button" onclick="pauseLiveTimer('feed')">⏸ Pause</button>
+          <button class="btn-stop"  type="button" onclick="stopLiveTimer('feed')">⏹ Stop</button>
+          <button class="btn-restart" type="button" onclick="restartLiveTimer('feed')">🔄 Restart</button>
+        </div>
       </div>
-
-      <div id="feed-timer-btn-wrap" style="display: flex; gap: 10px; margin-bottom: 20px;">
-        <button class="choice-btn" type="button" onclick="startLiveTimer('feed')" style="flex: 1; background: rgba(52,211,153,0.1); color: var(--green); border-color: var(--green);">⏱ Start Timer</button>
-        <input class="field-input" id="feed-dur" type="number" placeholder="Mins" style="margin-bottom: 0; flex: 1;">
+      <div id="feed-timer-btn-wrap" style="display:flex;gap:8px;margin-bottom:18px;">
+        <button class="choice-btn" type="button" onclick="startLiveTimer('feed')" style="flex:1;background:rgba(52,211,153,0.1);color:var(--green);border-color:var(--green);">⏱ Start Timer</button>
+        <input class="field-input" id="feed-dur" type="number" placeholder="Mins" style="margin-bottom:0;flex:1;">
       </div>
-
-      <div class="submit-row"><button class="cancel-btn" onclick="closeLog()">✕</button><button class="submit-btn" style="background:var(--green)" onclick="submitFeed()">Save Feed</button></div>
+      <div class="submit-row">
+        <button class="cancel-btn" onclick="closeLog()">✕</button>
+        <button class="submit-btn" style="background:var(--green)" onclick="submitFeed()">Save Feed</button>
+      </div>
     </div>
 
+    <!-- SLEEP -->
     <div id="form-sleep" class="log-form" style="display:none">
-      <label class="field-label">Sleep (minutes)</label>
-
+      <label class="field-label">Duration — use timer or enter manually</label>
       <div class="live-timer-container" id="sleep-live-timer" style="display:none;">
-          <div class="timer-display" id="sleep-timer-display">00:00</div>
-          <div class="timer-controls">
-              <button class="btn-pause" id="sleep-pause-btn" type="button" onclick="pauseLiveTimer('sleep')">⏸ Pause</button>
-              <button class="btn-stop" type="button" onclick="stopLiveTimer('sleep')">⏹ Wake Up</button>
-              <button class="btn-restart" type="button" onclick="restartLiveTimer('sleep')">🔄 Restart</button>
-          </div>
+        <div class="timer-display" id="sleep-timer-display">00:00</div>
+        <div class="timer-controls">
+          <button class="btn-pause" id="sleep-pause-btn" type="button" onclick="pauseLiveTimer('sleep')">⏸ Pause</button>
+          <button class="btn-stop"  type="button" onclick="stopLiveTimer('sleep')">⏹ Wake Up</button>
+          <button class="btn-restart" type="button" onclick="restartLiveTimer('sleep')">🔄 Restart</button>
+        </div>
       </div>
-
-      <div id="sleep-timer-btn-wrap" style="display: flex; gap: 10px; margin-bottom: 20px;">
-        <button class="choice-btn" type="button" onclick="startLiveTimer('sleep')" style="flex: 1; background: rgba(192,132,252,0.1); color: var(--purple); border-color: var(--purple);">⏱ Start Sleep</button>
-        <input class="field-input" id="sleep-dur" type="number" placeholder="Mins" style="margin-bottom: 0; flex: 1;">
+      <div id="sleep-timer-btn-wrap" style="display:flex;gap:8px;margin-bottom:18px;">
+        <button class="choice-btn" type="button" onclick="startLiveTimer('sleep')" style="flex:1;background:rgba(192,132,252,0.1);color:var(--purple);border-color:var(--purple);">⏱ Start Sleep</button>
+        <input class="field-input" id="sleep-dur" type="number" placeholder="Mins" style="margin-bottom:0;flex:1;">
       </div>
-
-      <div class="submit-row"><button class="cancel-btn" onclick="closeLog()">✕</button><button class="submit-btn" style="background:var(--purple)" onclick="submitSleep()">Save Sleep</button></div>
+      <div class="submit-row">
+        <button class="cancel-btn" onclick="closeLog()">✕</button>
+        <button class="submit-btn" style="background:var(--purple)" onclick="submitSleep()">Save Sleep</button>
+      </div>
     </div>
 
+    <!-- DIAPER -->
     <div id="form-diaper" class="log-form" style="display:none">
       <label class="field-label">Condition</label>
       <div class="choice-row" id="diaper-type-row">
-        <button class="choice-btn active" data-val="Wet" onclick="pickOpt(this, 'diaperType')"><span class="emoji">💧</span>Wet</button>
-        <button class="choice-btn" data-val="Dirty" onclick="pickOpt(this, 'diaperType')"><span class="emoji">💩</span>Dirty</button>
-        <button class="choice-btn" data-val="Both" onclick="pickOpt(this, 'diaperType')"><span class="emoji">💧💩</span>Both</button>
+        <button class="choice-btn" data-val="Wet"   onclick="pickOpt(this,'diaperType')"><span class="emoji">💧</span>Wet</button>
+        <button class="choice-btn" data-val="Dirty" onclick="pickOpt(this,'diaperType')"><span class="emoji">💩</span>Dirty</button>
+        <button class="choice-btn" data-val="Both"  onclick="pickOpt(this,'diaperType')"><span class="emoji">💧💩</span>Both</button>
       </div>
-      <div class="submit-row"><button class="cancel-btn" onclick="closeLog()">✕</button><button class="submit-btn" style="background:var(--blue)" onclick="submitDiaper()">Save Diaper</button></div>
+      <div class="submit-row">
+        <button class="cancel-btn" onclick="closeLog()">✕</button>
+        <button class="submit-btn" style="background:var(--blue)" onclick="submitDiaper()">Save Diaper</button>
+      </div>
     </div>
 
+    <!-- GROWTH -->
     <div id="form-growth" class="log-form" style="display:none">
-      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;">
         <div><label class="field-label">Weight (kg)</label><input class="field-input" id="gr-weight" type="number" step="0.01"></div>
         <div><label class="field-label">Length (cm)</label><input class="field-input" id="gr-length" type="number" step="0.1"></div>
-        <div><label class="field-label">Head (cm)</label><input class="field-input" id="gr-head" type="number" step="0.1"></div>
-        <div><label class="field-label">Date</label><input class="field-input" id="gr-date" type="date"></div>
+        <div><label class="field-label">Head (cm)</label>  <input class="field-input" id="gr-head"   type="number" step="0.1"></div>
+        <div><label class="field-label">Date</label>       <input class="field-input" id="gr-date"   type="date"></div>
       </div>
-      <div class="submit-row"><button class="cancel-btn" onclick="closeLog()">✕</button><button class="submit-btn" id="gr-submit-btn" style="background:var(--pink)" onclick="submitGrowth()">Save Growth</button></div>
+      <div class="submit-row">
+        <button class="cancel-btn" onclick="closeLog()">✕</button>
+        <button class="submit-btn" id="gr-submit-btn" style="background:var(--pink)" onclick="submitGrowth()">Save Growth</button>
+      </div>
     </div>
 
+    <!-- MEDS -->
     <div id="form-meds" class="log-form" style="display:none">
       <label class="field-label">Medication</label>
       <div class="choice-row" id="med-type-row">
-        <button class="choice-btn active" data-val="Acetaminophen" onclick="pickOpt(this, 'medType')">Acetaminophen</button>
-        <button class="choice-btn" data-val="Ibuprofen" onclick="pickOpt(this, 'medType')">Ibuprofen</button>
+        <button class="choice-btn" data-val="Acetaminophen" onclick="pickOpt(this,'medType')">Acetaminophen</button>
+        <button class="choice-btn" data-val="Ibuprofen"     onclick="pickOpt(this,'medType')">Ibuprofen</button>
       </div>
-      <label class="field-label">Dose & Notes</label>
-      <input class="field-input" id="med-note" type="text" placeholder="e.g. 2.5ml for fever">
-      <p style="font-size:11px; color:var(--text3); margin-top:-10px; margin-bottom:20px;">Saving starts a 6-hour safety countdown timer.</p>
-      <div class="submit-row"><button class="cancel-btn" onclick="closeLog()">✕</button><button class="submit-btn" style="background:var(--orange)" onclick="submitMed()">Save Meds & Start Timer</button></div>
+      <label class="field-label">Dose &amp; Notes</label>
+      <input class="field-input" id="med-note" type="text" placeholder="e.g. 2.5 ml for fever">
+      <p class="field-hint">Saving starts a 6-hour safety countdown timer on the dashboard.</p>
+      <div class="submit-row">
+        <button class="cancel-btn" onclick="closeLog()">✕</button>
+        <button class="submit-btn" style="background:var(--orange)" onclick="submitMed()">Save &amp; Start Timer</button>
+      </div>
     </div>
 
+    <!-- FOOD -->
     <div id="form-food" class="log-form" style="display:none">
       <label class="field-label">Food Introduced</label>
       <input class="field-input" id="food-name" type="text" placeholder="e.g. Peanut Butter, Eggs">
       <label class="field-label">Reaction</label>
       <div class="choice-row" id="food-react-row">
-        <button class="choice-btn active" data-val="None" onclick="pickOpt(this, 'foodReact')"><span class="emoji">✅</span>None</button>
-        <button class="choice-btn" data-val="Mild" onclick="pickOpt(this, 'foodReact')"><span class="emoji">⚠️</span>Mild</button>
-        <button class="choice-btn" data-val="Severe" onclick="pickOpt(this, 'foodReact')"><span class="emoji">🚨</span>Severe</button>
+        <button class="choice-btn" data-val="None"   onclick="pickOpt(this,'foodReact')"><span class="emoji">✅</span>None</button>
+        <button class="choice-btn" data-val="Mild"   onclick="pickOpt(this,'foodReact')"><span class="emoji">⚠️</span>Mild</button>
+        <button class="choice-btn" data-val="Severe" onclick="pickOpt(this,'foodReact')"><span class="emoji">🚨</span>Severe</button>
       </div>
-      <div class="submit-row"><button class="cancel-btn" onclick="closeLog()">✕</button><button class="submit-btn" style="background:var(--teal)" onclick="submitFood()">Save Food</button></div>
+      <div class="submit-row">
+        <button class="cancel-btn" onclick="closeLog()">✕</button>
+        <button class="submit-btn" style="background:var(--teal)" onclick="submitFood()">Save Food Log</button>
+      </div>
     </div>
 
+    <!-- PARENT -->
     <div id="form-parent" class="log-form" style="display:none">
-      <div style="text-align:center; margin-bottom:20px;">
-        <h3 style="margin-bottom:5px;">How are you feeling?</h3>
-        <p style="font-size:12px; color:var(--text3);">The fourth trimester is hard. Be honest.</p>
+      <div style="text-align:center;margin-bottom:18px;">
+        <h3 style="margin-bottom:5px;font-size:17px;">How are you feeling?</h3>
+        <p style="font-size:12px;color:var(--text3)">The fourth trimester is hard. Be honest.</p>
       </div>
       <div class="choice-row" id="parent-mood-row">
-        <button class="choice-btn active" data-val="Great" onclick="pickOpt(this, 'parentMood')"><span class="emoji">😊</span>Great</button>
-        <button class="choice-btn" data-val="Okay" onclick="pickOpt(this, 'parentMood')"><span class="emoji">😐</span>Okay</button>
-        <button class="choice-btn" data-val="Struggling" onclick="pickOpt(this, 'parentMood')"><span class="emoji">🌧️</span>Struggling</button>
+        <button class="choice-btn" data-val="Great"     onclick="pickOpt(this,'parentMood')"><span class="emoji">😊</span>Great</button>
+        <button class="choice-btn" data-val="Okay"      onclick="pickOpt(this,'parentMood')"><span class="emoji">😐</span>Okay</button>
+        <button class="choice-btn" data-val="Struggling" onclick="pickOpt(this,'parentMood')"><span class="emoji">🌧️</span>Struggling</button>
       </div>
-      <label class="field-label">Self Care Checklist</label>
-      <div style="display:flex; gap:10px; margin-bottom:20px;">
-        <label style="flex:1; display:flex; align-items:center; gap:8px; font-size:14px; font-weight:700;"><input type="checkbox" id="p-water" style="width:18px;height:18px;"> Drank Water</label>
-        <label style="flex:1; display:flex; align-items:center; gap:8px; font-size:14px; font-weight:700;"><input type="checkbox" id="p-shower" style="width:18px;height:18px;"> Showered</label>
+      <label class="field-label">Self Care</label>
+      <div style="display:flex;gap:10px;margin-bottom:18px;">
+        <label style="flex:1;display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;"><input type="checkbox" id="p-water" style="width:18px;height:18px;"> Drank Water</label>
+        <label style="flex:1;display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;"><input type="checkbox" id="p-shower" style="width:18px;height:18px;"> Showered</label>
       </div>
-      <div class="submit-row"><button class="cancel-btn" onclick="closeLog()">✕</button><button class="submit-btn" style="background:var(--accent2)" onclick="submitParent()">Save Log</button></div>
+      <div class="submit-row">
+        <button class="cancel-btn" onclick="closeLog()">✕</button>
+        <button class="submit-btn" style="background:var(--accent2)" onclick="submitParent()">Save Check-in</button>
+      </div>
     </div>
 
   </div>
 </div>
 
-<div class="modal-overlay" id="profile-modal" onclick="if(event.target.id === 'profile-modal') closeProfile()">
-  <div class="modal-sheet" style="border-radius: 24px; max-width:400px; margin: 0 auto; transform: scale(0.95);">
-    <div style="font-size: 20px; font-weight: 900; margin-bottom: 20px;">👶 Profile & Data</div>
-    <label class="field-label">Baby's Name</label><input class="field-input" id="p-name" type="text">
-    <label class="field-label">Birth Date</label><input class="field-input" id="p-birth" type="date">
-    <div class="submit-row"><button class="cancel-btn" onclick="closeProfile()">Cancel</button><button class="submit-btn" style="background:var(--accent)" onclick="saveProfile()">Save ✓</button></div>
-    
-    <div style="border-top: 1px solid var(--border); margin-top: 20px; padding-top: 20px;">
-      <div style="font-size: 14px; font-weight: 800; margin-bottom: 10px;">Alerts & Notifications</div>
-      <button class="choice-btn" id="btn-enable-alerts" style="width: 100%; margin-bottom: 10px; text-align:center;" onclick="requestNotificationPermission()">🔔 Enable System Alerts</button>
-      <p style="font-size:11px; color:var(--text3); margin-top:-5px; margin-bottom:15px; line-height:1.4;">Alerts trigger if it has been 3 hours since a feed or 2 hours since a diaper change. <br><strong style="color:var(--red)">Note:</strong> Mobile OS will block these if your screen is locked or you are using another app.</p>
+<!-- ═══ PROFILE MODAL ═══ -->
+<div class="modal-overlay modal-center" id="profile-modal" onclick="if(event.target.id==='profile-modal')closeProfile()">
+  <div class="modal-sheet" style="border-radius:22px;max-width:420px;">
+    <div style="font-size:19px;font-weight:900;margin-bottom:18px;">👶 Profile &amp; Settings</div>
+    <label class="field-label">Baby's Name</label>
+    <input class="field-input" id="p-name" type="text" placeholder="Enter name">
+    <label class="field-label">Birth Date</label>
+    <input class="field-input" id="p-birth" type="date">
+    <div class="submit-row" style="margin-bottom:20px;">
+      <button class="cancel-btn" onclick="closeProfile()">Cancel</button>
+      <button class="submit-btn" style="background:var(--accent)" onclick="saveProfile()">Save ✓</button>
     </div>
-
-    <div style="border-top: 1px solid var(--border); margin-top: 10px; padding-top: 20px;">
-      <div style="font-size: 14px; font-weight: 800; margin-bottom: 10px;">Data Management</div>
-      <div style="display:flex; gap:10px; margin-bottom:10px;">
-        <button class="choice-btn" onclick="exportData('json')">💾 Export JSON</button>
-        <button class="choice-btn" onclick="exportData('csv')">📊 Export CSV</button>
-        <button class="choice-btn" onclick="document.getElementById('import-file').click()">📂 Import</button>
+    <div style="border-top:1px solid var(--border);padding-top:18px;margin-bottom:16px;">
+      <div style="font-size:13px;font-weight:800;margin-bottom:10px;">Alerts &amp; Notifications</div>
+      <button id="btn-enable-alerts" onclick="requestNotificationPermission()" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border2);background:var(--card2);color:var(--text2);font-size:13px;font-weight:800;cursor:pointer;margin-bottom:8px;font-family:'Nunito',sans-serif;">🔔 Enable System Alerts</button>
+      <p class="field-hint" style="margin:0">Alerts trigger at 3h since last feed and 2h since last diaper. May be blocked when screen is locked.</p>
+    </div>
+    <div style="border-top:1px solid var(--border);padding-top:18px;">
+      <div style="font-size:13px;font-weight:800;margin-bottom:10px;">Data Management</div>
+      <div style="display:flex;gap:8px;margin-bottom:9px;flex-wrap:wrap;">
+        <button class="choice-btn" onclick="exportData('json')" style="min-width:0;flex:1">💾 JSON</button>
+        <button class="choice-btn" onclick="exportData('csv')"  style="min-width:0;flex:1">📊 CSV</button>
+        <button class="choice-btn" onclick="document.getElementById('import-file').click()" style="min-width:0;flex:1">📂 Import</button>
         <input type="file" id="import-file" accept=".json" style="display:none" onchange="handleImport(event)">
       </div>
-      <button class="choice-btn" style="width: 100%; border-color:rgba(248,113,113,0.3); color:var(--red);" onclick="pruneData()">🧹 Clear Data Older Than 6 Months</button>
+      <button class="choice-btn" onclick="pruneData()" style="width:100%;border-color:rgba(248,113,113,0.3);color:var(--red);">🧹 Clear Data Older Than 6 Months</button>
     </div>
   </div>
 </div>
 
+<!-- ═════════════════════ JS ═════════════════════ -->
 <script>
-/* ═══════════════════════════════════════ DATA & CONSTANTS ═══ */
-const STORE = 'baby-tracker-v6';
-let data = {
-  profile: { name: '', birthDate: '' },
-  feeds: [], sleeps: [], diapers: [], weights: [], meds: [], foods: [], parent: [], vaccines: [],
-  stash: 0, vitD: '', theme: 'dark', explicitlySetTheme: false, alertsEnabled: false
-};
+'use strict';
+/* ═══════════════════════════ CONSTANTS & DATA MODEL ═════════════════════════ */
+const STORE      = 'baby-tracker-v6';
+const TIMER_STORE = 'bt_liveTimers';
+const PAGE_SIZE  = 20;
 
 const MILESTONES = [
-  { m: 2, text: ["Smiles at people", "Coos or gurgles", "Holds head up when on tummy"] },
-  { m: 4, text: ["Chuckles", "Reaches for toys", "Holds head steady", "Rolls tummy to back"] },
-  { m: 6, text: ["Knows familiar faces", "Sits without support", "Passes things between hands"] },
-  { m: 9, text: ["Crawls", "Pulls to stand", "Plays peek-a-boo", "Pincer grasp (thumb & finger)"] },
-  { m: 12, text: ["Walks holding on", "Says mama/dada", "Waves bye-bye"] }
+  { m:2,  text:["Smiles at people","Coos or gurgles","Holds head up when on tummy"] },
+  { m:4,  text:["Chuckles","Reaches for toys","Holds head steady","Rolls tummy to back"] },
+  { m:6,  text:["Knows familiar faces","Sits without support","Passes things between hands"] },
+  { m:9,  text:["Crawls","Pulls to stand","Plays peek-a-boo","Pincer grasp (thumb & finger)"] },
+  { m:12, text:["Walks holding on","Says mama/dada","Waves bye-bye"] }
 ];
 
-let state = { feedType: 'Nursing', breastSide: 'Left', diaperType: 'Wet', medType: 'Acetaminophen', foodReact: 'None', parentMood: 'Great' };
-let editIndex = { type: null, idx: -1 }; 
-
-let liveTimers = {
-  feed: { start: 0, elapsed: 0, running: false, interval: null },
-  sleep: { start: 0, elapsed: 0, running: false, interval: null }
+let data = {
+  profile:{ name:'', birthDate:'' },
+  feeds:[], sleeps:[], diapers:[], weights:[], meds:[], foods:[], parent:[], vaccines:[],
+  stash:0,
+  vitD:[], /* FIX-1: array of date strings, not a single string */
+  theme:'dark', explicitlySetTheme:false, alertsEnabled:false
 };
 
-let charts = { timeline: null, growth: null, vitD: null, feedingDist: null, diaperTrend: null, parentMood: null };
-let notifiedFeedId = null;
-let notifiedDiaperId = null;
+let state = { feedType:'Nursing', breastSide:'Left', diaperType:'Wet', medType:'Acetaminophen', foodReact:'None', parentMood:'Great' };
 
-function load() { 
-  try { 
-    let raw = localStorage.getItem(STORE); 
-    if (raw) data = { ...data, ...JSON.parse(raw) }; 
-    
-    // Sort data consistently
-    ['feeds', 'sleeps', 'diapers', 'meds', 'foods', 'parent'].forEach(k => {
-      if (data[k]) data[k].sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
-    });
-    if (data.weights) data.weights.sort((a,b) => new Date(b.date) - new Date(a.date));
-    
-    if (!data.vaccines || data.vaccines.length === 0) {
+/* Monotonically incrementing ID — FIX-6: prevents collision on rapid inserts */
+let _uid = Date.now();
+const uid = () => ++_uid;
+
+/* Edit context */
+let editCtx = { type:null, idx:-1 };
+
+/* ═══════════════════════════ LIVE TIMER STATE ════════════════════════════ */
+/* FIX-16/17: timers have clean API; interval handles excluded from persistence */
+const BLANK_TIMER = () => ({ start:0, elapsed:0, running:false });
+let liveTimers = { feed: BLANK_TIMER(), sleep: BLANK_TIMER() };
+/* Interval handles kept only in memory */
+let timerIntervals = { feed:null, sleep:null };
+
+/* ═══════════════════════════ CHART STATE ════════════════════════════════ */
+let charts = { timeline:null, sleepTrend:null, vitD:null, feedDist:null, diaperTrend:null, growth:null, parentMood:null };
+/* FIX-13: only rebuild charts when data or theme changes */
+let chartsNeedRebuild = true;
+
+/* ═══════════════════════════ VACCINE CACHE ══════════════════════════════ */
+/* FIX-15: avoid recomputing vaccine schedule on every 60-second tick */
+let _vaxCache = null;
+let _vaxCacheKey = '';
+
+/* ═══════════════════════════ NOTIFICATION GUARDS ════════════════════════ */
+let notifiedFeedId = null, notifiedDiaperId = null;
+
+/* ═══════════════════════════ HISTORY PAGINATION ════════════════════════ */
+let historyPage = 0;
+
+/* ═════════════════════════════════════════════════════════════════════════
+   STORAGE
+   ═════════════════════════════════════════════════════════════════════════ */
+function load() {
+  try {
+    const raw = localStorage.getItem(STORE);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      data = { ...data, ...parsed };
+
+      /* FIX-1: migrate vitD from old single-string format to array */
+      if (typeof data.vitD === 'string') {
+        data.vitD = data.vitD ? [data.vitD] : [];
+      }
+      if (!Array.isArray(data.vitD)) data.vitD = [];
+
+      /* Ensure arrays exist */
+      ['feeds','sleeps','diapers','weights','meds','foods','parent'].forEach(k => {
+        if (!Array.isArray(data[k])) data[k] = [];
+      });
+      if (!Array.isArray(data.vaccines)) data.vaccines = [];
+    }
+
+    /* Default vaccine schedule */
+    if (data.vaccines.length === 0) {
+      const base = uid();
       data.vaccines = [
-        { id: Date.now()+1, weeks: 6, label: "6 Week Vaccines", desc: "DTaP, IPV, HepB, Hib, RV, PCV", done: false },
-        { id: Date.now()+2, weeks: 10, label: "10 Week Vaccines", desc: "DTaP, IPV, Hib, RV, PCV", done: false },
-        { id: Date.now()+3, weeks: 14, label: "14 Week Vaccines", desc: "DTaP, IPV, HepB, Hib, RV, PCV", done: false },
-        { id: Date.now()+4, weeks: 24, label: "6 Month (24 Wk) Vaccines", desc: "HepB, RV, DTaP, Hib, PCV, IPV", done: false },
-        { id: Date.now()+5, weeks: 52, label: "1 Year (52 Wk) Vaccines", desc: "MMR, Varicella, HepA, PCV", done: false }
+        { id:base,   weeks:6,  label:'6 Week Vaccines',        desc:'DTaP, IPV, HepB, Hib, RV, PCV',           done:false },
+        { id:base+1, weeks:10, label:'10 Week Vaccines',       desc:'DTaP, IPV, Hib, RV, PCV',                  done:false },
+        { id:base+2, weeks:14, label:'14 Week Vaccines',       desc:'DTaP, IPV, HepB, Hib, RV, PCV',           done:false },
+        { id:base+3, weeks:24, label:'6 Month Vaccines',       desc:'HepB, RV, DTaP, Hib, PCV, IPV',           done:false },
+        { id:base+4, weeks:52, label:'1 Year Vaccines',        desc:'MMR, Varicella, HepA, PCV',                done:false }
       ];
     }
 
-    if(!data.explicitlySetTheme && window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) data.theme = 'light';
+    /* FIX-14: single consolidated sort after load */
+    sortAllData();
+
+    if (!data.explicitlySetTheme && window.matchMedia && window.matchMedia('(prefers-color-scheme:light)').matches) {
+      data.theme = 'light';
+    }
   } catch(e) { console.error('Load error:', e); }
 }
-function save() { try { localStorage.setItem(STORE, JSON.stringify(data)); } catch(e) { console.error('Save error:', e); } }
 
-/* ═══════════════════════════════════════ NOTIFICATIONS ═══ */
-function requestNotificationPermission() {
-  if (!("Notification" in window)) return alert("This browser does not support desktop notification");
-  Notification.requestPermission().then(permission => {
-    if (permission === "granted") {
-      data.alertsEnabled = true; save(); updateUI();
-      new Notification("Alerts Enabled", { body: "Tracking 3h feeds and 2h diapers." });
-    }
+/* FIX-14: one place to sort everything */
+function sortAllData() {
+  ['feeds','sleeps','diapers','meds','foods','parent'].forEach(k => {
+    if (Array.isArray(data[k])) data[k].sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
   });
+  if (Array.isArray(data.weights)) data.weights.sort((a,b) => new Date(b.date) - new Date(a.date));
 }
 
-/* ═══════════════════════════════════════ UTILS ═══ */
-const now = () => Date.now();
-const vibrate = () => { if(navigator.vibrate) navigator.vibrate(50); };
-const minsSince = (ts) => Math.floor((now() - new Date(ts).getTime()) / 60000);
-function fmtDur(m) { if (m < 1) return '—'; if (m < 60) return m + 'm'; return Math.floor(m/60) + 'h ' + (m%60) + 'm'; }
-function fmtTime(ts) { return new Date(ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); }
-function fmtDate(ts) {
-  const d = new Date(ts), t = new Date(), y = new Date(t - 86400000);
-  return d.toDateString()===t.toDateString()?'Today':d.toDateString()===y.toDateString()?'Yesterday':d.toLocaleDateString([], { month: 'short', day: 'numeric' });
-}
-function getAgeDays() { return data.profile.birthDate ? Math.floor(Math.abs(now() - new Date(data.profile.birthDate).getTime()) / 86400000) : null; }
-
-/* ═══════════════════════════════════════ DASHBOARD ═══ */
-function updateUI() {
-  document.getElementById('header-name').textContent = data.profile.name ? `🌙 ${data.profile.name}'s Tracker` : "🌙 Baby Tracker";
-  const days = getAgeDays();
-  const ageEl = document.getElementById('header-age');
-  if (days === null) ageEl.textContent = 'Tap ⚙️ to add birth date';
-  else if (days === 0) ageEl.textContent = "Born today!";
-  else if (days < 30) ageEl.textContent = `${days} days old`;
-  else if (days < 365) ageEl.textContent = `${Math.floor(days/30.4)} months old`;
-  else ageEl.textContent = `${(days/365).toFixed(1)} years old`;
-
-  // Hero Feed Timer
-  const lastF = data.feeds[0];
-  const tv = document.getElementById('timer-val'), ts = document.getElementById('timer-sub');
-  let fMins = -1;
-  if (!lastF) { tv.textContent = '—'; ts.textContent = 'No feed logged'; } 
-  else {
-    fMins = minsSince(lastF.timestamp);
-    tv.textContent = fmtDur(fMins);
-    tv.style.color = fMins >= 180 ? 'var(--red)' : fMins >= 120 ? 'var(--amber)' : 'var(--green)';
-    let sideStr = lastF.side ? ` (${lastF.side})` : '';
-    ts.textContent = `${lastF.type}${sideStr}`;
-  }
-
-  // Hero Diaper Timer
-  const lastD = data.diapers[0];
-  const dv = document.getElementById('diaper-val'), ds = document.getElementById('diaper-sub');
-  let dMins = -1;
-  if (!lastD) { dv.textContent = '—'; ds.textContent = 'No diaper logged'; }
-  else {
-    dMins = minsSince(lastD.timestamp);
-    dv.textContent = fmtDur(dMins);
-    dv.style.color = dMins >= 180 ? 'var(--red)' : dMins >= 120 ? 'var(--amber)' : 'var(--blue)';
-    ds.textContent = lastD.type;
-  }
-
-  // System Alerts Check
-  if (data.alertsEnabled && Notification.permission === "granted") {
-      const alertBtn = document.getElementById('btn-enable-alerts');
-      if (alertBtn) { alertBtn.innerHTML = "✅ Alerts Enabled"; alertBtn.style.color = "var(--green)"; alertBtn.style.borderColor = "var(--green)"; alertBtn.style.background = "rgba(52,211,153,0.1)"; }
-      
-      if (lastF && fMins >= 180 && notifiedFeedId !== lastF.id) {
-          new Notification("Feeding Time", {body: "It has been 3 hours since the last feed."});
-          notifiedFeedId = lastF.id;
-      }
-      if (lastD && dMins >= 120 && notifiedDiaperId !== lastD.id) {
-          new Notification("Diaper Check", {body: "It has been 2 hours since the last diaper change."});
-          notifiedDiaperId = lastD.id;
-      }
-  }
-
-  // Stash & Vit D
-  document.getElementById('stash-val').textContent = data.stash || 0;
-  const todayStr = new Date().toDateString();
-  const vitdCheck = document.getElementById('vitd-check');
-  if (data.vitD === todayStr) { vitdCheck.classList.add('checked'); vitdCheck.textContent = '✓'; } 
-  else { vitdCheck.classList.remove('checked'); vitdCheck.textContent = ''; }
-
-  // Vaccine Card Logic
-  const vaxCardInfo = document.getElementById('vax-info');
-  const vaxAllDone = document.getElementById('vax-all-done');
-  const vaxCalculatedDate = document.getElementById('vax-calculated-date');
-  
-  if (days !== null && data.profile.birthDate) {
-      let pending = data.vaccines.filter(v => !v.done).sort((a,b) => a.weeks - b.weeks);
-      
-      if (pending.length > 0) {
-          vaxCardInfo.style.display = 'block';
-          vaxAllDone.style.display = 'none';
-          
-          let nextVax = pending[0];
-          let targetDays = nextVax.weeks * 7;
-          let diff = targetDays - days;
-          
-          // Calculate specific date
-          let birth = new Date(data.profile.birthDate);
-          let apptDate = new Date(birth);
-          apptDate.setDate(birth.getDate() + targetDays);
-          vaxCalculatedDate.textContent = apptDate.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' });
-
-          document.getElementById('vax-next-title').textContent = nextVax.label;
-          document.getElementById('vax-next-desc').textContent = nextVax.desc;
-          
-          let countdownEl = document.getElementById('vax-next-countdown');
-          if (diff > 0) {
-              countdownEl.textContent = `Due in ${diff} day${diff>1?'s':''}`;
-              countdownEl.style.color = 'var(--text)';
-              countdownEl.style.background = 'var(--card2)';
-          } else if (diff === 0) {
-              countdownEl.textContent = `Due Today`;
-              countdownEl.style.color = 'var(--amber)';
-              countdownEl.style.background = 'rgba(251,191,36,0.1)';
-          } else {
-              countdownEl.textContent = `Past due by ${Math.abs(diff)} day${Math.abs(diff)>1?'s':''}`;
-              countdownEl.style.color = 'var(--red)';
-              countdownEl.style.background = 'rgba(248,113,113,0.1)';
-          }
-      } else {
-          vaxCardInfo.style.display = 'none';
-          vaxAllDone.style.display = 'block';
-      }
-  } else {
-      vaxCardInfo.style.display = 'none';
-      vaxAllDone.style.display = 'block';
-      vaxAllDone.textContent = "Please add birth date to see schedule";
-  }
-
-  // Med Timer
-  const medAlert = document.getElementById('med-timer-card');
-  const lastMed = data.meds[0];
-  if (lastMed) {
-    const mSince = minsSince(lastMed.timestamp);
-    if (mSince < 360) {
-      medAlert.style.display = 'block';
-      const rem = 360 - mSince;
-      document.getElementById('med-timer-val').textContent = fmtDur(rem);
-      document.getElementById('med-timer-sub').textContent = `until next safe dose (${lastMed.type})`;
-    } else medAlert.style.display = 'none';
-  } else medAlert.style.display = 'none';
+function save() {
+  try {
+    localStorage.setItem(STORE, JSON.stringify(data));
+    chartsNeedRebuild = true; /* FIX-13 */
+    invalidateVaxCache();     /* FIX-15 */
+  } catch(e) { console.error('Save error:', e); }
 }
 
-function toggleVitD() {
-  vibrate();
-  const todayStr = new Date().toDateString();
-  data.vitD = data.vitD === todayStr ? '' : todayStr;
-  save(); updateUI();
-}
-
-/* ═══════════════════════════════════════ VIEWS & TABS ═══ */
-let currView = 'dashboard', currSeg = 'feed';
-function switchView(v) {
-  vibrate();
-  ['dashboard','history','milestones','analytics'].forEach(id => {
-    document.getElementById('view-'+id).style.display = (id===v)?'block':'none';
-    document.getElementById('nav-'+id).classList.toggle('active', id===v);
+/* ═════════════════════════════════════════════════════════════════════════
+   LIVE TIMERS  (FIX-16: getFinalDuration separated from cleanup)
+   ═════════════════════════════════════════════════════════════════════════ */
+function saveLiveTimers() {
+  /* FIX-17: never persist interval handles */
+  const payload = {};
+  ['feed','sleep'].forEach(t => {
+    const { start, elapsed, running } = liveTimers[t];
+    payload[t] = { start, elapsed, running };
   });
-  currView = v;
-  if(v==='history') renderHistory();
-  if(v==='milestones') renderMilestones();
-  if(v==='analytics') renderCharts();
-  if(v==='dashboard') updateUI(); // Ensure Vitamin D checkbox updates
-}
-function switchSeg(seg) {
-  vibrate(); currSeg = seg;
-  ['feed','sleep','diaper','food','weight'].forEach(s => document.getElementById('seg-'+s).classList.toggle('active', s===seg));
-  renderHistory();
+  localStorage.setItem(TIMER_STORE, JSON.stringify(payload));
 }
 
-/* ═══════════════════════════════════════ VACCINE MANAGEMENT ═══ */
-function openVaxManage() {
-    vibrate();
-    document.getElementById('vax-modal').classList.add('open');
-    renderVaxList();
-    clearVaxForm();
-}
-function closeVaxManage() {
-    document.getElementById('vax-modal').classList.remove('open');
-    updateUI(); // Update dashboard when modal closes
-}
-function renderVaxList() {
-    const list = document.getElementById('vax-list');
-    data.vaccines.sort((a,b) => a.weeks - b.weeks);
-    
-    if(data.vaccines.length === 0) {
-        list.innerHTML = `<div style="text-align:center; padding: 20px; color:var(--text3)">No vaccines scheduled.</div>`;
-        return;
-    }
-    
-    list.innerHTML = data.vaccines.map(v => `
-        <div class="vax-list-item" style="opacity: ${v.done ? 0.5 : 1}">
-            <div style="flex:1;">
-                <div style="font-size:14px; font-weight:800; text-decoration: ${v.done?'line-through':'none'}">${v.label} <span style="font-size:11px; color:var(--text3); font-weight:600">(${v.weeks} Wks)</span></div>
-                <div style="font-size:11px; color:var(--text3); margin-top:2px;">${v.desc}</div>
-            </div>
-            <div style="display:flex; gap:8px;">
-                <button onclick="toggleVaxDone(${v.id})" style="background:var(--card2); border:1px solid var(--border); color:${v.done?'var(--green)':'var(--text2)'}; padding:4px 8px; border-radius:8px; cursor:pointer; transition: all 0.2s;">${v.done?'Undo':'Done'}</button>
-                <button onclick="editVaxItem(${v.id})" style="background:var(--blue); border:none; color:#fff; padding:4px 8px; border-radius:8px; cursor:pointer; transition: all 0.2s;">Edit</button>
-                <button onclick="delVaxItem(${v.id})" style="background:var(--red); border:none; color:#fff; padding:4px 8px; border-radius:8px; cursor:pointer; transition: all 0.2s;">X</button>
-            </div>
-        </div>
-    `).join('');
-}
-function clearVaxForm() {
-    document.getElementById('vax-edit-id').value = '';
-    document.getElementById('vax-label').value = '';
-    document.getElementById('vax-weeks').value = '';
-    document.getElementById('vax-desc').value = '';
-    document.getElementById('vax-form-title').innerHTML = '<span>Add New Vaccine</span><button onclick="clearVaxForm()" style="background:none; border:none; color:var(--text3); font-size:12px; cursor:pointer;">Clear Form</button>';
-}
-function saveVaxItem() {
-    vibrate();
-    const id = document.getElementById('vax-edit-id').value;
-    const label = document.getElementById('vax-label').value;
-    const weeks = parseInt(document.getElementById('vax-weeks').value);
-    const desc = document.getElementById('vax-desc').value;
-    
-    if(!label || isNaN(weeks)) return alert("Label and Weeks are required.");
-    
-    if (id) {
-        let idx = data.vaccines.findIndex(v => v.id == id);
-        if(idx > -1) {
-            data.vaccines[idx] = { ...data.vaccines[idx], label, weeks, desc };
-        }
-    } else {
-        data.vaccines.push({ id: Date.now(), weeks, label, desc, done: false });
-    }
-    
-    save(); clearVaxForm(); renderVaxList(); updateUI();
-}
-function editVaxItem(id) {
-    vibrate();
-    const v = data.vaccines.find(x => x.id === id);
-    if(v) {
-        document.getElementById('vax-edit-id').value = v.id;
-        document.getElementById('vax-label').value = v.label;
-        document.getElementById('vax-weeks').value = v.weeks;
-        document.getElementById('vax-desc').value = v.desc;
-        document.getElementById('vax-form-title').innerHTML = '<span>Edit Vaccine</span><button onclick="clearVaxForm()" style="background:none; border:none; color:var(--text3); font-size:12px; cursor:pointer;">Cancel Edit</button>';
-    }
-}
-function delVaxItem(id) {
-    vibrate();
-    if(confirm("Delete this vaccine from schedule?")) {
-        data.vaccines = data.vaccines.filter(v => v.id !== id);
-        save(); renderVaxList(); updateUI();
-    }
-}
-function toggleVaxDone(id) {
-    vibrate();
-    let v = data.vaccines.find(x => x.id === id);
-    if(v) { v.done = !v.done; save(); renderVaxList(); updateUI(); }
-}
-function markNextVaxDone() {
-    vibrate();
-    let pending = data.vaccines.filter(v => !v.done).sort((a,b) => a.weeks - b.weeks);
-    if(pending.length > 0) {
-        pending[0].done = true;
-        save(); updateUI();
-    }
-}
-
-/* ═══════════════════════════════════════ MODAL LOGIC ═══ */
-function openLog(tab) {
-  vibrate(); switchLogTab(tab);
-  document.getElementById('log-modal').classList.add('open');
-  if(tab==='growth' && editIndex.idx === -1) {
-    document.getElementById('gr-date').value = new Date().toISOString().split('T')[0];
-    document.getElementById('gr-submit-btn').textContent = "Save Growth";
-  }
-}
-function closeLog() { 
-    document.getElementById('log-modal').classList.remove('open'); 
-    editIndex = { type: null, idx: -1 };
-}
-function switchLogTab(tab) {
-  document.querySelectorAll('#log-tabs .type-tab').forEach(el => el.classList.remove('active'));
-  document.getElementById('tab-'+tab).classList.add('active');
-  document.querySelectorAll('.log-form').forEach(el => el.style.display = 'none');
-  document.getElementById('form-'+tab).style.display = 'block';
-}
-
-function pickOpt(btn, stateKey) {
-  vibrate(); state[stateKey] = btn.dataset.val;
-  Array.from(btn.parentNode.children).forEach(b => {
-    const act = b===btn;
-    b.style.borderColor = act?'var(--accent)':'var(--border2)'; 
-    b.style.background = act?'rgba(167, 139, 250, 0.1)':'var(--input)';
-  });
-  if(stateKey === 'feedType') {
-    document.getElementById('feed-vol-wrap').style.display = (state.feedType==='Bottle'||state.feedType==='Pump')?'block':'none';
-    document.getElementById('feed-side-wrap').style.display = (state.feedType==='Nursing')?'block':'none';
-  }
-}
-
-/* ═══════════════════════════════════════ ADVANCED LIVE TIMERS ═══ */
 function loadLiveTimers() {
-    try {
-        let saved = localStorage.getItem('bt_liveTimers');
-        if (saved) {
-            let parsed = JSON.parse(saved);
-            ['feed', 'sleep'].forEach(type => {
-                liveTimers[type] = parsed[type];
-                if(liveTimers[type].running) startTimerLoop(type);
-                else if(liveTimers[type].elapsed > 0) renderTimerUI(type);
-            });
-        }
-    } catch(e){}
-}
-function saveLiveTimers() { localStorage.setItem('bt_liveTimers', JSON.stringify(liveTimers)); }
-
-function startLiveTimer(type) {
-    vibrate();
-    document.getElementById(type+'-timer-btn-wrap').style.display = 'none';
-    document.getElementById(type+'-live-timer').style.display = 'block';
-    if (!liveTimers[type].running && liveTimers[type].elapsed === 0) {
-        liveTimers[type].start = now();
-        liveTimers[type].running = true;
-        startTimerLoop(type);
-        saveLiveTimers();
-    }
+  try {
+    const raw = localStorage.getItem(TIMER_STORE);
+    if (!raw) return;
+    const parsed = JSON.parse(raw);
+    ['feed','sleep'].forEach(t => {
+      if (parsed[t]) {
+        liveTimers[t] = { start: parsed[t].start||0, elapsed: parsed[t].elapsed||0, running: parsed[t].running||false };
+      }
+    });
+  } catch(e) { console.error('Timer load error:', e); }
 }
 
-function pauseLiveTimer(type) {
-    vibrate();
-    let t = liveTimers[type];
-    if (t.running) {
-        t.elapsed += (now() - t.start);
-        t.running = false;
-        clearInterval(t.interval);
-        renderTimerUI(type);
-        document.getElementById(type+'-pause-btn').innerHTML = '▶️ Resume';
-    } else {
-        t.start = now();
-        t.running = true;
-        startTimerLoop(type);
-        document.getElementById(type+'-pause-btn').innerHTML = '⏸ Pause';
-    }
-    saveLiveTimers();
-}
-
-function stopLiveTimer(type) {
-    vibrate();
-    let t = liveTimers[type];
-    if (t.running) { t.elapsed += (now() - t.start); t.running = false; clearInterval(t.interval); }
-    let totalMins = Math.floor(t.elapsed / 60000);
-    document.getElementById(type+'-dur').value = Math.max(1, totalMins); 
-    t.elapsed = 0; saveLiveTimers(); renderTimerUI(type);
-    document.getElementById(type+'-live-timer').style.display = 'none';
-    document.getElementById(type+'-timer-btn-wrap').style.display = 'flex';
-}
-
-function restartLiveTimer(type) {
-    vibrate();
-    if(confirm('Restart timer?')) {
-        let t = liveTimers[type];
-        t.start = now(); t.elapsed = 0; t.running = true;
-        clearInterval(t.interval); startTimerLoop(type); saveLiveTimers();
-        document.getElementById(type+'-pause-btn').innerHTML = '⏸ Pause';
-    }
+/* FIX-5: proper timer UI restoration when modal opens */
+function restoreTimerModalUI(type) {
+  const t = liveTimers[type];
+  const liveEl = document.getElementById(type+'-live-timer');
+  const btnWrap = document.getElementById(type+'-timer-btn-wrap');
+  if (t.running || t.elapsed > 0) {
+    if (liveEl)  liveEl.style.display  = 'block';
+    if (btnWrap) btnWrap.style.display  = 'none';
+    renderTimerDisplay(type);
+    const pauseBtn = document.getElementById(type+'-pause-btn');
+    if (pauseBtn) pauseBtn.innerHTML = t.running ? '⏸ Pause' : '▶️ Resume';
+    if (t.running && !timerIntervals[type]) startTimerLoop(type);
+  } else {
+    if (liveEl)  liveEl.style.display  = 'none';
+    if (btnWrap) btnWrap.style.display  = 'flex';
+  }
 }
 
 function startTimerLoop(type) {
-    clearInterval(liveTimers[type].interval);
-    liveTimers[type].interval = setInterval(() => renderTimerUI(type), 1000);
-    renderTimerUI(type);
-    document.getElementById(type+'-live-timer').style.display = 'block';
-    document.getElementById(type+'-timer-btn-wrap').style.display = 'none';
+  clearInterval(timerIntervals[type]);
+  timerIntervals[type] = setInterval(() => renderTimerDisplay(type), 1000);
+  renderTimerDisplay(type);
 }
 
-function renderTimerUI(type) {
-    let t = liveTimers[type];
-    let totalMs = t.elapsed;
-    if (t.running) totalMs += (now() - t.start);
-    let secs = Math.floor(totalMs / 1000) % 60;
-    let mins = Math.floor(totalMs / 60000) % 60;
-    let hrs = Math.floor(totalMs / 3600000);
-    let str = hrs > 0 ? 
-        `${hrs}:${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}` :
-        `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
-    document.getElementById(type+'-timer-display').textContent = str;
+function renderTimerDisplay(type) {
+  const t = liveTimers[type];
+  let totalMs = t.elapsed + (t.running ? now() - t.start : 0);
+  const secs = Math.floor(totalMs/1000)%60;
+  const mins = Math.floor(totalMs/60000)%60;
+  const hrs  = Math.floor(totalMs/3600000);
+  const el   = document.getElementById(type+'-timer-display');
+  if (el) el.textContent = hrs > 0
+    ? `${hrs}:${pad(mins)}:${pad(secs)}`
+    : `${pad(mins)}:${pad(secs)}`;
 }
 
-function getFinalDuration(type) {
-    let t = liveTimers[type];
-    let durInput = document.getElementById(type+'-dur').value;
-    if (durInput) return parseInt(durInput); 
-    if (t.running || t.elapsed > 0) {
-        if (t.running) { t.elapsed += (now() - t.start); }
-        let totalMins = Math.max(1, Math.floor(t.elapsed / 60000));
-        t.running = false; t.elapsed = 0; clearInterval(t.interval); saveLiveTimers();
-        document.getElementById(type+'-live-timer').style.display = 'none';
-        document.getElementById(type+'-timer-btn-wrap').style.display = 'flex';
-        return totalMins;
-    }
-    return null;
-}
+function pad(n) { return String(n).padStart(2,'0'); }
 
-/* ═══════════════════════════════════════ SUBMIT ACTIONS ═══ */
-function submitFeed() {
-  const dur = getFinalDuration('feed');
-  const vol = parseFloat(document.getElementById('feed-vol').value);
-  if (state.feedType === 'Pump' && vol) data.stash += vol;
-  if (state.feedType === 'Bottle' && vol) data.stash = Math.max(0, data.stash - vol);
-  const side = state.feedType === 'Nursing' ? state.breastSide : null;
-  data.feeds.unshift({ id: now(), timestamp: new Date().toISOString(), type: state.feedType, side: side, dur: dur||null, vol: vol||null });
-  save(); document.getElementById('feed-dur').value=''; document.getElementById('feed-vol').value=''; closeLog(); updateUI();
-}
-function submitSleep() {
-  const dur = getFinalDuration('sleep');
-  data.sleeps.unshift({ id: now(), timestamp: new Date().toISOString(), dur: dur||0 });
-  save(); document.getElementById('sleep-dur').value=''; closeLog(); updateUI();
-}
-function submitDiaper() {
-  data.diapers.unshift({ id: now(), timestamp: new Date().toISOString(), type: state.diaperType });
-  save(); closeLog(); updateUI();
-}
-function submitGrowth() {
-  const w = parseFloat(document.getElementById('gr-weight').value), l = parseFloat(document.getElementById('gr-length').value), h = parseFloat(document.getElementById('gr-head').value);
-  const d = document.getElementById('gr-date').value;
-  if(!d || (!w && !l && !h)) return alert("Enter date and at least one metric.");
-  if (editIndex.type === 'weight' && editIndex.idx > -1) {
-     data.weights[editIndex.idx] = { ...data.weights[editIndex.idx], date: d, weight: w||null, length: l||null, head: h||null };
-  } else {
-     data.weights.push({ id: now(), date: d, weight: w||null, length: l||null, head: h||null });
+function startLiveTimer(type) {
+  const t = liveTimers[type];
+  if (!t.running && t.elapsed === 0) {
+    t.start   = now();
+    t.running = true;
+    startTimerLoop(type);
+    saveLiveTimers();
   }
-  data.weights.sort((a,b)=>new Date(b.date)-new Date(a.date));
-  save(); document.querySelectorAll('#form-growth input[type="number"]').forEach(i=>i.value=''); closeLog(); updateUI();
-  if(currView==='history') renderHistory();
-}
-function submitMed() {
-  const note = document.getElementById('med-note').value;
-  data.meds.unshift({ id: now(), timestamp: new Date().toISOString(), type: state.medType, note });
-  save(); document.getElementById('med-note').value=''; closeLog(); updateUI();
-}
-function submitFood() {
-  const f = document.getElementById('food-name').value;
-  if(!f) return alert('Enter food name');
-  data.foods.unshift({ id: now(), timestamp: new Date().toISOString(), food: f, react: state.foodReact });
-  save(); document.getElementById('food-name').value=''; closeLog();
-}
-function submitParent() {
-  const w = document.getElementById('p-water').checked, s = document.getElementById('p-shower').checked;
-  data.parent.unshift({ id: now(), timestamp: new Date().toISOString(), mood: state.parentMood, water: w, shower: s });
-  save(); document.getElementById('p-water').checked=false; document.getElementById('p-shower').checked=false; closeLog();
+  document.getElementById(type+'-live-timer').style.display = 'block';
+  document.getElementById(type+'-timer-btn-wrap').style.display = 'none';
 }
 
-/* ═══════════════════════════════════════ HISTORY, EDIT & SWIPE ═══ */
-function renderHistory() {
-  const list = document.getElementById('history-list');
-  const arr = data[currSeg + 's'] || []; 
-  if(!arr.length) { list.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text3)">No entries.</div>`; return; }
-  list.innerHTML = arr.slice(0, 20).map((item, i) => {
-    let icon, title, meta;
-    if(currSeg === 'feed') { 
-        icon = item.type==='Nursing'?'🤱':item.type==='Pump'?'🥛':'🍼'; 
-        let sideStr = item.side ? ` (${item.side})` : '';
-        title = item.type + sideStr + (item.vol?` · ${item.vol}oz`:'') + (item.dur?` · ${item.dur}m`:''); 
-        meta = `${fmtDate(item.timestamp)} · ${fmtTime(item.timestamp)}`;
+function pauseLiveTimer(type) {
+  const t = liveTimers[type];
+  const btn = document.getElementById(type+'-pause-btn');
+  if (t.running) {
+    t.elapsed += now() - t.start;
+    t.running = false;
+    clearInterval(timerIntervals[type]);
+    timerIntervals[type] = null;
+    if (btn) btn.innerHTML = '▶️ Resume';
+  } else {
+    t.start   = now();
+    t.running = true;
+    startTimerLoop(type);
+    if (btn) btn.innerHTML = '⏸ Pause';
+  }
+  saveLiveTimers();
+}
+
+function stopLiveTimer(type) {
+  const dur = finaliseTimer(type);
+  const inp = document.getElementById(type+'-dur');
+  if (inp) inp.value = Math.max(1, dur);
+  document.getElementById(type+'-live-timer').style.display = 'none';
+  document.getElementById(type+'-timer-btn-wrap').style.display = 'flex';
+}
+
+function restartLiveTimer(type) {
+  if (!confirm('Restart timer from zero?')) return;
+  finaliseTimer(type); /* clears elapsed */
+  liveTimers[type].start   = now();
+  liveTimers[type].elapsed = 0;
+  liveTimers[type].running = true;
+  const btn = document.getElementById(type+'-pause-btn');
+  if (btn) btn.innerHTML = '⏸ Pause';
+  startTimerLoop(type);
+  saveLiveTimers();
+}
+
+/* FIX-16: pure cleanup, returns elapsed minutes — called by stop, submit, getFinalDuration */
+function finaliseTimer(type) {
+  const t = liveTimers[type];
+  if (t.running) { t.elapsed += now() - t.start; }
+  t.running = false;
+  clearInterval(timerIntervals[type]);
+  timerIntervals[type] = null;
+  const mins = Math.max(0, Math.floor(t.elapsed / 60000));
+  t.elapsed = 0; t.start = 0;
+  saveLiveTimers();
+  return mins;
+}
+
+/* FIX-2: always cleans up timer, whether manual or timer-based */
+function getDuration(type) {
+  const inp = document.getElementById(type+'-dur');
+  const manual = inp ? parseInt(inp.value) : NaN;
+  const t = liveTimers[type];
+  const timerHasData = t.running || t.elapsed > 0;
+
+  if (!isNaN(manual) && manual > 0) {
+    if (timerHasData) finaliseTimer(type); /* clean up even when manual value given */
+    return manual;
+  }
+  if (timerHasData) {
+    return finaliseTimer(type);
+  }
+  return null;
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   UTILITIES
+   ═════════════════════════════════════════════════════════════════════════ */
+const now = () => Date.now();
+const vibrate = () => { try { if (navigator.vibrate) navigator.vibrate(50); } catch(_){} };
+const minsSince = ts => Math.floor((now() - new Date(ts).getTime()) / 60000);
+function fmtDur(m) {
+  if (!m || m < 1) return '—';
+  return m < 60 ? m+'m' : Math.floor(m/60)+'h '+(m%60)+'m';
+}
+function fmtTime(ts) { return new Date(ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}); }
+function fmtDate(ts) {
+  const d=new Date(ts), t=new Date(), y=new Date(t-86400000);
+  if (d.toDateString()===t.toDateString()) return 'Today';
+  if (d.toDateString()===y.toDateString()) return 'Yesterday';
+  return d.toLocaleDateString([],{month:'short',day:'numeric'});
+}
+function getAgeDays() {
+  return data.profile.birthDate
+    ? Math.floor((now() - new Date(data.profile.birthDate).getTime()) / 86400000)
+    : null;
+}
+function todayStr() { return new Date().toISOString().split('T')[0]; }
+function getLast7Days() {
+  const days = [];
+  for (let i=6; i>=0; i--) {
+    const d = new Date(now() - i*86400000);
+    days.push({ date: d.toDateString(), label: d.toLocaleDateString([],{weekday:'short'}) });
+  }
+  return days;
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   VACCINE CACHE  (FIX-15)
+   ═════════════════════════════════════════════════════════════════════════ */
+function invalidateVaxCache() { _vaxCacheKey = ''; _vaxCache = null; }
+
+function getVaxInfo() {
+  const key = data.profile.birthDate + '|' + data.vaccines.map(v=>v.id+':'+v.done).join(',');
+  if (key === _vaxCacheKey && _vaxCache) return _vaxCache;
+  _vaxCacheKey = key;
+
+  const days = getAgeDays();
+  if (days === null || !data.profile.birthDate) {
+    return (_vaxCache = { type:'no-birthdate' });
+  }
+  const pending = data.vaccines.filter(v=>!v.done).sort((a,b)=>a.weeks-b.weeks);
+  if (!pending.length) return (_vaxCache = { type:'all-done' });
+
+  const next = pending[0];
+  const targetDays = next.weeks * 7;
+  const diff = targetDays - days;
+  const birth = new Date(data.profile.birthDate);
+  const apptDate = new Date(birth.getTime() + targetDays*86400000);
+  return (_vaxCache = { type:'pending', next, diff, apptDate });
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   DASHBOARD
+   ═════════════════════════════════════════════════════════════════════════ */
+function updateUI() {
+  updateHeader();
+  updateHeroTimers();
+  updateVaxCard();
+  updateVitDCheck();
+  updateMedTimer();
+  checkNotifications();
+}
+
+function updateHeader() {
+  document.getElementById('header-name').textContent = data.profile.name ? `🌙 ${data.profile.name}'s Tracker` : '🌙 Baby Tracker';
+  const days = getAgeDays();
+  const el = document.getElementById('header-age');
+  if (days === null)   el.textContent = 'Tap ⚙️ to add birth date';
+  else if (days === 0) el.textContent = 'Born today!';
+  else if (days < 30)  el.textContent = `${days} days old`;
+  else if (days < 365) el.textContent = `${Math.floor(days/30.4)} months old`;
+  else                 el.textContent = `${(days/365).toFixed(1)} years old`;
+}
+
+function updateHeroTimers() {
+  const lf = data.feeds[0];
+  const tv = document.getElementById('timer-val'), ts = document.getElementById('timer-sub');
+  if (!lf) { tv.textContent='—'; ts.textContent='No feed logged'; }
+  else {
+    const m = minsSince(lf.timestamp);
+    tv.textContent = fmtDur(m);
+    tv.style.color = m>=180?'var(--red)':m>=120?'var(--amber)':'var(--green)';
+    ts.textContent = lf.type + (lf.side ? ` (${lf.side})` : '');
+  }
+  const ld = data.diapers[0];
+  const dv = document.getElementById('diaper-val'), ds = document.getElementById('diaper-sub');
+  if (!ld) { dv.textContent='—'; ds.textContent='No diaper logged'; }
+  else {
+    const m = minsSince(ld.timestamp);
+    dv.textContent = fmtDur(m);
+    dv.style.color = m>=180?'var(--red)':m>=120?'var(--amber)':'var(--blue)';
+    ds.textContent = ld.type;
+  }
+  document.getElementById('stash-val').textContent = data.stash || 0;
+}
+
+function updateVaxCard() {
+  const info = getVaxInfo(); /* FIX-15: cached */
+  const infoEl = document.getElementById('vax-info');
+  const doneEl = document.getElementById('vax-all-done');
+  if (info.type === 'no-birthdate') {
+    infoEl.style.display='none'; doneEl.style.display='block';
+    doneEl.textContent='Add a birth date in ⚙️ to see the schedule';
+    return;
+  }
+  if (info.type === 'all-done') {
+    infoEl.style.display='none'; doneEl.style.display='block';
+    doneEl.textContent='All scheduled vaccinations completed! 🎉';
+    return;
+  }
+  infoEl.style.display='block'; doneEl.style.display='none';
+  document.getElementById('vax-next-title').textContent = info.next.label;
+  document.getElementById('vax-next-desc').textContent  = info.next.desc;
+  document.getElementById('vax-calculated-date').textContent = info.apptDate.toLocaleDateString([],{month:'short',day:'numeric',year:'numeric'});
+  const ce = document.getElementById('vax-next-countdown');
+  if (info.diff > 0) {
+    ce.textContent=`Due in ${info.diff} day${info.diff>1?'s':''}`;
+    ce.style.cssText='color:var(--text2);background:var(--card2);padding:7px 11px;border-radius:9px;';
+  } else if (info.diff === 0) {
+    ce.textContent='Due Today!';
+    ce.style.cssText='color:var(--amber);background:rgba(251,191,36,0.1);padding:7px 11px;border-radius:9px;';
+  } else {
+    ce.textContent=`Past due by ${Math.abs(info.diff)} day${Math.abs(info.diff)>1?'s':''}`;
+    ce.style.cssText='color:var(--red);background:rgba(248,113,113,0.1);padding:7px 11px;border-radius:9px;';
+  }
+}
+
+function updateVitDCheck() {
+  const today = new Date().toDateString();
+  const taken = Array.isArray(data.vitD) && data.vitD.includes(today);
+  const el = document.getElementById('vitd-check');
+  el.classList.toggle('checked', taken);
+  el.textContent = taken ? '✓' : '';
+}
+
+function updateMedTimer() {
+  const lm = data.meds[0];
+  const card = document.getElementById('med-timer-card');
+  if (lm) {
+    const m = minsSince(lm.timestamp);
+    if (m < 360) {
+      card.style.display='block';
+      document.getElementById('med-timer-val').textContent = fmtDur(360-m);
+      document.getElementById('med-timer-sub').textContent = `until next safe dose (${lm.type})`;
+      return;
     }
-    else if(currSeg === 'sleep') { icon = '💤'; title = `Sleep · ${fmtDur(item.dur)}`; meta = `${fmtDate(item.timestamp)} · ${fmtTime(item.timestamp)}`;}
-    else if(currSeg === 'diaper') { icon = item.type==='Dirty'?'💩':item.type==='Both'?'💧💩':'💧'; title = item.type + ' Diaper'; meta = `${fmtDate(item.timestamp)} · ${fmtTime(item.timestamp)}`;}
-    else if(currSeg === 'food') { icon = item.react==='Severe'?'🚨':item.react==='Mild'?'⚠️':'✅'; title = item.food; meta = `${fmtDate(item.timestamp)} · ${fmtTime(item.timestamp)}`;}
-    else if(currSeg === 'weight') { icon = '📏'; title = `W: ${item.weight||'--'}kg | L: ${item.length||'--'}cm | H: ${item.head||'--'}cm`; meta = `${fmtDate(item.date)}`; }
-    return `
-    <div class="swipe-container">
-      <div class="swipe-content"><span class="log-icon">${icon}</span><div class="log-body"><div class="log-title">${title}</div><div class="log-meta">${meta}</div></div></div>
-      <div class="swipe-actions">
-        ${currSeg === 'weight' ? `<div class="swipe-action" style="background:var(--blue);" onclick="editEntry('${currSeg}', ${i})">Edit</div>` : ''}
-        <div class="swipe-action" style="background:var(--red); border-radius: 0 16px 16px 0;" onclick="delEntry('${currSeg}', ${i})">Del</div>
+  }
+  card.style.display='none';
+}
+
+/* FIX-4: guard against browsers without Notification API */
+function checkNotifications() {
+  if (!data.alertsEnabled) return;
+  if (typeof Notification === 'undefined' || Notification.permission !== 'granted') return;
+  const lf = data.feeds[0];
+  if (lf && minsSince(lf.timestamp) >= 180 && notifiedFeedId !== lf.id) {
+    new Notification('Feeding Time 🍼', { body:'It has been 3 hours since the last feed.' });
+    notifiedFeedId = lf.id;
+  }
+  const ld = data.diapers[0];
+  if (ld && minsSince(ld.timestamp) >= 120 && notifiedDiaperId !== ld.id) {
+    new Notification('Diaper Check 💧', { body:'It has been 2 hours since the last diaper change.' });
+    notifiedDiaperId = ld.id;
+  }
+}
+
+/* FIX-1: vitD stored as array of date strings */
+function toggleVitD() {
+  vibrate();
+  const today = new Date().toDateString();
+  if (!Array.isArray(data.vitD)) data.vitD = [];
+  const idx = data.vitD.indexOf(today);
+  if (idx > -1) data.vitD.splice(idx,1);
+  else data.vitD.push(today);
+  save(); updateVitDCheck();
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   VIEW NAVIGATION
+   ═════════════════════════════════════════════════════════════════════════ */
+let currView = 'dashboard';
+let currSeg  = 'feed';
+
+function switchView(v) {
+  vibrate();
+  ['dashboard','history','milestones','analytics'].forEach(id => {
+    document.getElementById('view-'+id).style.display = (id===v) ? 'block' : 'none';
+    document.getElementById('nav-'+id).classList.toggle('active', id===v);
+  });
+  currView = v;
+  document.getElementById('scroll-area').scrollTop = 0;
+  if (v==='history')    { historyPage=0; renderHistory(); }
+  if (v==='milestones') renderMilestones();
+  if (v==='analytics')  renderCharts();
+  if (v==='dashboard')  updateUI();
+}
+
+function switchSeg(seg) {
+  vibrate(); currSeg = seg; historyPage = 0;
+  ['feed','sleep','diaper','food','weight'].forEach(s =>
+    document.getElementById('seg-'+s).classList.toggle('active', s===seg));
+  renderHistory();
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   VACCINE MANAGEMENT
+   ═════════════════════════════════════════════════════════════════════════ */
+function openVaxManage() {
+  vibrate();
+  document.getElementById('vax-modal').classList.add('open');
+  renderVaxList(); clearVaxForm();
+}
+function closeVaxManage() {
+  document.getElementById('vax-modal').classList.remove('open');
+  updateUI();
+}
+function renderVaxList() {
+  const list = document.getElementById('vax-list');
+  const sorted = [...data.vaccines].sort((a,b)=>a.weeks-b.weeks);
+  if (!sorted.length) { list.innerHTML='<div style="text-align:center;padding:20px;color:var(--text3)">No vaccines scheduled.</div>'; return; }
+  list.innerHTML = sorted.map(v => `
+    <div class="vax-list-item" style="opacity:${v.done?0.5:1}">
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13.5px;font-weight:800;text-decoration:${v.done?'line-through':'none'}">${v.label} <span style="font-size:11px;color:var(--text3)">(${v.weeks}w)</span></div>
+        <div style="font-size:11px;color:var(--text3);margin-top:2px">${v.desc}</div>
       </div>
+      <div style="display:flex;gap:5px;flex-shrink:0">
+        <button onclick="toggleVaxDone(${v.id})" style="background:var(--card2);border:1px solid var(--border);color:${v.done?'var(--green)':'var(--text2)'};padding:5px 9px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:800;font-family:'Nunito',sans-serif;">${v.done?'Undo':'Done'}</button>
+        <button onclick="editVaxItem(${v.id})"   style="background:rgba(56,189,248,0.15);border:none;color:var(--blue);padding:5px 9px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:800;font-family:'Nunito',sans-serif;">Edit</button>
+        <button onclick="delVaxItem(${v.id})"    style="background:rgba(248,113,113,0.15);border:none;color:var(--red);padding:5px 9px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:800;font-family:'Nunito',sans-serif;">✕</button>
+      </div>
+    </div>`).join('');
+}
+function clearVaxForm() {
+  ['vax-edit-id','vax-label','vax-weeks','vax-desc'].forEach(id => document.getElementById(id).value='');
+  document.getElementById('vax-form-title').firstElementChild.textContent='Add Vaccine';
+}
+function saveVaxItem() {
+  vibrate();
+  const editId = document.getElementById('vax-edit-id').value;
+  const label  = document.getElementById('vax-label').value.trim();
+  const weeks  = parseInt(document.getElementById('vax-weeks').value);
+  const desc   = document.getElementById('vax-desc').value.trim();
+  if (!label || isNaN(weeks)) { alert('Label and Weeks are required.'); return; }
+  if (editId) {
+    const idx = data.vaccines.findIndex(v => v.id == editId);
+    if (idx > -1) data.vaccines[idx] = { ...data.vaccines[idx], label, weeks, desc };
+  } else {
+    data.vaccines.push({ id:uid(), weeks, label, desc, done:false });
+  }
+  save(); clearVaxForm(); renderVaxList();
+}
+function editVaxItem(id) {
+  vibrate();
+  const v = data.vaccines.find(x => x.id===id);
+  if (!v) return;
+  document.getElementById('vax-edit-id').value = v.id;
+  document.getElementById('vax-label').value   = v.label;
+  document.getElementById('vax-weeks').value   = v.weeks;
+  document.getElementById('vax-desc').value    = v.desc;
+  document.getElementById('vax-form-title').firstElementChild.textContent = 'Edit Vaccine';
+}
+function delVaxItem(id) {
+  vibrate();
+  if (!confirm('Delete this vaccine from the schedule?')) return;
+  data.vaccines = data.vaccines.filter(v => v.id!==id);
+  save(); renderVaxList();
+}
+function toggleVaxDone(id) {
+  vibrate();
+  const v = data.vaccines.find(x => x.id===id);
+  if (v) { v.done=!v.done; save(); renderVaxList(); }
+}
+function markNextVaxDone() {
+  vibrate();
+  const pending = data.vaccines.filter(v=>!v.done).sort((a,b)=>a.weeks-b.weeks);
+  if (pending.length) { pending[0].done=true; save(); updateUI(); }
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   LOG MODAL
+   ═════════════════════════════════════════════════════════════════════════ */
+function openLog(tab) {
+  vibrate();
+  switchLogTab(tab);
+  /* FIX-5: restore timer UI state before showing modal */
+  restoreTimerModalUI('feed');
+  restoreTimerModalUI('sleep');
+  if (tab==='growth' && editCtx.idx===-1) {
+    document.getElementById('gr-date').value = todayStr();
+    document.getElementById('gr-submit-btn').textContent = 'Save Growth';
+  }
+  document.getElementById('log-modal').classList.add('open');
+}
+function closeLog() {
+  document.getElementById('log-modal').classList.remove('open');
+  editCtx = { type:null, idx:-1 };
+}
+function switchLogTab(tab) {
+  document.querySelectorAll('#log-tabs .type-tab').forEach(el => el.classList.remove('active'));
+  const tabEl = document.getElementById('tab-'+tab);
+  if (tabEl) tabEl.classList.add('active');
+  document.querySelectorAll('.log-form').forEach(el => el.style.display='none');
+  const formEl = document.getElementById('form-'+tab);
+  if (formEl) formEl.style.display='block';
+}
+
+function pickOpt(btn, key) {
+  vibrate(); state[key] = btn.dataset.val;
+  Array.from(btn.parentNode.children).forEach(b => {
+    const active = b===btn;
+    b.style.borderColor = active ? 'var(--accent)' : 'var(--border2)';
+    b.style.background  = active ? 'rgba(167,139,250,0.1)' : 'var(--input)';
+  });
+  if (key==='feedType') {
+    document.getElementById('feed-vol-wrap').style.display  = (state.feedType==='Bottle'||state.feedType==='Pump') ? 'block' : 'none';
+    document.getElementById('feed-side-wrap').style.display = state.feedType==='Nursing' ? 'block' : 'none';
+  }
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   SUBMIT ACTIONS
+   ═════════════════════════════════════════════════════════════════════════ */
+function submitFeed() {
+  const dur = getDuration('feed');
+  const vol = parseFloat(document.getElementById('feed-vol').value) || null;
+  if (state.feedType==='Pump'   && vol) data.stash = +(data.stash + vol).toFixed(2);
+  if (state.feedType==='Bottle' && vol) data.stash = +Math.max(0, data.stash - vol).toFixed(2);
+  data.feeds.unshift({ id:uid(), timestamp:new Date().toISOString(), type:state.feedType,
+    side: state.feedType==='Nursing' ? state.breastSide : null, dur, vol });
+  document.getElementById('feed-dur').value='';
+  document.getElementById('feed-vol').value='';
+  save(); sortAllData(); closeLog(); updateUI();
+}
+
+/* FIX-8: validate duration > 0 before saving sleep */
+function submitSleep() {
+  const dur = getDuration('sleep');
+  if (!dur || dur < 1) {
+    alert('Please enter a duration (minutes) or use the timer before saving.');
+    return;
+  }
+  data.sleeps.unshift({ id:uid(), timestamp:new Date().toISOString(), dur });
+  document.getElementById('sleep-dur').value='';
+  save(); sortAllData(); closeLog(); updateUI();
+}
+
+function submitDiaper() {
+  data.diapers.unshift({ id:uid(), timestamp:new Date().toISOString(), type:state.diaperType });
+  save(); sortAllData(); closeLog(); updateUI();
+}
+
+function submitGrowth() {
+  const w = parseFloat(document.getElementById('gr-weight').value) || null;
+  const l = parseFloat(document.getElementById('gr-length').value) || null;
+  const h = parseFloat(document.getElementById('gr-head').value)   || null;
+  const d = document.getElementById('gr-date').value;
+  if (!d || (!w && !l && !h)) { alert('Enter a date and at least one measurement.'); return; }
+  const entry = { id:uid(), date:d, weight:w, length:l, head:h };
+  if (editCtx.type==='weight' && editCtx.idx > -1) {
+    data.weights[editCtx.idx] = { ...data.weights[editCtx.idx], ...entry };
+  } else {
+    data.weights.push(entry);
+  }
+  /* FIX-14: sort in one place */
+  data.weights.sort((a,b)=>new Date(b.date)-new Date(a.date));
+  ['gr-weight','gr-length','gr-head'].forEach(id => document.getElementById(id).value='');
+  save(); closeLog(); updateUI();
+  if (currView==='history') renderHistory();
+}
+
+function submitMed() {
+  const note = document.getElementById('med-note').value.trim();
+  data.meds.unshift({ id:uid(), timestamp:new Date().toISOString(), type:state.medType, note });
+  document.getElementById('med-note').value='';
+  save(); sortAllData(); closeLog(); updateUI();
+}
+
+function submitFood() {
+  const food = document.getElementById('food-name').value.trim();
+  if (!food) { alert('Enter a food name.'); return; }
+  data.foods.unshift({ id:uid(), timestamp:new Date().toISOString(), food, react:state.foodReact });
+  document.getElementById('food-name').value='';
+  save(); sortAllData(); closeLog();
+}
+
+function submitParent() {
+  data.parent.unshift({ id:uid(), timestamp:new Date().toISOString(), mood:state.parentMood,
+    water:document.getElementById('p-water').checked, shower:document.getElementById('p-shower').checked });
+  document.getElementById('p-water').checked=false;
+  document.getElementById('p-shower').checked=false;
+  save(); sortAllData(); closeLog();
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   HISTORY  (FIX-7: pagination; FIX-11: always-visible delete/edit)
+   ═════════════════════════════════════════════════════════════════════════ */
+function getHistoryArray() {
+  if (currSeg === 'weight') return data.weights;
+  return data[currSeg+'s'] || [];
+}
+
+function renderHistory() {
+  historyPage = 0;
+  const list = document.getElementById('history-list');
+  list.innerHTML = '';
+  appendHistoryPage();
+}
+
+function appendHistoryPage() {
+  const arr  = getHistoryArray();
+  const list = document.getElementById('history-list');
+  const start = historyPage * PAGE_SIZE;
+  const slice = arr.slice(start, start + PAGE_SIZE);
+  const hasMore = (start + PAGE_SIZE) < arr.length;
+
+  /* Remove existing load-more button */
+  const old = document.getElementById('load-more-btn');
+  if (old) old.remove();
+
+  if (!slice.length && historyPage === 0) {
+    list.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text3);font-weight:700;">No entries yet.</div>`;
+    return;
+  }
+
+  slice.forEach((item, i) => {
+    const realIdx = start + i;
+    list.insertAdjacentHTML('beforeend', buildHistoryItem(item, realIdx));
+  });
+
+  if (hasMore) {
+    const rem = arr.length - (start + PAGE_SIZE);
+    list.insertAdjacentHTML('beforeend',
+      `<button id="load-more-btn" onclick="historyPage++;appendHistoryPage()">Load more (${rem} remaining)</button>`);
+  }
+}
+
+function buildHistoryItem(item, idx) {
+  let icon, title, meta;
+  if (currSeg==='feed') {
+    icon  = item.type==='Nursing'?'🤱':item.type==='Pump'?'🥛':'🍼';
+    title = item.type + (item.side?` (${item.side})`:'') + (item.vol?` · ${item.vol}oz`:'') + (item.dur?` · ${item.dur}m`:'');
+    meta  = `${fmtDate(item.timestamp)} · ${fmtTime(item.timestamp)}`;
+  } else if (currSeg==='sleep') {
+    icon='💤'; title=`Sleep · ${fmtDur(item.dur)}`; meta=`${fmtDate(item.timestamp)} · ${fmtTime(item.timestamp)}`;
+  } else if (currSeg==='diaper') {
+    icon=item.type==='Dirty'?'💩':item.type==='Both'?'💧💩':'💧';
+    title=item.type+' Diaper'; meta=`${fmtDate(item.timestamp)} · ${fmtTime(item.timestamp)}`;
+  } else if (currSeg==='food') {
+    icon=item.react==='Severe'?'🚨':item.react==='Mild'?'⚠️':'✅';
+    title=item.food+` · ${item.react}`; meta=`${fmtDate(item.timestamp)} · ${fmtTime(item.timestamp)}`;
+  } else if (currSeg==='weight') {
+    icon='📏';
+    title=`W:${item.weight||'—'}kg · L:${item.length||'—'}cm · H:${item.head||'—'}cm`;
+    meta=fmtDate(item.date)+' · '+item.date;
+  }
+  const editBtn = currSeg==='weight'
+    ? `<button class="btn-edit" onclick="editEntry(${idx})">Edit</button>` : '';
+  return `<div class="log-item">
+    <span class="log-icon">${icon}</span>
+    <div class="log-body"><div class="log-title">${title}</div><div class="log-meta">${meta}</div></div>
+    <div class="log-actions">${editBtn}<button class="btn-del" onclick="delEntry(${idx})">🗑</button></div>
+  </div>`;
+}
+
+function editEntry(idx) {
+  vibrate();
+  const item = data.weights[idx];
+  if (!item) return;
+  document.getElementById('gr-weight').value = item.weight||'';
+  document.getElementById('gr-length').value = item.length||'';
+  document.getElementById('gr-head').value   = item.head||'';
+  document.getElementById('gr-date').value   = item.date||'';
+  editCtx = { type:'weight', idx };
+  document.getElementById('gr-submit-btn').textContent = 'Update Growth';
+  openLog('growth');
+}
+
+function delEntry(idx) {
+  vibrate();
+  if (!confirm('Delete this entry?')) return;
+  const arr = getHistoryArray();
+  if (idx >= 0 && idx < arr.length) arr.splice(idx,1);
+  save(); renderHistory(); updateUI();
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   MILESTONES
+   ═════════════════════════════════════════════════════════════════════════ */
+function renderMilestones() {
+  const ageM = getAgeDays() ? Math.floor(getAgeDays()/30.4) : 0;
+  document.getElementById('milestone-content').innerHTML = MILESTONES.map(ms => {
+    const past = ageM >= ms.m;
+    return `<div class="ms-group" style="opacity:${past?1:0.45}">
+      <div class="ms-title">⭐ ${ms.m} Month${ms.m>1?'s':''}</div>
+      ${ms.text.map(t=>`<div class="ms-item"><span>${past?'✅':'⏳'}</span><span>${t}</span></div>`).join('')}
     </div>`;
   }).join('');
 }
 
-function editEntry(t, i) {
-    vibrate();
-    if(t === 'weight') {
-        const item = data.weights[i];
-        document.getElementById('gr-weight').value = item.weight || '';
-        document.getElementById('gr-length').value = item.length || '';
-        document.getElementById('gr-head').value = item.head || '';
-        document.getElementById('gr-date').value = item.date || '';
-        editIndex = { type: 'weight', idx: i };
-        document.getElementById('gr-submit-btn').textContent = "Update Growth";
-        openLog('growth');
-    }
-}
-function delEntry(t, i) { vibrate(); if(confirm('Delete?')) { data[t+'s'].splice(i,1); save(); updateUI(); renderHistory(); } }
+/* ═════════════════════════════════════════════════════════════════════════
+   ANALYTICS  (FIX-10: empty states; FIX-12: sleep analytics; FIX-13: dirty flag)
+   ═════════════════════════════════════════════════════════════════════════ */
+function tc() { return document.documentElement.dataset.theme==='dark' ? '#8b9ab5' : '#5a6a85'; }
+function gc() { return document.documentElement.dataset.theme==='dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'; }
 
-/* ═══════════════════════════════════════ MILESTONES ═══ */
-function renderMilestones() {
-  const container = document.getElementById('milestone-content');
-  const ageMonths = getAgeDays() ? Math.floor(getAgeDays() / 30.4) : 0;
-  container.innerHTML = MILESTONES.map(ms => {
-    const isPast = ageMonths >= ms.m;
-    return `
-      <div class="ms-group" style="opacity: ${isPast ? 1 : 0.5}">
-        <div class="ms-title">⭐ ${ms.m} Months</div>
-        ${ms.text.map(t => `<div class="ms-item"><span>${isPast?'✅':'⏳'}</span><span>${t}</span></div>`).join('')}
-      </div>
-    `;
-  }).join('');
-}
-
-/* ═══════════════════════════════════════ CHARTS ═══ */
 function destroyAllCharts() {
-  Object.keys(charts).forEach(key => {
-    if(charts[key]) { charts[key].destroy(); charts[key] = null; }
-  });
+  Object.keys(charts).forEach(k => { if (charts[k]) { charts[k].destroy(); charts[k]=null; } });
 }
 
+function showChartOrEmpty(wrapId, emptyId, hasData) {
+  document.getElementById(wrapId).style.display  = hasData ? 'block' : 'none';
+  document.getElementById(emptyId).style.display = hasData ? 'none'  : 'block';
+}
+
+/* FIX-13: skip rebuild if nothing changed */
 function renderCharts() {
+  if (!chartsNeedRebuild) return;
+  chartsNeedRebuild = false;
   destroyAllCharts();
-  
-  const tc = document.documentElement.dataset.theme==='dark'?'#8b9ab5':'#5a6a85';
-  
-  // 24-Hour Timeline
-  const ctxT = document.getElementById('timeline-chart').getContext('2d');
+  buildTimelineChart();
+  buildSleepTrendChart();
+  buildVitDChart();
+  buildFeedDistChart();
+  buildDiaperTrendChart();
+  buildGrowthChart();
+  buildParentMoodChart();
+}
+
+/* ── Timeline ── */
+function buildTimelineChart() {
   const h24 = now() - 86400000;
-  const toHr = (ts) => (new Date(ts).getTime() - h24) / 3600000;
-  const slp = data.sleeps.filter(x=>new Date(x.timestamp).getTime()>h24).map(s=>({x:toHr(s.timestamp), y:3}));
-  const dia = data.diapers.filter(x=>new Date(x.timestamp).getTime()>h24).map(d=>({x:toHr(d.timestamp), y:2}));
-  const fds = data.feeds.filter(x=>new Date(x.timestamp).getTime()>h24).map(f=>({x:toHr(f.timestamp), y:1}));
-  
-  charts.timeline = new Chart(ctxT, {
-    type: 'scatter', 
-    data: { 
-      datasets: [
-        {label: 'Sleep', data:slp, backgroundColor:'#c084fc', pointRadius: 6},
-        {label: 'Diaper', data:dia, backgroundColor:'#38bdf8', pointRadius: 6},
-        {label: 'Feed', data:fds, backgroundColor:'#34d399', pointRadius: 6}
-      ] 
-    },
-    options: { 
-      responsive: true, 
-      maintainAspectRatio: false, 
-      plugins: { legend: {display:true, labels: {color: tc, font: {size: 10}}} },
-      scales: { 
-        x: {min:0, max:24, ticks:{color:tc, callback:v=>Math.floor(v)+'h'}, grid: {color: 'rgba(255,255,255,0.1)'}}, 
-        y: {min:0.5, max:3.5, ticks:{color:tc, callback:v=>v===1?'Feed':v===2?'Diaper':v===3?'Sleep':''}, grid: {display: false}} 
+  const toHr = ts => (new Date(ts).getTime() - h24) / 3600000;
+  const sl = data.sleeps.filter(x=>new Date(x.timestamp)>h24-86400000).map(s=>({x:toHr(s.timestamp),y:3}));
+  const di = data.diapers.filter(x=>new Date(x.timestamp)>h24-86400000).map(d=>({x:toHr(d.timestamp),y:2}));
+  const fe = data.feeds.filter(x=>new Date(x.timestamp)>h24-86400000).map(f=>({x:toHr(f.timestamp),y:1}));
+  const hasData = sl.length||di.length||fe.length;
+  showChartOrEmpty('timeline-wrap','timeline-empty', hasData);
+  if (!hasData) return;
+  charts.timeline = new Chart(document.getElementById('timeline-chart'),{
+    type:'scatter',
+    data:{datasets:[
+      {label:'Sleep',  data:sl, backgroundColor:'#c084fc',pointRadius:7},
+      {label:'Diaper', data:di, backgroundColor:'#38bdf8',pointRadius:7},
+      {label:'Feed',   data:fe, backgroundColor:'#34d399',pointRadius:7}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:true,labels:{color:tc(),font:{size:10,family:'Nunito',weight:'700'},usePointStyle:true}}},
+      scales:{
+        x:{type:'linear',min:0,max:24,grid:{color:gc()},ticks:{color:tc(),callback:v=>Math.floor(v)+'h',maxTicksLimit:9},border:{display:false}},
+        y:{min:0.5,max:3.5,grid:{display:false},ticks:{color:tc(),callback:v=>v===1?'Feed':v===2?'Diaper':v===3?'Sleep':''},border:{display:false}}
       }
     }
   });
+}
 
-  // Vitamin D Compliance Chart (Last 7 Days)
-  const ctxVD = document.getElementById('vitd-chart').getContext('2d');
-  const last7Days = [];
-  for (let i = 6; i >= 0; i--) {
-    const d = new Date(now() - i * 86400000);
-    last7Days.push({
-      date: d.toDateString(),
-      label: d.toLocaleDateString([], {weekday: 'short'}),
-      taken: data.vitD === d.toDateString() ? 1 : 0
-    });
+/* ── Sleep Trend (FIX-12: new chart) ── */
+function buildSleepTrendChart() {
+  const days = getLast7Days();
+  const sleepHrs = days.map(d =>
+    +( data.sleeps.filter(s=>new Date(s.timestamp).toDateString()===d.date)
+         .reduce((sum,s)=>sum+(s.dur||0),0) / 60 ).toFixed(1));
+  const hasData = sleepHrs.some(v=>v>0);
+  showChartOrEmpty('sleep-trend-wrap','sleep-trend-empty', hasData);
+
+  /* 24h summary box */
+  const box = document.getElementById('sleep-24h-box');
+  const h24 = now()-86400000;
+  const todayMins = data.sleeps.filter(s=>new Date(s.timestamp).getTime()>h24).reduce((a,s)=>a+(s.dur||0),0);
+  const todayHrs = +(todayMins/60).toFixed(1);
+  let alertClass='alert-warn', alertText=`${todayHrs}h sleep in the last 24 hours. Target: 14–17h for newborns.`;
+  if (todayHrs>=14) { alertClass='alert-ok';   alertText=`✅ ${todayHrs}h sleep today — right on target!`; }
+  else if (todayHrs>=10) { alertClass='alert-warn'; }
+  else if (todayMins>0) { alertClass='alert-bad'; alertText=`⚠️ Only ${todayHrs}h sleep in 24h. Newborns need 14–17h. Consider a sleep-friendly environment.`; }
+  box.style.display = todayMins>0 ? 'block' : 'none';
+  box.innerHTML = `<div class="alert-box ${alertClass}"><span class="alert-icon">😴</span><div>${alertText}</div></div>`;
+
+  if (!hasData) return;
+  charts.sleepTrend = new Chart(document.getElementById('sleep-trend-chart'),{
+    type:'bar',
+    data:{labels:days.map(d=>d.label),datasets:[{
+      label:'Sleep (h)',
+      data:sleepHrs,
+      backgroundColor:sleepHrs.map(h=>h>=14?'rgba(52,211,153,0.7)':h>=10?'rgba(192,132,252,0.7)':'rgba(248,113,113,0.65)'),
+      borderRadius:7
+    }]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.raw+'h'}}},
+      scales:{
+        y:{beginAtZero:true,max:20,grid:{color:gc()},ticks:{color:tc(),callback:v=>v+'h'},border:{display:false}},
+        x:{grid:{display:false},ticks:{color:tc()},border:{display:false}}
+      }
+    }
+  });
+}
+
+/* ── Vitamin D (FIX-1: reads from array) ── */
+function buildVitDChart() {
+  const days = getLast7Days();
+  const vals = days.map(d => (Array.isArray(data.vitD)&&data.vitD.includes(d.date)) ? 1 : 0);
+  const taken = vals.filter(v=>v).length;
+  showChartOrEmpty('vitd-wrap','vitd-empty', taken>0||true); /* always show chart */
+  charts.vitD = new Chart(document.getElementById('vitd-chart'),{
+    type:'bar',
+    data:{labels:days.map(d=>d.label),datasets:[{
+      data:vals,
+      backgroundColor:vals.map(v=>v?'rgba(52,211,153,0.75)':'rgba(248,113,113,0.45)'),
+      borderRadius:6
+    }]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        y:{beginAtZero:true,max:1,grid:{color:gc()},ticks:{color:tc(),stepSize:1,callback:v=>v===1?'✓':'✗'},border:{display:false}},
+        x:{grid:{display:false},ticks:{color:tc()},border:{display:false}}
+      }
+    }
+  });
+}
+
+/* ── Feed Distribution ── */
+function buildFeedDistChart() {
+  const counts = ['Nursing','Bottle','Pump'].map(t=>data.feeds.filter(f=>f.type===t).length);
+  const hasData = counts.some(c=>c>0);
+  showChartOrEmpty('feed-dist-wrap','feed-dist-empty', hasData);
+  if (!hasData) return;
+  charts.feedDist = new Chart(document.getElementById('feeding-distribution-chart'),{
+    type:'doughnut',
+    data:{labels:['Nursing','Bottle','Pump'],datasets:[{data:counts,backgroundColor:['#34d399','#38bdf8','#f472b6'],borderColor:'transparent',borderWidth:0}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'bottom',labels:{color:tc(),font:{size:11,family:'Nunito',weight:'700'},padding:14,usePointStyle:true}}}}
+  });
+}
+
+/* ── Diaper Trend ── */
+function buildDiaperTrendChart() {
+  const days = getLast7Days();
+  const counts = days.map(d=>data.diapers.filter(x=>new Date(x.timestamp).toDateString()===d.date).length);
+  const hasData = counts.some(c=>c>0);
+  showChartOrEmpty('diaper-trend-wrap','diaper-trend-empty', hasData);
+  if (!hasData) return;
+  charts.diaperTrend = new Chart(document.getElementById('diaper-trend-chart'),{
+    type:'line',
+    data:{labels:days.map(d=>d.label),datasets:[{label:'Changes',data:counts,borderColor:'#38bdf8',backgroundColor:'rgba(56,189,248,0.1)',tension:0.4,fill:true,pointBackgroundColor:'#0ea5e9',pointRadius:5}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        y:{beginAtZero:true,grid:{color:gc()},ticks:{color:tc(),stepSize:1},border:{display:false}},
+        x:{grid:{display:false},ticks:{color:tc()},border:{display:false}}
+      }
+    }
+  });
+}
+
+/* ── Growth Curve ── */
+/* FIX-9: metric-specific empty state message */
+function buildGrowthChart() { rebuildGrowthChart(); }
+
+function rebuildGrowthChart() {
+  if (charts.growth) { charts.growth.destroy(); charts.growth=null; }
+  const metric = document.getElementById('growth-metric').value;
+  const sorted = [...data.weights].sort((a,b)=>new Date(a.date)-new Date(b.date));
+  const pts = sorted.filter(w=>w[metric]!==null && w[metric]!==undefined);
+  const hasData = pts.length > 0;
+
+  showChartOrEmpty('growth-wrap','growth-empty', hasData);
+  if (!hasData) {
+    const metricLabels = {weight:'weight (kg)',length:'length (cm)',head:'head circumference (cm)'};
+    document.getElementById('growth-empty-msg').textContent = `No ${metricLabels[metric]||metric} data logged yet`;
+    return;
   }
-  
-  charts.vitD = new Chart(ctxVD, {
-    type: 'bar',
-    data: {
-      labels: last7Days.map(d => d.label),
-      datasets: [{
-        label: 'Vitamin D Taken',
-        data: last7Days.map(d => d.taken),
-        backgroundColor: last7Days.map(d => d.taken ? '#34d399' : 'rgba(248,113,113,0.5)'),
-        borderColor: last7Days.map(d => d.taken ? '#059669' : '#f87171'),
-        borderWidth: 1
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        y: {
-          beginAtZero: true,
-          max: 1,
-          ticks: {
-            stepSize: 1,
-            callback: v => v === 1 ? '✓' : '✗',
-            color: tc
-          }
-        },
-        x: {
-          ticks: { color: tc }
-        }
-      },
-      plugins: {
-        legend: { display: false }
-      }
-    }
-  });
-
-  // Feeding Distribution Chart
-  const ctxFD = document.getElementById('feeding-distribution-chart').getContext('2d');
-  const feedTypes = ['Nursing', 'Bottle', 'Pump'];
-  const feedCounts = feedTypes.map(type => 
-    data.feeds.filter(f => f.type === type).length
-  );
-  
-  charts.feedingDist = new Chart(ctxFD, {
-    type: 'doughnut',
-    data: {
-      labels: feedTypes,
-      datasets: [{
-        data: feedCounts,
-        backgroundColor: ['#34d399', '#38bdf8', '#f472b6'],
-        borderColor: 'transparent'
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          position: 'bottom',
-          labels: { color: tc, padding: 15 }
-        }
-      }
-    }
-  });
-
-  // Diaper Change Trend (Last 7 Days)
-  const ctxDT = document.getElementById('diaper-trend-chart').getContext('2d');
-  const diaperLast7Days = last7Days.map(day => {
-    return data.diapers.filter(d => 
-      new Date(d.timestamp).toDateString() === day.date
-    ).length;
-  });
-  
-  charts.diaperTrend = new Chart(ctxDT, {
-    type: 'line',
-    data: {
-      labels: last7Days.map(d => d.label),
-      datasets: [{
-        label: 'Diaper Changes',
-        data: diaperLast7Days,
-        borderColor: '#38bdf8',
-        backgroundColor: 'rgba(56,189,248,0.1)',
-        tension: 0.4,
-        fill: true
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        y: {
-          beginAtZero: true,
-          ticks: { color: tc, stepSize: 1 }
-        },
-        x: {
-          ticks: { color: tc }
-        }
-      }
-    }
-  });
-
-  // Parent Mood Chart
-  const ctxPM = document.getElementById('parent-mood-chart').getContext('2d');
-  const moodValues = { 'Great': 3, 'Okay': 2, 'Struggling': 1 };
-  const recentMoods = data.parent.slice(0, 7).reverse();
-  
-  charts.parentMood = new Chart(ctxPM, {
-    type: 'line',
-    data: {
-      labels: recentMoods.map(m => fmtDate(m.timestamp)),
-      datasets: [{
-        label: 'Mood',
-        data: recentMoods.map(m => moodValues[m.mood] || 0),
-        borderColor: '#a78bfa',
-        backgroundColor: 'rgba(167,139,250,0.1)',
-        tension: 0.4,
-        fill: true
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        y: {
-          min: 0,
-          max: 3,
-          ticks: {
-            callback: v => v === 3 ? '😊' : v === 2 ? '😐' : v === 1 ? '🌧️' : '',
-            color: tc
-          }
-        },
-        x: {
-          ticks: { color: tc }
-        }
-      }
-    }
-  });
-
-  renderWeightChart();
-}
-
-function renderWeightChart() {
-  if(charts.growth) charts.growth.destroy();
-  
-  const ctxW = document.getElementById('weight-chart').getContext('2d');
-  const sortedWeights = [...data.weights].sort((a,b)=>new Date(a.date)-new Date(b.date));
-  
-  if(sortedWeights.length === 0) return;
-  
-  const metric = document.getElementById('growth-metric').value; 
-  const pts = sortedWeights.filter(w => w[metric] !== null);
-  
-  if(pts.length === 0) return;
-  
-  charts.growth = new Chart(ctxW, {
-    type: 'line', 
-    data: { 
-      labels: pts.map(w => w.date.substring(5)), 
-      datasets: [{ 
-        data: pts.map(w => w[metric]), 
-        borderColor: '#f472b6', 
-        backgroundColor: 'rgba(244,114,182,0.1)',
-        tension: 0.4, 
-        pointBackgroundColor: '#db2777',
-        fill: true
-      }] 
-    },
-    options: { 
-      responsive: true, 
-      maintainAspectRatio: false, 
-      plugins: { legend: {display: false} },
-      scales: {
-        x: { ticks: { color: document.documentElement.dataset.theme==='dark'?'#8b9ab5':'#5a6a85' } },
-        y: { ticks: { color: document.documentElement.dataset.theme==='dark'?'#8b9ab5':'#5a6a85' } }
+  const unitLabels = {weight:'kg',length:'cm',head:'cm'};
+  charts.growth = new Chart(document.getElementById('weight-chart'),{
+    type:'line',
+    data:{labels:pts.map(w=>w.date.substring(5)),datasets:[{
+      data:pts.map(w=>w[metric]),
+      borderColor:'#f472b6',backgroundColor:'rgba(244,114,182,0.1)',
+      tension:0.4,fill:true,pointBackgroundColor:'#db2777',pointBorderColor:'#fff',pointBorderWidth:2,pointRadius:5
+    }]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.raw+' '+(unitLabels[metric]||'')}}},
+      scales:{
+        y:{grid:{color:gc()},ticks:{color:tc()},border:{display:false}},
+        x:{grid:{color:gc()},ticks:{color:tc(),maxTicksLimit:7},border:{display:false}}
       }
     }
   });
 }
 
-/* ═══════════════════════════════════════ SETTINGS ═══ */
-function openProfile() { 
-  document.getElementById('p-name').value = data.profile.name||''; 
+/* ── Parent Mood ── */
+function buildParentMoodChart() {
+  const moodVal = {Great:3,Okay:2,Struggling:1};
+  const recent = [...data.parent].reverse().slice(-14);
+  const hasData = recent.length > 0;
+  showChartOrEmpty('parent-wrap','parent-empty', hasData);
+  if (!hasData) return;
+  charts.parentMood = new Chart(document.getElementById('parent-mood-chart'),{
+    type:'line',
+    data:{labels:recent.map(m=>fmtDate(m.timestamp)),datasets:[{
+      label:'Mood',data:recent.map(m=>moodVal[m.mood]||0),
+      borderColor:'#a78bfa',backgroundColor:'rgba(167,139,250,0.1)',tension:0.4,fill:true,
+      pointBackgroundColor:'#7c3aed',pointRadius:5
+    }]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        y:{min:0,max:3,grid:{color:gc()},ticks:{color:tc(),stepSize:1,callback:v=>v===3?'😊':v===2?'😐':v===1?'🌧️':''},border:{display:false}},
+        x:{grid:{display:false},ticks:{color:tc(),maxTicksLimit:7},border:{display:false}}
+      }
+    }
+  });
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   PROFILE / SETTINGS
+   ═════════════════════════════════════════════════════════════════════════ */
+function openProfile() {
+  document.getElementById('p-name').value  = data.profile.name||'';
   document.getElementById('p-birth').value = data.profile.birthDate||'';
-  updateUI(); // Refreshes the alerts UI button state
-  document.getElementById('profile-modal').classList.add('open'); 
+  refreshAlertsButton();
+  document.getElementById('profile-modal').classList.add('open');
 }
 function closeProfile() { document.getElementById('profile-modal').classList.remove('open'); }
 function saveProfile() {
-  data.profile.name = document.getElementById('p-name').value; 
+  data.profile.name      = document.getElementById('p-name').value.trim();
   data.profile.birthDate = document.getElementById('p-birth').value;
-  save(); closeProfile(); updateUI(); 
-  if(currView==='milestones') renderMilestones();
-  if(currView==='analytics') renderCharts();
+  invalidateVaxCache();
+  save(); closeProfile(); updateUI();
+  if (currView==='milestones') renderMilestones();
 }
-function toggleTheme() {
-  data.theme = data.theme === 'dark' ? 'light' : 'dark'; 
-  data.explicitlySetTheme = true;
-  document.documentElement.dataset.theme = data.theme; 
-  
-  const themeBtn = document.getElementById('theme-btn');
-  themeBtn.textContent = data.theme === 'dark' ? '☀️' : '🌙';
-  
-  save(); 
-  if(currView==='analytics') renderCharts();
-}
-function exportData(format = 'json') {
-  if (format === 'csv') {
-    // Create CSV with all data
-    let csv = 'Type,Timestamp,Details\n';
-    
-    data.feeds.forEach(f => {
-      csv += `Feed,${f.timestamp},"${f.type} ${f.side||''} ${f.dur||''}min ${f.vol||''}oz"\n`;
-    });
-    data.sleeps.forEach(s => {
-      csv += `Sleep,${s.timestamp},"${s.dur}min"\n`;
-    });
-    data.diapers.forEach(d => {
-      csv += `Diaper,${d.timestamp},"${d.type}"\n`;
-    });
-    data.weights.forEach(w => {
-      csv += `Growth,${w.date},"W:${w.weight}kg L:${w.length}cm H:${w.head}cm"\n`;
-    });
-    data.foods.forEach(f => {
-      csv += `Food,${f.timestamp},"${f.food} - ${f.react}"\n`;
-    });
-    data.meds.forEach(m => {
-      csv += `Medicine,${m.timestamp},"${m.type}: ${m.note}"\n`;
-    });
-    data.parent.forEach(p => {
-      csv += `Parent,${p.timestamp},"Mood: ${p.mood} Water:${p.water} Shower:${p.shower}"\n`;
-    });
-    
-    const blob = new Blob([csv], {type: 'text/csv'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `baby-data-${new Date().toISOString().slice(0,10)}.csv`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+function refreshAlertsButton() {
+  const btn = document.getElementById('btn-enable-alerts');
+  if (!btn) return;
+  const granted = typeof Notification !== 'undefined' && Notification.permission === 'granted';
+  if (granted && data.alertsEnabled) {
+    btn.innerHTML='✅ Alerts Enabled'; btn.style.color='var(--green)';
+    btn.style.borderColor='var(--green)'; btn.style.background='rgba(52,211,153,0.08)';
   } else {
-    // JSON export (original)
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], {type: "application/json"}));
-    a.download = `baby-data-${new Date().toISOString().slice(0,10)}.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    btn.innerHTML='🔔 Enable System Alerts'; btn.style.color='';
+    btn.style.borderColor=''; btn.style.background='';
   }
 }
+function requestNotificationPermission() {
+  if (typeof Notification === 'undefined') { alert('Notifications are not supported in this browser.'); return; }
+  Notification.requestPermission().then(p => {
+    if (p==='granted') {
+      data.alertsEnabled=true; save(); refreshAlertsButton();
+      new Notification('Alerts Enabled ✅',{body:'You will be notified at 3h feeds and 2h diapers.'});
+    }
+  });
+}
+function toggleTheme() {
+  data.theme = data.theme==='dark' ? 'light' : 'dark';
+  data.explicitlySetTheme = true;
+  document.documentElement.dataset.theme = data.theme;
+  document.getElementById('theme-btn').textContent = data.theme==='dark' ? '☀️' : '🌙';
+  chartsNeedRebuild = true; /* FIX-13 */
+  save();
+  if (currView==='analytics') renderCharts();
+}
+function exportData(format) {
+  if (format==='csv') {
+    let csv = 'Type,Timestamp,Details\n';
+    data.feeds.forEach(f=>   csv+=`Feed,${f.timestamp},"${f.type} ${f.side||''} ${f.dur||''}min ${f.vol||''}oz"\n`);
+    data.sleeps.forEach(s=>  csv+=`Sleep,${s.timestamp},"${s.dur}min"\n`);
+    data.diapers.forEach(d=> csv+=`Diaper,${d.timestamp},"${d.type}"\n`);
+    data.weights.forEach(w=> csv+=`Growth,${w.date},"W:${w.weight}kg L:${w.length}cm H:${w.head}cm"\n`);
+    data.foods.forEach(f=>   csv+=`Food,${f.timestamp},"${f.food} - ${f.react}"\n`);
+    data.meds.forEach(m=>    csv+=`Medicine,${m.timestamp},"${m.type}: ${m.note}"\n`);
+    data.parent.forEach(p=>  csv+=`Parent,${p.timestamp},"Mood:${p.mood} Water:${p.water} Shower:${p.shower}"\n`);
+    download(`baby-data-${todayStr()}.csv`, csv, 'text/csv');
+  } else {
+    download(`baby-data-${todayStr()}.json`, JSON.stringify(data,null,2), 'application/json');
+  }
+}
+function download(name, content, mime) {
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([content],{type:mime}));
+  a.download=name; document.body.appendChild(a); a.click();
+  document.body.removeChild(a); URL.revokeObjectURL(a.href);
+}
 function handleImport(e) {
-  const reader = new FileReader();
-  reader.onload = (ev) => { 
-    try { 
-      data = JSON.parse(ev.target.result); 
-      save(); 
-      alert('Data imported successfully!'); 
-      location.reload(); 
-    } catch(err) { 
-      alert('Error reading file. Please check the format.'); 
-    } 
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    try { data=JSON.parse(ev.target.result); save(); alert('Imported successfully!'); location.reload(); }
+    catch(_){ alert('Invalid file format.'); }
   };
-  if(e.target.files[0]) reader.readAsText(e.target.files[0]);
+  if (e.target.files[0]) reader.readAsText(e.target.files[0]);
 }
 function pruneData() {
-  if(!confirm('Delete data older than 6 months? This cannot be undone.')) return;
-  const cut = now() - (180 * 86400000);
-  ['feeds','sleeps','diapers','meds','foods','parent'].forEach(k => data[k] = data[k].filter(x => new Date(x.timestamp).getTime() > cut));
-  data.weights = data.weights.filter(x => new Date(x.date).getTime() > cut);
-  save(); 
-  alert('Old data pruned successfully.'); 
-  closeProfile();
-  updateUI();
+  if (!confirm('Delete all data older than 6 months? This cannot be undone.')) return;
+  const cut = now()-(180*86400000);
+  ['feeds','sleeps','diapers','meds','foods','parent'].forEach(k=>
+    data[k]=data[k].filter(x=>new Date(x.timestamp).getTime()>cut));
+  data.weights=data.weights.filter(x=>new Date(x.date).getTime()>cut);
+  save(); closeProfile(); updateUI(); alert('Old data cleared.');
 }
 
-/* ═══════════════════════════════════════ INIT ═══ */
-function init() { 
-    load(); 
-    document.documentElement.dataset.theme = data.theme; 
-    document.getElementById('theme-btn').textContent = data.theme === 'dark' ? '☀️' : '🌙';
-    
-    data.weights.sort((a,b)=>new Date(b.date)-new Date(a.date)); 
-    updateUI(); 
-    loadLiveTimers(); 
-    
-    // Update every minute
-    setInterval(updateUI, 60000); 
-    
-    // Handle window resize for charts
-    window.addEventListener('resize', () => {
-      if(currView === 'analytics') {
-        clearTimeout(window.resizeTimer);
-        window.resizeTimer = setTimeout(() => renderCharts(), 250);
-      }
-    });
+/* ═════════════════════════════════════════════════════════════════════════
+   INIT
+   ═════════════════════════════════════════════════════════════════════════ */
+function init() {
+  load();
+  loadLiveTimers();
+
+  document.documentElement.dataset.theme = data.theme;
+  document.getElementById('theme-btn').textContent = data.theme==='dark' ? '☀️' : '🌙';
+
+  /* Start any timers that were running at page close */
+  ['feed','sleep'].forEach(t => {
+    if (liveTimers[t].running) startTimerLoop(t);
+  });
+
+  updateUI();
+  setInterval(updateUI, 60000);
 }
+
 init();
 </script>
 </body>
